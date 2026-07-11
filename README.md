@@ -32,6 +32,8 @@ Resources:
 The first week or two belong to you. Read the Related Work (in [Gdocs](https://docs.google.com/document/d/1d3sI772HJ6YMEpM5byhJjTuyK0kBtH4n1o0SHHDFMRQ/edit?tab=t.vyefkip4od2b)), browse the hackathon resources, poke at the problem space, then propose
 experiments of your own as a [design](designs/E0-TEMPLATE.md) sheet and bring it to the group.
 
+The suggested week-by-week plan: [ONBOARDING.md](ONBOARDING.md).
+
 
 
 ## The design-sheet workflow
