@@ -1,0 +1,13 @@
+{
+  "project": "semantic-diffchecking: experimental design hub",
+  "sheets": [
+    {
+      "file": "E0-TEMPLATE.md",
+      "id": "E0",
+      "title": "Experiment Title",
+      "owner": "unassigned",
+      "status": "draft",
+      "question": "Can we templatise the design of experiments to make them easier to read, run, and compare?"
+    }
+  ]
+}
