@@ -235,6 +235,11 @@ def selftest(oracle: SemanticOracle) -> None:
         (43, "x * y = y * x = x", "outside-fragment"),            # chained equality
         (43, "e * x = x", None),                                  # 'e' is formally just a variable
         (4512, "x*(y*(z*w)) = ((x*y)*z)*w", "outside-fragment"),  # order 6 identity
+        # LaTeX noise actually produced by a small model (Qwen2.5-1.5B) in the
+        # semantic-drift notebook: every token wrapped in \( \).
+        (4512, r"\( (x \) ◇ \( y) \) ◇ \( z = x \) ◇ \( (y \) ◇ \( z) \)", "equivalent"),
+        ("x ◇ y = y ◇ x", r"$a \oplus b$ = $b \oplus a$", "equivalent"),  # \oplus + inline $
+        (43, r"x \oplus y = y \cdot x", "outside-fragment"),  # mixed LaTeX ops stay two distinct ops
     ]
     failures = 0
     for intended, generated, expected in cases:

@@ -32,7 +32,20 @@ CANONICAL_OP = "◇"
 CANONICAL_VARS = "xyzwuvtsrqpn"  # first-appearance renaming order
 
 # Infix symbols an LLM plausibly uses for the single binary operation.
-INFIX_OPS = set("◇⋄⬦◆∘○◦·⋅*∗×+-/&%@#!?^~")
+INFIX_OPS = set("◇⋄⬦◆∘○◦·⋅*∗×+-/&%@#!?^~⊕⊗⊙⊖⊘•★†◁▷")
+
+# LaTeX operator commands rewritten to *distinct* Unicode symbols. Each command
+# keeps its own symbol rather than collapsing everything to ◇, so an output
+# that mixes two operators (e.g. \oplus and \cdot) still trips the parser's
+# single-operation check instead of being silently conflated into one op.
+# Only commands NOT followed by another letter are rewritten (so \circledast
+# is left alone to fail loudly rather than half-rewritten via \circ).
+_LATEX_OP_COMMANDS = {
+    "cdot": "·", "circ": "∘", "diamond": "◇", "ast": "*", "times": "×",
+    "oplus": "⊕", "otimes": "⊗", "odot": "⊙", "ominus": "⊖", "oslash": "⊘",
+    "bullet": "•", "star": "★", "dagger": "†",
+    "triangleleft": "◁", "triangleright": "▷",
+}
 
 # ---------------------------------------------------------------------------
 # Errors
@@ -175,21 +188,29 @@ _QUANTIFIER = re.compile(
 )
 
 def strip_noise(text: str) -> str:
-    """Strip the packaging an LLM tends to wrap a formula in, before tokenizing.
+    r"""Strip the packaging an LLM tends to wrap a formula in, before tokenizing.
 
-    Handles, in order: markdown code fences and stray backticks; `$...$` math
-    delimiters; a handful of common LaTeX operator macros rewritten to their
-    Unicode symbols; a leading universal-quantifier prefix (`∀ x y,` / `for all
-    ...,`), which is implicit for every ETP law and carries no extra meaning;
-    and a trailing sentence period. Returns the bare `s = t` core. This only
-    removes semantically inert wrapping — it never touches the operator
-    structure — so it cannot change which law is meant."""
+    Handles, in order: markdown code fences and stray backticks; math-mode
+    delimiters (`$...$`, and inline `\(`, `\)`, `\[`, `\]`, which small models
+    often wrap around every single token); `\text{...}`-style wrappers around
+    variable names; common LaTeX operator macros rewritten to their Unicode
+    symbols (each to a *distinct* symbol — see _LATEX_OP_COMMANDS); a leading
+    universal-quantifier prefix (`∀ x y,` / `for all ...,`), which is implicit
+    for every ETP law and carries no extra meaning; and a trailing sentence
+    period. Returns the bare `s = t` core. This only removes semantically
+    inert wrapping — it never touches the operator structure — so it cannot
+    change which law is meant. Unrecognized LaTeX commands are left in place
+    to fail loudly in the tokenizer rather than be silently guessed at."""
     s = text.strip()
     s = re.sub(r"^```[a-zA-Z]*\s*|\s*```$", "", s).strip()
     s = s.strip("`").strip()
-    s = re.sub(r"^\$+\s*|\s*\$+$", "", s).strip()
-    s = s.replace(r"\cdot", "·").replace(r"\circ", "∘").replace(r"\diamond", "◇")
-    s = s.replace(r"\ast", "*").replace(r"\times", "×").replace(r"\left", "").replace(r"\right", "")
+    # Math-mode delimiters, anywhere in the string: \( \) \[ \] and $ / $$.
+    s = re.sub(r"\\[()\[\]]|\$", "", s)
+    # \text{x} / \mathrm{x} wrappers around variable names — keep the content.
+    s = re.sub(r"\\(?:text|mathrm|mathbf|mathit)\{([^{}]*)\}", r"\1", s)
+    for cmd, sym in _LATEX_OP_COMMANDS.items():
+        s = re.sub(rf"\\{cmd}(?![A-Za-z])", sym, s)
+    s = s.replace(r"\left", "").replace(r"\right", "")
     while True:
         stripped = _QUANTIFIER.sub("", s)
         if stripped == s:
