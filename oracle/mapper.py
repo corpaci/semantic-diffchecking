@@ -126,19 +126,30 @@ class NodeMapper:
                 "NodeMapper(equations_path=...)."
             )
         with open(self.equations_path, encoding="utf-8") as f:
-            for lineno, line in enumerate(f, start=1):
-                law = line.strip()
-                if not law:
-                    continue
-                self.laws.append(law)
-                key = canonical_key(parse_equation(law))
-                dup = self.key_to_node.get(key)
-                if dup is not None:
-                    raise RuntimeError(
-                        f"canonical-key collision: Equation {dup} and Equation "
-                        f"{lineno} both normalize to {key!r}"
-                    )
-                self.key_to_node[key] = lineno
+            lines = f.read().splitlines()
+        while lines and not lines[-1].strip():
+            lines.pop()  # a trailing newline / blank tail is harmless
+        for lineno, line in enumerate(lines, start=1):
+            law = line.strip()
+            if not law:
+                # Both `laws` (index = node - 1) and `key_to_node` (value =
+                # line number) assume line N = Equation N. Skipping an interior
+                # blank line would silently skew the two against each other, so
+                # refuse the file instead.
+                raise RuntimeError(
+                    f"blank line {lineno} in {self.equations_path}: the "
+                    "catalogue must hold exactly one law per line (line N = "
+                    "Equation N)"
+                )
+            self.laws.append(law)
+            key = canonical_key(parse_equation(law))
+            dup = self.key_to_node.get(key)
+            if dup is not None:
+                raise RuntimeError(
+                    f"canonical-key collision: Equation {dup} and Equation "
+                    f"{lineno} both normalize to {key!r}"
+                )
+            self.key_to_node[key] = lineno
 
     def law_text(self, node: int) -> str:
         """Return the catalogue text of Equation `node` (1-based).

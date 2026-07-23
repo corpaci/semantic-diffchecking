@@ -36,6 +36,11 @@ The suggested week-by-week plan: [ONBOARDING.md](ONBOARDING.md).
 
 
 
+## Instruments
+
+- [`oracle/`](oracle/README.md) — the formal semantic oracle: normalizes a (possibly messy, LLM-emitted) magma equation, maps it to its node in the [Equational Theories Project](https://github.com/teorth/equational_theories) catalogue, and labels an (intended, generated) pair `equivalent / weaker / stronger / incomparable / unknown` using only proven implications. See its README for setup and usage.
+
+
 ## The design-sheet workflow
 
 1. Copy `designs/E0-TEMPLATE.md` to `designs/E<n>-short-keyname.md` and fill it in
