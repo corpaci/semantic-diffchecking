@@ -35,9 +35,6 @@ from dataclasses import asdict, dataclass
 from build_matrix import MATRIX_BIN, META_JSON, STATUS_NAMES
 from mapper import MapResult, NodeMapper
 
-PROOF_FALSE, PROOF_TRUE = 0, 1
-
-
 # Byte values in the matrix for the two *proven* statuses. Anything that is
 # neither a proof-true nor a proof-false (i.e. a conjecture or an open cell) is
 # deliberately not named here: it falls through to the "unknown" branch, which
