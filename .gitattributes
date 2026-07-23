@@ -1,0 +1,2 @@
+# Normalize text files to LF in the repository, regardless of editor/OS settings.
+* text=auto
