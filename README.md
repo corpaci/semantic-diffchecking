@@ -1,18 +1,28 @@
-# semantic-drift-autoformalization
+# LADR Drift
 
-This repo explores semantic drift and formalization strategies.
+This repository studies semantic drift when LLMs translate authentic textbook
+mathematics into Lean 4 theorem statements.
 
-## Start here (project bird's-eye view, updated 2026-07-05)
+## Current experiment
 
-**Thesis:** LLM-generated Lean 4 statements can *compile* yet not be *faithful* to the source theorem — and in textbook mathematics, faithfulness itself is context-dependent (chapter-level standing assumptions). We measure this on *Linear Algebra Done Right* and meta-evaluate automatic faithfulness metrics. Target: ICLR 2027.
+Run the same 256 LADR theorems under three conditions:
 
-Read in this order:
+1. `statement_only`: theorem statement -> Lean statement.
+2. `statement_plus_proof`: theorem statement + informal proof -> Lean statement.
+3. `two_stage`: theorem + informal proof -> semantic plan -> Lean statement.
 
-1. **`ladr_paper_plan_2026-07-05.md`** — the complete research plan: thesis, RQs, takeaways (§0), study design (2×2 conditions SO/SP/SC/SPC), annotation protocol, stats plan, paper skeleton, timeline, task backlog, and a **step-by-step execution runbook (Appendix A — start there to run experiments)**, glossary (App. B), prompt templates (App. C).
-2. **`api_usage_proposal_2026-07-05.md`** — compute budget (expected ≈ $200–230, cap $650), model lineup and roles, per-phase spend gates, cost-control policy.
-3. **`ladr_pilot_log_2026-06-25.md`** — completed 27-theorem pilot: compiler-feedback repair lifts compilation to ~85%; informal proofs do NOT improve compilation; faithfulness question left open → motivates the plan above.
+The primary comparison uses GPT-5.5 and GPT-5.6 Sol with
+`reasoning.effort = none`. The separate compiler-feedback repair agent is not
+part of this run.
 
-## LADR dataset
-We added `LADR_all_material/`, a small dataset collected from my other project based on the undergraduate textbook “Linear Algebra Done Right.” It contains JSONL files for definitions, theorems (with informal proofs), examples, and exercises to support Lean 4 formalization experiments.
+## Repository layout
 
-- Folder README: see `LADR_all_material/README.md` for schema, experiment design, and evaluation metrics (baseline NL→Lean, NL+informal_proof→Lean, and a multi-stage pipeline).
+- `LADR_all_material/`: source dataset only; no generated outputs.
+- `scripts/`: three current experiment entry points plus Lean checking and analysis utilities.
+- `lean_checker/`: reproducible Lean 4 + Mathlib environment.
+- `results/`: generated outputs grouped first by experiment, then by model and
+  reasoning mode.
+- `ladr_pilot_log_2026-06-25.md`: concise 27-theorem pilot findings.
+- `ladr_paper_plan_2026-07-05.md`: longer-term research plan.
+
+See `results/README.md` for the artifact layout and dry-run commands.

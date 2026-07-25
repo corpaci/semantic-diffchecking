@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Typecheck generated Lean declarations with the local mathlib Lake project."""
+"""Typecheck generated declarations in one persistent Lean batch process."""
 
 from __future__ import annotations
 
@@ -19,26 +19,17 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
 DEFAULT_INPUT = (
     REPO_ROOT
-    / "LADR_all_material"
-    / "generated"
-    / "pilot_27_thms"
-    / "one_shot_ab"
-    / "lean_statement_pilot_ab.jsonl"
-)
-DEFAULT_OUTPUT = (
-    REPO_ROOT
-    / "LADR_all_material"
-    / "generated"
-    / "pilot_27_thms"
-    / "one_shot_ab"
-    / "lean_statement_pilot_ab_checked.jsonl"
+    / "results"
+    / "statement_only"
+    / "gpt-5.5"
+    / "reasoning_none"
+    / "generations.jsonl"
 )
 DEFAULT_LEAN_PROJECT = REPO_ROOT / "lean_checker"
 LEAN_PREAMBLE = """\
 import Mathlib
 
 set_option linter.style.header false
-
 """
 
 
@@ -85,22 +76,52 @@ def check_key(record: dict[str, Any]) -> tuple[str | None, str | None, str | Non
 def completed_checks(path: Path) -> set[tuple[str | None, str | None, str | None]]:
     if not path.exists():
         return set()
-    done: set[tuple[str | None, str | None, str | None]] = set()
-    for record in load_jsonl(path):
-        done.add(check_key(record))
-    return done
+    return {check_key(record) for record in load_jsonl(path)}
 
 
-def lean_input(output_text: str) -> str:
-    text = output_text.strip()
+def source_job(record: dict[str, Any], source_index: int) -> dict[str, Any] | None:
+    if record.get("status") != "ok":
+        return None
+    output_text = (record.get("output_text") or "").strip()
+    if not output_text:
+        return None
+    return {
+        "source_index": source_index,
+        "theorem_dataset_name": record.get("theorem_dataset_name") or record.get("name"),
+        "condition": record.get("condition"),
+        "model": record.get("model"),
+        "prompt_version": record.get("prompt_version"),
+        "output_sha256": output_hash(output_text),
+        "output_text": output_text,
+    }
+
+
+def declaration_body(output_text: str) -> str:
     lines = [
         line
-        for line in text.splitlines()
+        for line in output_text.strip().splitlines()
         if not re.match(r"\s*import\s+\S+\s*$", line)
-        and not re.match(r"\s*set_option\s+linter\.style\.header\s+false\s*$", line)
+        and not re.match(
+            r"\s*set_option\s+linter\.style\.header\s+false\s*$", line
+        )
     ]
-    body = "\n".join(lines).strip()
-    return LEAN_PREAMBLE + body + "\n"
+    return "\n".join(lines).strip()
+
+
+def build_batch(jobs: list[dict[str, Any]]) -> tuple[str, list[tuple[int, int]]]:
+    lines = LEAN_PREAMBLE.rstrip().splitlines()
+    ranges: list[tuple[int, int]] = []
+
+    for index, job in enumerate(jobs, start=1):
+        lines.extend(["", f"-- LADR_BATCH_START {index}"])
+        start_line = len(lines) + 1
+        body_lines = declaration_body(job["output_text"]).splitlines()
+        lines.extend(body_lines)
+        end_line = len(lines)
+        ranges.append((start_line, end_line))
+        lines.append(f"-- LADR_BATCH_END {index}")
+
+    return "\n".join(lines) + "\n", ranges
 
 
 def parse_lean_json(stdout: str) -> tuple[list[dict[str, Any]], list[str]]:
@@ -121,8 +142,20 @@ def parse_lean_json(stdout: str) -> tuple[list[dict[str, Any]], list[str]]:
     return messages, raw_lines
 
 
-def run_lean(code: str, *, lean_project: Path, timeout: float) -> dict[str, Any]:
+def message_line(message: dict[str, Any]) -> int | None:
+    pos = message.get("pos")
+    if not isinstance(pos, dict):
+        return None
+    line = pos.get("line")
+    return line if isinstance(line, int) else None
+
+
+def run_batch(
+    jobs: list[dict[str, Any]], *, lean_project: Path, timeout: float
+) -> list[dict[str, Any]]:
+    code, ranges = build_batch(jobs)
     cmd = ["lake", "env", "lean", "--stdin", "--json"]
+
     try:
         proc = subprocess.run(
             cmd,
@@ -134,56 +167,77 @@ def run_lean(code: str, *, lean_project: Path, timeout: float) -> dict[str, Any]
             check=False,
         )
     except subprocess.TimeoutExpired as exc:
-        return {
-            "lean_typechecked": False,
-            "check_status": "timeout",
-            "returncode": None,
-            "timeout_seconds": timeout,
-            "messages": [],
-            "stdout_raw": exc.stdout or "",
-            "stderr": exc.stderr or "",
-        }
+        return [
+            {
+                "lean_typechecked": False,
+                "check_status": "timeout",
+                "returncode": None,
+                "timeout_seconds": timeout,
+                "messages": [],
+                "stdout_raw": exc.stdout or "",
+                "stderr": exc.stderr or "",
+            }
+            for _ in jobs
+        ]
 
     messages, raw_lines = parse_lean_json(proc.stdout)
-    return {
-        "lean_typechecked": proc.returncode == 0,
-        "check_status": "ok" if proc.returncode == 0 else "error",
-        "returncode": proc.returncode,
-        "messages": messages,
-        "stdout_raw": "\n".join(raw_lines),
-        "stderr": proc.stderr,
-    }
+    by_job: list[list[dict[str, Any]]] = [[] for _ in jobs]
+    global_messages: list[dict[str, Any]] = []
 
+    for message in messages:
+        line = message_line(message)
+        owner = None
+        if line is not None:
+            for index, (start, end) in enumerate(ranges):
+                if start <= line <= end:
+                    owner = index
+                    break
+        if owner is None:
+            global_messages.append(message)
+        else:
+            by_job[owner].append(message)
 
-def source_job(record: dict[str, Any], source_index: int) -> dict[str, Any] | None:
-    if record.get("status") != "ok":
-        return None
-    validation = record.get("validation") or {}
-    if not validation.get("passed_basic_checks"):
-        return None
-    output_text = (record.get("output_text") or "").strip()
-    if not output_text:
-        return None
-    return {
-        "source_index": source_index,
-        "theorem_dataset_name": record.get("theorem_dataset_name") or record.get("name"),
-        "condition": record.get("condition"),
-        "model": record.get("model"),
-        "prompt_version": record.get("prompt_version"),
-        "output_sha256": output_hash(output_text),
-        "output_text": output_text,
-    }
+    global_errors = [
+        message for message in global_messages if message.get("severity") == "error"
+    ]
+    unmapped_failure = proc.returncode != 0 and not any(
+        message.get("severity") == "error"
+        for job_messages in by_job
+        for message in job_messages
+    )
+
+    results: list[dict[str, Any]] = []
+    for job_messages in by_job:
+        errors = [
+            message for message in job_messages if message.get("severity") == "error"
+        ]
+        if global_errors or unmapped_failure:
+            errors = errors or global_errors or [{"data": proc.stderr or "Lean batch failed"}]
+        passed = not errors
+        results.append(
+            {
+                "lean_typechecked": passed,
+                "check_status": "ok" if passed else "error",
+                "returncode": 0 if passed else 1,
+                "messages": job_messages + global_errors,
+                "stdout_raw": "\n".join(raw_lines) if not passed else "",
+                "stderr": proc.stderr if not passed else "",
+                "batch_returncode": proc.returncode,
+                "batch_size": len(jobs),
+            }
+        )
+    return results
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Typecheck generated Lean JSONL records with lake env lean."
+        description="Typecheck generated Lean records in one Lean process."
     )
     parser.add_argument("--input", type=Path, default=DEFAULT_INPUT)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--lean-project", type=Path, default=DEFAULT_LEAN_PROJECT)
     parser.add_argument("--limit", type=int, default=None)
-    parser.add_argument("--timeout", type=float, default=180.0)
+    parser.add_argument("--timeout", type=float, default=1800.0)
     parser.add_argument(
         "--force",
         action="store_true",
@@ -195,7 +249,8 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     input_path = args.input if args.input.is_absolute() else REPO_ROOT / args.input
-    output_path = args.output if args.output.is_absolute() else REPO_ROOT / args.output
+    output_arg = args.output or (input_path.parent / "lean_checks.jsonl")
+    output_path = output_arg if output_arg.is_absolute() else REPO_ROOT / output_arg
     lean_project = (
         args.lean_project if args.lean_project.is_absolute() else REPO_ROOT / args.lean_project
     )
@@ -204,7 +259,6 @@ def main() -> None:
         die(f"Input file not found: {input_path}")
     if not lean_project.exists():
         die(f"Lean checker project not found: {lean_project}")
-
     if args.force and output_path.exists():
         output_path.unlink()
 
@@ -218,30 +272,35 @@ def main() -> None:
         jobs = jobs[: args.limit]
 
     done = completed_checks(output_path)
+    pending_jobs = [job for job in jobs if check_key(job) not in done]
     print(f"Input: {input_path}")
     print(f"Output: {output_path}")
     print(f"Lean project: {lean_project}")
-    print(f"Candidate valid records: {len(jobs)}")
-    print(f"Skipping {len(done)} completed checks")
+    print(f"Candidate records: {len(jobs)}")
+    print(f"Skipping {len(jobs) - len(pending_jobs)} completed checks")
+    print(f"Lean processes: {1 if pending_jobs else 0}")
+
+    if not pending_jobs:
+        print("Done.")
+        print("New checks: {}")
+        return
+
+    print(f"Starting one Lean process for {len(pending_jobs)} declarations...")
+    batch_results = run_batch(
+        pending_jobs,
+        lean_project=lean_project,
+        timeout=args.timeout,
+    )
 
     summary: Counter[str] = Counter()
     by_condition: dict[str, Counter[str]] = defaultdict(Counter)
+    checked_at = iso_now()
 
-    for index, job in enumerate(jobs, start=1):
-        key = check_key(job)
-        label = f"{job['theorem_dataset_name']} / {job['condition']}"
-        if key in done:
-            print(f"[{index}/{len(jobs)}] skip {label}")
-            continue
-
-        print(f"[{index}/{len(jobs)}] check {label}")
-        result = run_lean(
-            lean_input(job["output_text"]),
-            lean_project=lean_project,
-            timeout=args.timeout,
-        )
+    for index, (job, result) in enumerate(
+        zip(pending_jobs, batch_results), start=1
+    ):
         record = {
-            "checked_at": iso_now(),
+            "checked_at": checked_at,
             "source_index": job["source_index"],
             "theorem_dataset_name": job["theorem_dataset_name"],
             "condition": job["condition"],
@@ -252,22 +311,10 @@ def main() -> None:
             **result,
         }
         append_jsonl(output_path, record)
-        done.add(key)
-
         status = record["check_status"]
         summary[status] += 1
         by_condition[str(job["condition"])][status] += 1
-        if status != "ok":
-            first_error = next(
-                (
-                    msg.get("data")
-                    for msg in record["messages"]
-                    if msg.get("severity") == "error"
-                ),
-                record["stderr"] or record["stdout_raw"],
-            )
-            if first_error:
-                print(f"  error: {str(first_error).splitlines()[0]}")
+        print(f"[{index}/{len(pending_jobs)}] {job['theorem_dataset_name']}: {status}")
 
     print("Done.")
     print("New checks:", dict(summary))

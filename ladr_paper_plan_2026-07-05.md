@@ -286,8 +286,8 @@ Plus RQ1 (the gap number + taxonomy) and RQ3 (the heatmap + cascade) are uncondi
 - [ ] Pin API client config in all three scripts: `OpenAI(timeout=<explicit>, max_retries=0)`; **Anthropic measurement calls (Sonnet 5) explicitly `thinking: {"type": "disabled"}`** — its default is adaptive-ON and would silently burn reasoning tokens; log model + thinking/effort setting into each output record; smoke-test 3–5 items and verify R (`usage.output_tokens`) before every full run (see §10 billing-trap rules).
 - [ ] Transcribe `LADR_chapter_scopes.jsonl` (9 chapters, verbatim boxes).
 - [ ] Pre-registration pass → `LADR_scope_dependence_256.jsonl` (before any new generation output is inspected).
-- [ ] Add `SC`/`SPC` conditions to `generate_lean_statements.py`; freeze 4 prompts; bump prompt version.
-- [ ] Full primary run: 256 × 4 × (one-shot + repair). Archive under `generated/full_256_thms/`.
+- [ ] Add scoped-condition experiment scripts; freeze 4 prompts; bump prompt version.
+- [ ] Full primary run: archive artifacts under `results/<condition>/<model>/`.
 - [ ] Probes script (`probe_compiled_statements.py`): vacuity, hypothesis-independence, unused-arg lint; JSONL out.
 - [ ] Second back-translator model + card-diff judge; regenerate cards for all compiled outputs.
 - [ ] Extend HTML comparison page with label form → JSONL export.
@@ -353,7 +353,7 @@ Notes:
 
 Every step lists: command(s), where output lands, a done-check, and estimated time. All commands run from the repo root with the venv active (`source .venv/bin/activate`; create via `python3 -m venv .venv && pip install -r requirements.txt` if absent). API keys live in `.env` (`OPENAI_API_KEY`; add `ANTHROPIC_API_KEY` before Step 6).
 
-> ⚠️ **Model-default landmine (read before running anything):** `generate_lean_statements.py` and `run_lean_repair_agent.py` currently default to `--model gpt-5.5` (changed 2026-07-01). GPT-5.5 has thinking ON by default; an accidental no-flag full run = 5.5 × 16k max-tokens × SDK auto-retries — the exact cost trap in §10. **Either flip the defaults back to `gpt-5.4` in Step A1, or never invoke without an explicit `--model`.**
+> ⚠️ **Model-default landmine (read before running anything):** `statement_only.py` / `statement_plus_proof.py` and `legacy_repair_agent.py` currently default to `--model gpt-5.5` (changed 2026-07-01). GPT-5.5 has thinking ON by default; an accidental no-flag full run = 5.5 × 16k max-tokens × SDK auto-retries — the exact cost trap in §10. **Either flip the defaults back to `gpt-5.4` in Step A1, or never invoke without an explicit `--model`.**
 
 ### A0. Prerequisites (once, ~1 h)
 - `python3 --version` (3.10+), venv + `pip install -r requirements.txt`.
@@ -362,9 +362,9 @@ Every step lists: command(s), where output lands, a done-check, and estimated ti
 
 ### A1. Harden the scripts (P0, ~1–2 h)
 1. In all three API scripts, construct the client explicitly: `OpenAI(timeout=900, max_retries=0)` (and later `Anthropic(..., max_retries=0)`).
-2. Flip `--model` defaults in `generate_lean_statements.py` / `run_lean_repair_agent.py` back to `gpt-5.4` (or make the flag required).
+2. Flip `--model` defaults in `statement_only.py` / `statement_plus_proof.py` / `legacy_repair_agent.py` back to `gpt-5.4` (or make the flag required).
 3. Add to every output record: `model`, `thinking/effort setting`, `prompt_version`.
-4. Launcher pattern for long runs: `caffeinate -i nohup python3 scripts/run_lean_repair_agent.py ... > logs/<run>.log 2>&1 &` (the July-1 failure was `nohup python` → command not found; log stays 41 bytes).
+4. Launcher pattern for long runs: `caffeinate -i nohup python3 scripts/legacy_repair_agent.py ... > logs/<run>.log 2>&1 &` (the July-1 failure was `nohup python` → command not found; log stays 41 bytes).
 - **Done-check:** `--dry-run --limit 3` prints resolved model + config; a 3-item live smoke shows `usage` with no unexpected reasoning tokens.
 
 ### A2. Data prep (before looking at any new model output; ~6 h reading work)
@@ -374,20 +374,20 @@ Every step lists: command(s), where output lands, a done-check, and estimated ti
 - **Done-check:** 9 scope rows; 256 dependence rows; 64-subset committed. Git-commit all three before Step A4 (timestamped pre-registration).
 
 ### A3. Add SC/SPC conditions (~2–3 h)
-- Extend `CONDITIONS` and the prompt builder in `generate_lean_statements.py` + `run_lean_repair_agent.py` using the Appendix C blocks; scope text loaded from `LADR_chapter_scopes.jsonl` by chapter parsed from `name`. Bump `prompt_version` to `..._v3`.
+- Extend `CONDITIONS` and the prompt builder in `statement_only.py` + `statement_plus_proof.py` + `legacy_repair_agent.py` using the Appendix C blocks; scope text loaded from `LADR_chapter_scopes.jsonl` by chapter parsed from `name`. Bump `prompt_version` to `..._v3`.
 - **Done-check:** `--dry-run` for each of the 4 conditions shows the correct blocks present/absent.
 
 ### A4. Phase-0 smoke tests (mandatory gate, <$5)
-- Per model/config: `python3 scripts/run_lean_repair_agent.py --model <M> --condition SPC --limit 5 --input LADR_all_material/LADR_thms_256.jsonl --output <smoke_out>`; record mean R = `usage.output_tokens`.
+- Per model/config: `python3 scripts/legacy_repair_agent.py --model <M> --condition SPC --limit 5 --input LADR_all_material/LADR_thms_256.jsonl --output <smoke_out>`; record mean R = `usage.output_tokens`.
 - **Gate:** GPT-5.5 R > 10k → invoke proposal cut order (2 conditions only) before its full subset run.
 
 ### A5. Primary run — GPT-5.4, 256 × 4 (W1–2; ~2–6 h wall-clock/condition sequential + Lean checks)
 ```
 for COND in SO SP SC SPC:
-  caffeinate -i nohup python3 scripts/run_lean_repair_agent.py \
+  caffeinate -i nohup python3 scripts/legacy_repair_agent.py \
     --model gpt-5.4 --condition $COND --max-iters 3 \
     --input  LADR_all_material/LADR_thms_256.jsonl \
-    --output LADR_all_material/generated/full_256_thms/repair_agent_v3/agent_${COND}.jsonl \
+    --output results/repair_agent_ab/gpt-5.4/reasoning_none/agent_${COND}.jsonl \
     > logs/full256_${COND}.log 2>&1
 ```
 - Then error taxonomy: `python3 scripts/analyze_lean_checks.py --input .../agent_<COND>.jsonl`.

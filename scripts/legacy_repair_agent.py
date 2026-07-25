@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a small generate-check-repair agent for LADR Lean statements."""
+"""Legacy compiler-feedback repair experiment; excluded from current runs."""
 
 from __future__ import annotations
 
@@ -29,16 +29,12 @@ except ImportError:
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-DEFAULT_INPUT = REPO_ROOT / "LADR_all_material" / "LADR_pilot_27.jsonl"
-DEFAULT_OUTPUT = (
-    REPO_ROOT
-    / "LADR_all_material"
-    / "generated"
-    / "pilot_27_thms"
-    / "repair_agent_ab"
-    / "lean_statement_agent_ab.jsonl"
-)
+DEFAULT_INPUT = REPO_ROOT / "LADR_all_material" / "LADR_thms_256.jsonl"
+DEFAULT_RESULTS_ROOT = REPO_ROOT / "results"
 DEFAULT_LEAN_PROJECT = REPO_ROOT / "lean_checker"
+DEFAULT_MODEL = "gpt-5.5"
+DEFAULT_REASONING_EFFORT = "none"
+REASONING_EFFORTS = ("none", "low", "medium", "high", "xhigh")
 
 CONDITIONS = ("statement_only", "statement_plus_proof")
 PROMPT_VERSION = "ladr_statement_repair_agent_v3"
@@ -108,6 +104,17 @@ def append_jsonl(path: Path, record: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+
+def default_output_path(model: str, reasoning_effort: str) -> Path:
+    model_dir = model.replace("/", "__")
+    return (
+        DEFAULT_RESULTS_ROOT
+        / "repair_agent_ab"
+        / model_dir
+        / f"reasoning_{reasoning_effort}"
+        / "results.jsonl"
+    )
 
 
 def output_hash(text: str) -> str:
@@ -254,6 +261,7 @@ def call_openai(
     model: str,
     messages: list[dict[str, str]],
     max_tokens: int,
+    reasoning_effort: str,
     temperature: float | None,
 ) -> tuple[str, dict[str, Any] | None]:
     kwargs: dict[str, Any] = {
@@ -261,6 +269,7 @@ def call_openai(
         "instructions": SYSTEM_PROMPT,
         "input": messages,
         "max_output_tokens": max_tokens,
+        "reasoning": {"effort": reasoning_effort},
     }
     if temperature is not None:
         kwargs["temperature"] = temperature
@@ -274,7 +283,18 @@ def call_openai(
             "output_tokens": getattr(usage, "output_tokens", None),
             "total_tokens": getattr(usage, "total_tokens", None),
         }
-    return clean_model_text(extract_response_text(response)), usage_dict
+    text = clean_model_text(extract_response_text(response))
+    if not text:
+        # Reasoning models spend max_output_tokens on hidden reasoning; if the
+        # budget runs out the response comes back incomplete with empty text.
+        status = getattr(response, "status", None)
+        details = getattr(response, "incomplete_details", None)
+        reason = getattr(details, "reason", None) if details is not None else None
+        raise RuntimeError(
+            f"empty model response (status={status}, reason={reason}); "
+            "consider raising --max-tokens"
+        )
+    return text, usage_dict
 
 
 def parse_lean_json(stdout: str) -> tuple[list[dict[str, Any]], list[str]]:
@@ -375,6 +395,7 @@ def run_agent_job(
             model=args.model,
             messages=messages,
             max_tokens=args.max_tokens,
+            reasoning_effort=args.reasoning_effort,
             temperature=args.temperature,
         )
         validation = validate_output(output_text, row.get("name"))
@@ -420,6 +441,7 @@ def run_agent_job(
         "dataset": row.get("domain") or "LADR",
         "input_row": row,
         "model": args.model,
+        "reasoning_effort": args.reasoning_effort,
         "temperature": args.temperature,
         "max_tokens": args.max_tokens,
         "max_iters": args.max_iters,
@@ -455,10 +477,15 @@ def parse_args() -> argparse.Namespace:
         description="Generate Lean statements, run Lean, and repair with compiler feedback."
     )
     parser.add_argument("--input", type=Path, default=DEFAULT_INPUT)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--lean-project", type=Path, default=DEFAULT_LEAN_PROJECT)
-    parser.add_argument("--model", default="gpt-5.4")
-    parser.add_argument("--max-tokens", type=int, default=1400)
+    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument(
+        "--reasoning-effort",
+        choices=REASONING_EFFORTS,
+        default=DEFAULT_REASONING_EFFORT,
+    )
+    parser.add_argument("--max-tokens", type=int, default=16000)
     parser.add_argument("--temperature", type=float, default=None)
     parser.add_argument("--max-iters", type=int, default=3)
     parser.add_argument("--timeout", type=float, default=180.0)
@@ -473,7 +500,8 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     input_path = args.input if args.input.is_absolute() else REPO_ROOT / args.input
-    output_path = args.output if args.output.is_absolute() else REPO_ROOT / args.output
+    output_arg = args.output or default_output_path(args.model, args.reasoning_effort)
+    output_path = output_arg if output_arg.is_absolute() else REPO_ROOT / output_arg
     lean_project = args.lean_project if args.lean_project.is_absolute() else REPO_ROOT / args.lean_project
 
     if not input_path.exists():
@@ -491,6 +519,8 @@ def main() -> None:
 
     print(f"Input: {input_path}")
     print(f"Output: {output_path}")
+    print(f"Model: {args.model}")
+    print(f"Reasoning effort: {args.reasoning_effort}")
     print(f"Lean project: {lean_project}")
     print(f"Jobs: {len(jobs)}")
     print(f"Max repair iterations per job: {args.max_iters}")
@@ -527,6 +557,7 @@ def main() -> None:
                 "dataset": row.get("domain") or "LADR",
                 "input_row": row,
                 "model": args.model,
+                "reasoning_effort": args.reasoning_effort,
                 "status": "error",
                 "lean_typechecked": False,
                 "attempt_count": 0,

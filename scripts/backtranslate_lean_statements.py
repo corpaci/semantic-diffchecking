@@ -27,7 +27,7 @@ except ImportError:
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-DEFAULT_ROOT = REPO_ROOT / "LADR_all_material" / "generated" / "pilot_27_thms"
+DEFAULT_ROOT = REPO_ROOT / "results" / "archive" / "pilot_27" / "gpt-5.4" / "reasoning_none"
 DEFAULT_OUTPUT = DEFAULT_ROOT / "backtranslation" / "lean_statement_backtranslation_cards.jsonl"
 PROMPT_VERSION = "ladr_backtranslation_card_v1"
 

@@ -24,7 +24,7 @@ from typing import Any
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-DEFAULT_ROOT = REPO_ROOT / "LADR_all_material" / "generated" / "pilot_27_thms"
+DEFAULT_ROOT = REPO_ROOT / "results" / "archive" / "pilot_27" / "gpt-5.4" / "reasoning_none"
 
 LEAN_PREAMBLE = """\
 import Mathlib

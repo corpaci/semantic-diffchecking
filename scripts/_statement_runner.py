@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
-"""Run the LADR Lean-statement pilot A/B generation.
+"""Shared infrastructure for the two one-shot statement experiments.
 
-Each theorem is processed in interleaved order:
-  1. statement_only
-  2. statement_plus_proof
-
-The model is asked for exactly one Lean 4 declaration ending in `:= by sorry`.
-This script records prompts and metadata; it does not typecheck Lean output.
+Use statement_only.py or statement_plus_proof.py instead of running this module
+directly.
 """
 
 from __future__ import annotations
@@ -14,12 +10,13 @@ from __future__ import annotations
 import argparse
 import json
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 try:
     from dotenv import load_dotenv
@@ -34,41 +31,18 @@ except ImportError:
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-DEFAULT_INPUT = REPO_ROOT / "LADR_all_material" / "LADR_pilot_27.jsonl"
-DEFAULT_OUTPUT = (
-    REPO_ROOT
-    / "LADR_all_material"
-    / "generated"
-    / "pilot_27_thms"
-    / "one_shot_ab"
-    / "lean_statement_pilot_ab.jsonl"
-)
+DEFAULT_INPUT = REPO_ROOT / "LADR_all_material" / "LADR_thms_256.jsonl"
+DEFAULT_RESULTS_ROOT = REPO_ROOT / "results"
+DEFAULT_MODEL = "gpt-5.5"
+DEFAULT_REASONING_EFFORT = "none"
+REASONING_EFFORTS = ("none", "low", "medium", "high", "xhigh")
 
 CONDITIONS = ("statement_only", "statement_plus_proof")
-PROMPT_VERSION = "ladr_statement_pilot_ab_v4"
+PROMPT_VERSION = "ladr_statement_v5"
 SYSTEM_PROMPT = (
     "Return only one complete Lean 4 file. The first non-empty line must be "
     "`import Mathlib`. Do not use Markdown or explanations outside Lean code."
 )
-
-PROMPT_TEMPLATE = """\
-Formalize the LADR theorem below as one Lean 4 theorem statement.
-
-Requirements:
-- Start the file with `import Mathlib`.
-- Then include `set_option linter.style.header false`.
-- Put any Lean comments only after the import line.
-- Name the theorem `{name}`.
-- Include exactly one Lean `theorem` declaration.
-- The theorem declaration should end with `:= by sorry`.
-- Return only the complete Lean file.
-{proof_rule}
-
-Dataset: {dataset}
-Theorem dataset name: {name}
-Natural-language theorem:
-{nl_statement}
-{proof_block}"""
 
 
 def die(message: str) -> None:
@@ -100,6 +74,17 @@ def append_jsonl(path: Path, record: dict[str, Any]) -> None:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
 
+def default_output_path(condition: str, model: str, reasoning_effort: str) -> Path:
+    model_dir = model.replace("/", "__")
+    return (
+        DEFAULT_RESULTS_ROOT
+        / condition
+        / model_dir
+        / f"reasoning_{reasoning_effort}"
+        / "generations.jsonl"
+    )
+
+
 def completed_jobs(path: Path) -> set[tuple[str, str]]:
     if not path.exists():
         return set()
@@ -122,37 +107,11 @@ def completed_jobs(path: Path) -> set[tuple[str, str]]:
     return done
 
 
-def render_prompt(row: dict[str, Any], condition: str) -> str:
-    name = row.get("name")
-    nl_statement = row.get("nl_statement")
-    if not name or not nl_statement:
-        raise ValueError("input row must include name and nl_statement")
 
-    proof_rule = ""
-    proof_block = ""
-    if condition == "statement_plus_proof":
-        informal_proof = (row.get("informal_proof") or "").strip()
-        if not informal_proof:
-            raise ValueError(f"{name}: statement_plus_proof requires informal_proof")
-        proof_rule = (
-            "- Use the informal proof only to disambiguate the theorem statement; "
-            "do not formalize the proof."
-        )
-        proof_block = f"\nInformal proof:\n{informal_proof}\n"
-    elif condition != "statement_only":
-        raise ValueError(f"unknown condition: {condition}")
-
-    return PROMPT_TEMPLATE.format(
-        dataset=row.get("domain") or "LADR",
-        name=name,
-        nl_statement=nl_statement,
-        proof_rule=proof_rule,
-        proof_block=proof_block,
-    )
-
-
-def iter_jobs(rows: list[dict[str, Any]]) -> list[tuple[dict[str, Any], str]]:
-    return [(row, condition) for row in rows for condition in CONDITIONS]
+def iter_jobs(
+    rows: list[dict[str, Any]], condition: str
+) -> list[tuple[dict[str, Any], str]]:
+    return [(row, condition) for row in rows]
 
 
 def extract_response_text(response: Any) -> str:
@@ -177,13 +136,16 @@ def call_openai(
     model: str,
     prompt: str,
     max_tokens: int,
+    reasoning_effort: str,
     temperature: float | None,
+    instructions: str = SYSTEM_PROMPT,
 ) -> tuple[str, dict[str, Any] | None]:
     kwargs: dict[str, Any] = {
         "model": model,
-        "instructions": SYSTEM_PROMPT,
+        "instructions": instructions,
         "input": prompt,
         "max_output_tokens": max_tokens,
+        "reasoning": {"effort": reasoning_effort},
     }
     if temperature is not None:
         kwargs["temperature"] = temperature
@@ -192,18 +154,34 @@ def call_openai(
     usage = getattr(response, "usage", None)
     usage_dict = None
     if usage is not None:
-        usage_dict = {
-            "input_tokens": getattr(usage, "input_tokens", None),
-            "output_tokens": getattr(usage, "output_tokens", None),
-            "total_tokens": getattr(usage, "total_tokens", None),
-        }
-    return extract_response_text(response), usage_dict
+        if hasattr(usage, "model_dump"):
+            usage_dict = usage.model_dump()
+        elif hasattr(usage, "to_dict"):
+            usage_dict = usage.to_dict()
+        else:
+            usage_dict = {
+                "input_tokens": getattr(usage, "input_tokens", None),
+                "output_tokens": getattr(usage, "output_tokens", None),
+                "total_tokens": getattr(usage, "total_tokens", None),
+            }
+    text = extract_response_text(response)
+    if not text:
+        # Reasoning models spend max_output_tokens on hidden reasoning; if the
+        # budget runs out the response comes back incomplete with empty text.
+        status = getattr(response, "status", None)
+        details = getattr(response, "incomplete_details", None)
+        reason = getattr(details, "reason", None) if details is not None else None
+        raise RuntimeError(
+            f"empty model response (status={status}, reason={reason}); "
+            "consider raising --max-tokens"
+        )
+    return text, usage_dict
 
 
 def validate_output(text: str, expected_name: str | None) -> dict[str, Any]:
     declaration_names = re.findall(r"(?m)^\s*(?:theorem|lemma)\s+([^\s:]+)", text)
     starts_with_import = text.lstrip().startswith("import Mathlib")
-    has_sorry_stub = ":= by sorry" in text
+    has_sorry_stub = bool(re.search(r":=\s*by\s+sorry\b", text))
     actual_name = declaration_names[0] if len(declaration_names) == 1 else None
     name_matches = bool(expected_name) and actual_name == expected_name
     notes: list[str] = []
@@ -251,6 +229,7 @@ def base_record(
         "system_prompt": SYSTEM_PROMPT,
         "prompt": prompt,
         "model": args.model,
+        "reasoning_effort": args.reasoning_effort,
         "temperature": args.temperature,
         "max_tokens": args.max_tokens,
         "output_text": None,
@@ -260,17 +239,23 @@ def base_record(
     }
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(condition: str) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Generate interleaved LADR Lean 4 statement-only A/B pilot data."
+        description=f"Run the LADR {condition} generation experiment."
     )
     parser.add_argument("--input", type=Path, default=DEFAULT_INPUT)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--model", default="gpt-5.4")
-    parser.add_argument("--max-tokens", type=int, default=1200)
+    parser.add_argument("--output", type=Path, default=None)
+    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument(
+        "--reasoning-effort",
+        choices=REASONING_EFFORTS,
+        default=DEFAULT_REASONING_EFFORT,
+    )
+    parser.add_argument("--max-tokens", type=int, default=16000)
     parser.add_argument("--temperature", type=float, default=None)
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--sleep", type=float, default=0.2)
+    parser.add_argument("--max-workers", type=int, default=1)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--dry-run-count", type=int, default=4)
     return parser.parse_args()
@@ -295,30 +280,45 @@ def make_client() -> Any:
             "OPENAI_API_KEY is not set. Export it in the environment or add it to "
             f"{REPO_ROOT / '.env'}." + extra
         )
-    return OpenAI()
+    return OpenAI(timeout=600.0, max_retries=0)
 
 
-def main() -> None:
-    args = parse_args()
+def run_experiment(
+    condition: str,
+    prompt_builder: Callable[[dict[str, Any]], str],
+) -> None:
+    if condition not in CONDITIONS:
+        die(f"unknown statement experiment: {condition}")
+
+    args = parse_args(condition)
     input_path = args.input if args.input.is_absolute() else REPO_ROOT / args.input
-    output_path = args.output if args.output.is_absolute() else REPO_ROOT / args.output
+    output_arg = args.output or default_output_path(
+        condition, args.model, args.reasoning_effort
+    )
+    output_path = output_arg if output_arg.is_absolute() else REPO_ROOT / output_arg
 
     if not input_path.exists():
         die(f"Input file not found: {input_path}")
+    if args.max_workers < 1:
+        die("--max-workers must be at least 1")
 
     load_environment()
     rows = load_jsonl(input_path)
     if args.limit is not None:
         rows = rows[: args.limit]
 
-    jobs = iter_jobs(rows)
+    jobs = iter_jobs(rows, condition)
     if args.dry_run:
         print(f"Dry run: showing {min(args.dry_run_count, len(jobs))} rendered prompts")
+        print(f"Experiment: {condition}")
         print(f"Input: {input_path}")
         print(f"Output: {output_path}")
-        for index, (row, condition) in enumerate(jobs[: args.dry_run_count], start=1):
-            prompt = render_prompt(row, condition)
-            print(f"\n--- prompt {index}: {row.get('name')} / {condition} ---")
+        print(f"Model: {args.model}")
+        print(f"Reasoning effort: {args.reasoning_effort}")
+        print(f"Max workers: {args.max_workers}")
+        for index, (row, _) in enumerate(jobs[: args.dry_run_count], start=1):
+            prompt = prompt_builder(row)
+            print(f"\n--- prompt {index}: {row.get('name')} ---")
             print("SYSTEM:")
             print(SYSTEM_PROMPT)
             print("USER:")
@@ -327,45 +327,60 @@ def main() -> None:
 
     client = make_client()
     done = completed_jobs(output_path)
+    pending_rows = [row for row, _ in jobs if (row.get("name"), condition) not in done]
+
+    print(f"Experiment: {condition}")
     print(f"Input: {input_path}")
     print(f"Output: {output_path}")
+    print(f"Model: {args.model}")
+    print(f"Reasoning effort: {args.reasoning_effort}")
+    print(f"Max workers: {args.max_workers}")
     print(f"Skipping {len(done)} completed records")
+    print(f"Requests to make: {len(pending_rows)}")
 
-    for index, (row, condition) in enumerate(jobs, start=1):
-        name = row.get("name")
-        if (name, condition) in done:
-            print(f"[{index}/{len(jobs)}] skip {name} / {condition}")
-            continue
-
+    def generate_one(row: dict[str, Any]) -> dict[str, Any]:
         prompt = ""
         try:
-            prompt = render_prompt(row, condition)
+            prompt = prompt_builder(row)
             record = base_record(row=row, condition=condition, prompt=prompt, args=args)
-            print(f"[{index}/{len(jobs)}] {name} / {condition}")
             output_text, usage = call_openai(
                 client,
                 model=args.model,
                 prompt=prompt,
                 max_tokens=args.max_tokens,
+                reasoning_effort=args.reasoning_effort,
                 temperature=args.temperature,
             )
             record["output_text"] = output_text
             record["usage"] = usage
             record["validation"] = validate_output(output_text, row.get("name"))
             record["status"] = "ok"
-            done.add((name, condition))
-        except Exception as exc:  # noqa: BLE001 - keep the pilot moving per row.
+        except Exception as exc:  # noqa: BLE001 - preserve failures in JSONL.
             record = base_record(row=row, condition=condition, prompt=prompt, args=args)
             record["status"] = "error"
             record["error"] = str(exc)
-            print(f"  error: {exc}", file=sys.stderr)
-
-        append_jsonl(output_path, record)
         if args.sleep > 0:
             time.sleep(args.sleep)
+        return record
+
+    with ThreadPoolExecutor(max_workers=args.max_workers) as executor:
+        futures = {executor.submit(generate_one, row): row for row in pending_rows}
+        for completed, future in enumerate(as_completed(futures), start=1):
+            row = futures[future]
+            name = row.get("name")
+            try:
+                record = future.result()
+            except Exception as exc:  # Defensive: generate_one normally records errors.
+                record = base_record(row=row, condition=condition, prompt="", args=args)
+                record["status"] = "error"
+                record["error"] = str(exc)
+
+            append_jsonl(output_path, record)
+            status = record["status"]
+            print(f"[{completed}/{len(pending_rows)}] {name}: {status}")
 
     print("Done.")
 
 
 if __name__ == "__main__":
-    main()
+    die("Run scripts/statement_only.py or scripts/statement_plus_proof.py")

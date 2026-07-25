@@ -1,6 +1,7 @@
 # LADR Pilot 27 Generated Artifacts
 
 This folder contains the generated outputs for the 27-theorem LADR pilot.
+All conditions used GPT-5.4 with the API default `reasoning.effort = none`.
 
 ## one_shot_ab
 
