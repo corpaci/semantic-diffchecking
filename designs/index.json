@@ -8,6 +8,14 @@
       "owner": "unassigned",
       "status": "draft",
       "question": "Can we templatise the design of experiments to make them easier to read, run, and compare?"
+    },
+    {
+      "file": "E1-vocab-map.md",
+      "id": "E1",
+      "title": "One relation vocabulary across ETP and LADR",
+      "owner": "Luiza Corpaci (ETP) · Ke Zhang (LADR)",
+      "status": "draft",
+      "question": "Is every LADR drift class either determined by the ETP relation label or in a small, named residual — so a metric's error profile transfers by relabeling rather than recalibration?"
     }
   ]
 }
