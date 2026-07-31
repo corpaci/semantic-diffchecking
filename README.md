@@ -39,6 +39,9 @@ The suggested week-by-week plan: [ONBOARDING.md](ONBOARDING.md).
 ## Instruments
 
 - [`oracle/`](oracle/README.md) — the formal semantic oracle: normalizes a (possibly messy, LLM-emitted) magma equation, maps it to its node in the [Equational Theories Project](https://github.com/teorth/equational_theories) catalogue, and labels an (intended, generated) pair `equivalent / weaker / stronger / incomparable / unknown` using only proven implications. See its README for setup and usage.
+- [`ladr/`](ladr/README.md) — the in-the-wild arm: semantic drift in textbook autoformalization, built from *Linear Algebra Done Right* (256 theorems, per-chapter scope boxes, human faithfulness labels) with a Lean checker and a back-translation measurement layer. See [`ladr/ladr_paper_plan_2026-07-05.md`](ladr/ladr_paper_plan_2026-07-05.md) for the research design and [`ladr/api_usage_proposal_2026-07-05.md`](ladr/api_usage_proposal_2026-07-05.md) for the budget.
+
+The two are one program, not two: `oracle/` is a **closed world** — every implication among the 4,694 catalogued laws is settled by a Lean proof or a counterexample magma, so a metric's error profile there is known with certainty. `ladr/` is the **open world**, where ground truth is human-audited and no complete oracle exists. The intended use is asymmetric: a metric that fails the directional test on magmas is retired before it ever reaches Lean, while success on magmas predicts nothing on its own. [`designs/E1-vocab-map.md`](designs/E1-vocab-map.md) is where the two label sets are reconciled, and it gates that transfer.
 
 
 ## The design-sheet workflow
