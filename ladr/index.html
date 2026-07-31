@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Detecting Semantically Unfaithful Formal Translations</title>
+<meta name="description" content="MARS project: detecting formally valid yet semantically unfaithful LLM translations of human intent into formal representations." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   EDIT GUIDE — everything is in this one file.
+   • Colours / fonts:   :root variables just below.
+   • Page content:      the <body>. Each section is <article class="section-block" id="...">.
+   • Table of contents:  add a <li><a class="toc-link" href="#your-id"> AND give the
+                          section a matching id="your-id". Scroll-spy is automatic.
+   • Sidenotes:          <div class="sidenote-pair"> with a <div class="section-main">
+                          (prose) and an <aside class="sidenote"> (margin note).
+   • No build step. Open the file, edit, save, refresh.
+   ════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Mars theme — light, iron-oxide accent ─────────────────
+     Sandy off-white background, dusty-rust accent, warm dark
+     text. Swap these to retheme the whole page. */
+  --bg: #fbf4ee;            /* Martian sand */
+  --bg-warm: #f6e9e0;       /* warm panel base */
+  --surface: #ffffff;       /* cards, header */
+  --text: #1a120d;          /* near-black, warm */
+  --text-soft: #2e221b;
+  --muted: #6e5d52;         /* dusty secondary */
+  --accent: #d2542b;        /* iron-oxide rust */
+  --accent-hover: #b1401d;  /* deep rust */
+  --accent-soft: #f0bca6;   /* dusty highlight */
+  --accent-soft-bg: #fcebe1;
+  --accent-soft-bg-hover: #f8dccd;
+  --border: #ecdfd6;
+  --border-strong: #d9c5b8;
+  --sidenote-muted: #8a7a6f;
+  --shadow-sm: 0 1px 2px rgba(60, 30, 15, 0.05);
+  --shadow-md: 0 4px 16px rgba(210, 84, 43, 0.12);
+  --shadow-lg: 0 10px 40px rgba(60, 30, 15, 0.08);
+  --font-serif: "Merriweather", Georgia, "Times New Roman", serif;
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; overflow-x: clip; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--text);
+  background:
+    radial-gradient(120% 55% at 50% -10%, rgba(210, 84, 43, 0.10) 0%, rgba(210, 84, 43, 0.03) 35%, transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent-soft); color: var(--text); }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  text-underline-offset: 2px;
+  transition: color 0.15s ease;
+}
+a:hover { color: var(--accent-hover); text-decoration: underline; text-decoration-thickness: 1.5px; }
+
+strong { font-weight: 700; color: var(--text); }
+em { font-style: italic; }
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--accent-soft-bg);
+  color: var(--accent-hover);
+  padding: 0.1em 0.38em;
+  border-radius: 4px;
+  border: 1px solid var(--accent-soft-bg-hover);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── Site header ─────────────────────────────────────────── */
+.site-header {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 0.85rem 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+.site-header::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 30%, var(--accent-soft) 60%, transparent 100%);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.site-brand {
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+.header-github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  color: var(--muted);
+  border-radius: 8px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.header-github:hover { color: var(--accent); background: var(--accent-soft-bg); text-decoration: none; }
+
+/* ── Frontmatter two-column layout ───────────────────────── */
+.frontmatter-shell { max-width: 1280px; margin: 1.25rem auto 1.5rem; padding: 0 1.25rem; }
+.frontmatter-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+  padding: 1.75rem 1.5rem 1.5rem;
+  border: 1.5px solid var(--accent-soft);
+  border-radius: 12px;
+  background:
+    radial-gradient(140% 120% at 100% 0%, rgba(226, 104, 60, 0.10) 0%, transparent 55%),
+    var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+.frontmatter-accent { width: 3rem; height: 3px; background: var(--accent); border-radius: 2px; margin: 0 0 1.25rem; }
+.frontmatter-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.022em;
+  color: var(--text);
+}
+.authors { font-family: var(--font-sans); font-size: 1rem; font-weight: 600; margin: 0 0 0.25rem; color: var(--text-soft); letter-spacing: 0.01em; }
+.institution { font-family: var(--font-sans); font-size: 0.92rem; color: var(--muted); margin: 0 0 0.25rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.equal-note { font-size: 0.85rem; color: var(--muted); font-style: italic; margin-bottom: 1.25rem; }
+.frontmatter-lead {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  margin: 1rem 0 0;
+  color: var(--text-soft);
+  font-style: italic;
+  line-height: 1.65;
+  max-width: 56ch;
+}
+.frontmatter-diagram { flex-shrink: 0; width: 100%; padding-top: 0.25rem; }
+@media (min-width: 1024px) { .frontmatter-row { grid-template-columns: 1fr 360px; } }
+@media (min-width: 640px) and (max-width: 1023px) { .frontmatter-row { grid-template-columns: 1fr 300px; } }
+
+/* ── Document layout ─────────────────────────────────────── */
+.doc-layout {
+  display: grid;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.25rem 2rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+.doc-body { min-width: 0; }
+@media (min-width: 1024px) {
+  .doc-layout { grid-template-columns: 16rem minmax(0, 1fr); gap: 2.75rem; padding: 0 1.5rem 4rem; }
+}
+.content-shell { max-width: 100%; margin: 0; padding: 0 0 2rem; }
+
+/* ── Section blocks ──────────────────────────────────────── */
+.section-block { margin-bottom: 3.25rem; scroll-margin-top: 5.5rem; }
+.section-block h2 {
+  font-size: 1.55rem;
+  font-weight: 800;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+.section-block h2::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -1px;
+  width: 3.5rem; height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.section-block h3 { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; margin: 2rem 0 0.85rem; color: var(--text); letter-spacing: -0.01em; }
+.section-block p { margin: 0 0 1.1rem; overflow-wrap: break-word; }
+.section-block p:last-child { margin-bottom: 0; }
+.section-block ul, .section-block ol { margin: 0 0 1.1rem; padding-left: 1.4rem; }
+.section-block li { margin-bottom: 0.55rem; }
+.section-block li::marker { color: var(--accent); }
+
+/* ── Callout ─────────────────────────────────────────────── */
+.callout {
+  background: var(--accent-soft-bg);
+  border: 1px solid var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin: 1.25rem 0 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+.callout strong { color: var(--accent-hover); }
+
+/* ── Table of contents ───────────────────────────────────── */
+.toc { font-family: var(--font-sans); }
+.toc-heading { margin: 0 0 0.75rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+.toc-list { list-style: none; margin: 0; padding: 0; }
+.toc-list li { margin: 0 0 0.3rem; }
+.toc-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.96rem;
+  line-height: 1.4;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 0.4rem 0 0.4rem 0.85rem;
+  border-left: 2px solid var(--border);
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.toc-link:hover { color: var(--text); text-decoration: none; border-left-color: var(--accent-soft); }
+.toc-link.is-active { color: var(--accent-hover); font-weight: 700; border-left-color: var(--accent); border-left-width: 3px; padding-left: 0.78rem; }
+
+@media (max-width: 1023px) {
+  .toc {
+    position: sticky; top: 0; z-index: 8;
+    margin: 0 -1.25rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .toc-heading { display: none; }
+  .toc-list { display: flex; flex-direction: row; flex-wrap: nowrap; gap: 0.35rem; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0.15rem; }
+  .toc-list li { flex: 0 0 auto; margin: 0; }
+  .toc-link { font-size: 0.92rem; white-space: nowrap; padding: 0.5rem 0.95rem; border-left: none; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); }
+  .toc-link.is-active { border-left: none; padding-left: 0.95rem; border-color: var(--accent); background: var(--accent-soft-bg); color: var(--accent-hover); }
+  .section-block { scroll-margin-top: 7rem; }
+}
+@media (min-width: 1024px) { .toc { position: sticky; top: 1rem; padding-right: 0.75rem; } }
+
+/* ── Sidenotes ───────────────────────────────────────────── */
+.sidenote-pair { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 900px) { .sidenote-pair { grid-template-columns: minmax(0, 1fr) 12rem; gap: 2rem; align-items: start; } }
+.section-main p { margin: 0 0 1.1rem; }
+.section-main p:last-child { margin-bottom: 0; }
+.sidenote {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--sidenote-muted);
+  padding: 0.1rem 0 0.1rem 0.85rem;
+  margin: 0;
+  border-left: 2px solid var(--border);
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+.sidenote-pair:has(.sidenote-ref:hover) .sidenote,
+.sidenote-pair:has(.sidenote:hover) .sidenote { color: var(--text); border-left-color: var(--accent); }
+.sidenote-ref { color: var(--accent); text-decoration: none; font-weight: 700; margin-left: 0.1em; }
+.sidenote-ref sup { font-size: 0.72em; font-weight: 800; }
+.sidenote-ref:hover { color: var(--accent-hover); text-decoration: none; }
+
+/* ── Interactive 2×2 VBU matrix ──────────────────────────── */
+.matrix-figure {
+  margin: 1.75rem 0 0.5rem;
+  padding: 1.35rem 1.35rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
+}
+.matrix-figure:hover { box-shadow: var(--shadow-md); }
+.matrix-caption { font-family: var(--font-sans); font-size: 0.92rem; font-weight: 700; margin: 0 0 0.25rem; color: var(--text); }
+.matrix-sub { font-family: var(--font-sans); font-size: 0.82rem; color: var(--muted); margin: 0 0 1rem; }
+.matrix-grid {
+  display: grid;
+  grid-template-columns: 1.9rem 1fr 1fr;
+  grid-template-rows: 1.9rem 1fr 1fr;
+  gap: 0.6rem;
+}
+/* explicit placement so nothing falls into the empty corner */
+.matrix-corner { grid-column: 1; grid-row: 1; }
+.matrix-axis-x { grid-column: 2 / 4; grid-row: 1; }
+.matrix-axis-y { grid-column: 1; grid-row: 2 / 4; }
+.cell-fi { grid-column: 2; grid-row: 2; }
+.cell-fv { grid-column: 3; grid-row: 2; }
+.cell-ui { grid-column: 2; grid-row: 3; }
+.cell-uv { grid-column: 3; grid-row: 3; }
+.matrix-axis-label {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.matrix-axis-y .matrix-axis-label { writing-mode: vertical-rl; transform: rotate(180deg); height: 100%; }
+@media (max-width: 540px) {
+  .matrix-cell-desc { display: none; }
+  .matrix-grid { gap: 0.45rem; }
+}
+.matrix-cell {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.85rem 0.9rem;
+  cursor: pointer;
+  background: var(--bg-warm);
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  min-height: 96px;
+}
+.matrix-cell:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--accent-soft); }
+.matrix-cell.is-active { border-color: var(--accent); background: var(--accent-soft-bg); }
+.matrix-cell.vbu { background: var(--surface); border-color: var(--accent); border-width: 2px; }
+.matrix-cell.vbu.is-active { background: var(--accent-soft-bg); }
+.matrix-cell-tag {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.14rem 0.5rem;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.tag-good { background: #dcfce7; color: #166534; }
+.tag-bad { background: var(--accent-soft-bg); color: var(--accent-hover); }
+.tag-target { background: var(--accent); color: #fff; }
+.matrix-cell-title { font-family: var(--font-sans); font-weight: 700; font-size: 0.95rem; color: var(--text); margin: 0 0 0.25rem; }
+.matrix-cell-desc { font-family: var(--font-sans); font-size: 0.8rem; color: var(--muted); line-height: 1.45; margin: 0; }
+.matrix-detail {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+.matrix-detail strong { color: var(--accent-hover); }
+
+/* ── Chat illustration ───────────────────────────────────── */
+.chat-tabs { display: flex; gap: 0.4rem; margin: 1.25rem 0 1rem; flex-wrap: wrap; }
+.chat-tab {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.chat-tab:hover { color: var(--text); border-color: var(--accent-soft); background: var(--accent-soft-bg); }
+.chat-tab.is-active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: var(--shadow-sm); }
+.chat-tab svg { width: 16px; height: 16px; }
+
+.chat-window {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-warm);
+  padding: 1.1rem 1.1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+.chat-scene { display: none; }
+.chat-scene.is-active { display: block; }
+.chat-scene-intent {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft-bg);
+  border-radius: 0 8px 8px 0;
+}
+.chat-scene-intent strong { color: var(--accent-hover); }
+
+.chat-msg { display: flex; gap: 0.7rem; margin-bottom: 0.9rem; align-items: flex-start; }
+.chat-msg:last-child { margin-bottom: 0; }
+.chat-avatar {
+  flex-shrink: 0;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--border-strong);
+}
+.chat-avatar svg { width: 22px; height: 22px; }
+.chat-avatar.human   { background: var(--accent-soft-bg); color: var(--accent); border-color: var(--accent-soft); }
+.chat-avatar.ai      { background: #241712; color: #ff9b6e; border-color: var(--accent-soft); }
+.chat-avatar.monitor { background: #16302c; color: #5fc6b2; border-color: #2f6157; }
+
+.chat-bubble {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem 0.7rem;
+}
+.chat-role {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin: 0 0 0.35rem;
+}
+.chat-bubble p { font-family: var(--font-sans); font-size: 0.88rem; line-height: 1.55; margin: 0; color: var(--text-soft); }
+.chat-bubble p + p { margin-top: 0.5rem; }
+.chat-lean {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0.55rem 0 0;
+  padding: 0.55rem 0.7rem;
+  background: #1a120e;
+  color: #f0d9cb;
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.chat-lean .kw { color: #ff9b6e; font-weight: 700; }
+.chat-lean .cm { color: #8a9b7a; }
+.chat-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.6rem;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+}
+.chat-verdict.vbu  { background: var(--accent-soft-bg); color: var(--accent-hover); border: 1px solid var(--accent-soft); }
+.chat-verdict.pass { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.chat-verdict.flag { background: #16302c; color: #6ad6c0; border: 1px solid #2f6157; }
+
+/* ── Pipeline diagram (frontmatter) ──────────────────────── */
+.pipeline-fig { margin: 0; width: 100%; }
+.pipeline-cap {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.pipeline-cap-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid currentColor; flex-shrink: 0; font-size: 0.7rem;
+}
+.pnode rect { transition: fill 0.18s ease, stroke 0.18s ease; cursor: pointer; }
+.pnode text { font-family: var(--font-sans); pointer-events: none; }
+.pnode:hover rect { stroke: var(--accent); stroke-width: 2.5; }
+.pipeline-tip {
+  position: absolute;
+  z-index: 20;
+  max-width: 230px;
+  padding: 0.6rem 0.8rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  background: rgba(10, 10, 10, 0.94);
+  color: #fff;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2), 0 0 0 1px rgba(240,90,69,0.35);
+}
+.pipeline-tip strong { color: #fff; }
+
+/* ── Timeline ────────────────────────────────────────────── */
+.timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+.timeline::before { content: ""; position: absolute; left: 0.5rem; top: 0.4rem; bottom: 0.4rem; width: 2px; background: var(--border); }
+.timeline li { position: relative; padding: 0 0 1.5rem 2rem; margin: 0; }
+.timeline li::before {
+  content: ""; position: absolute; left: 0.15rem; top: 0.35rem;
+  width: 0.75rem; height: 0.75rem; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--surface); box-shadow: 0 0 0 2px var(--accent-soft);
+}
+.timeline-phase { font-family: var(--font-sans); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); display: block; margin-bottom: 0.15rem; }
+.timeline-body { color: var(--text-soft); }
+
+/* ── Success criteria cards ──────────────────────────────── */
+.tier-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1rem 0 0; }
+@media (min-width: 700px) { .tier-grid { grid-template-columns: repeat(3, 1fr); } }
+.tier-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 1.1rem 1.2rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+}
+.tier-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--accent-soft); }
+.tier-label { font-family: var(--font-sans); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 0.5rem; }
+.tier-min .tier-label { color: var(--muted); }
+.tier-good .tier-label { color: var(--accent-hover); }
+.tier-stretch .tier-label { color: var(--accent); }
+.tier-card p { font-family: var(--font-sans); font-size: 0.88rem; line-height: 1.55; color: var(--text-soft); margin: 0; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+.site-footer {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 2.5rem 0 3rem;
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+.site-footer::before { content: ""; position: absolute; top: -1px; left: 0; width: 4rem; height: 3px; background: var(--accent); border-radius: 2px; }
+.footer-credit { margin-top: 1rem; font-size: 0.82rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ── Top nav ─────────────────────────────────────────────── -->
+<header class="site-header">
+  <span class="site-brand">MARS · Formal Translation Faithfulness</span>
+  <a class="header-github" href="https://github.com/shivam-raval96/mars-v-project" target="_blank" rel="noopener" aria-label="GitHub repository">
+    <svg width="22" height="22" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+  </a>
+</header>
+
+<!-- ── Frontmatter ─────────────────────────────────────────── -->
+<div class="frontmatter-shell">
+  <div class="frontmatter-row">
+    <div class="frontmatter-text">
+      <div class="frontmatter-accent"></div>
+      <h1 class="frontmatter-title">Detecting Semantically Unfaithful Formal Translations</h1>
+      <p class="authors">Shivam Raval · Luiza Corpaci</p>
+      <p class="institution">Harvard · AMD</p>
+      <p class="equal-note">MARS program project</p>
+      <p class="frontmatter-lead">
+        When LLMs translate human intent into formal representations, outputs can be
+        <em>formally valid yet semantically unfaithful</em> — passing every formal check
+        while quietly meaning the wrong thing. We study this failure mode on a clean,
+        Lean-verified ground-truth dataset, and ask whether cheap signals can catch it.
+      </p>
+    </div>
+    <div class="frontmatter-diagram">
+      <figure class="pipeline-fig" id="pipeline">
+        <figcaption class="pipeline-cap"><span class="pipeline-cap-icon">☝</span> Project pipeline — hover nodes</figcaption>
+        <!-- SVG built by JS into this wrap -->
+        <div id="pipeline-wrap" style="position:relative;"></div>
+      </figure>
+    </div>
+  </div>
+</div>
+
+<!-- ── Document body ───────────────────────────────────────── -->
+<div class="doc-layout">
+
+  <!-- Table of contents (scroll-spy via JS) -->
+  <nav class="toc" aria-label="Table of contents">
+    <p class="toc-heading">Contents</p>
+    <ul class="toc-list">
+      <li><a class="toc-link" href="#overview">Overview</a></li>
+      <li><a class="toc-link" href="#failure-mode">The Failure Mode</a></li>
+      <li><a class="toc-link" href="#example">Worked Example</a></li>
+      <li><a class="toc-link" href="#questions">Research Questions</a></li>
+      <li><a class="toc-link" href="#approach">Approach</a></li>
+      <li><a class="toc-link" href="#timeline">Timeline</a></li>
+      <li><a class="toc-link" href="#outputs">Expected Outputs</a></li>
+      <li><a class="toc-link" href="#success">Success Criteria</a></li>
+    </ul>
+  </nav>
+
+  <div class="doc-body">
+    <div class="content-shell">
+
+      <!-- ── Overview ────────────────────────────────────────── -->
+      <article class="section-block" id="overview">
+        <h2>Overview</h2>
+        <div class="sidenote-pair">
+          <div class="section-main">
+            <p>
+              Formal verification is a promising component of scalable oversight for
+              AI-generated artifacts. But when LLMs translate human intent into formal
+              representations, a dangerous failure mode arises: outputs that are
+              <strong>formally valid yet semantically unfaithful</strong> to the original
+              intent.<a class="sidenote-ref" href="#sn-1"><sup>1</sup></a> Standard
+              evaluation pipelines miss this — passing formal checks guarantees internal
+              consistency, not faithfulness.
+            </p>
+            <p>
+              This project studies that failure mode on a clean ground-truth dataset built
+              from Lean-verified equational theories.
+            </p>
+          </div>
+          <aside class="sidenote" id="sn-1">
+            A proof checker confirms the formal statement is internally consistent — it
+            cannot know whether that statement is what the human meant.
+          </aside>
+        </div>
+      </article>
+
+      <!-- ── The Failure Mode (interactive matrix) ───────────── -->
+      <article class="section-block" id="failure-mode">
+        <h2>The Failure Mode</h2>
+        <p>
+          Every translation attempt lands in one of four cells along two axes —
+          <strong>faithful to intent?</strong> and <strong>formally valid?</strong> The
+          dangerous quadrant is <strong>valid-but-unfaithful (VBU)</strong>: it survives
+          verification yet means the wrong thing. Click a cell.
+        </p>
+
+        <figure class="matrix-figure">
+          <figcaption class="matrix-caption">The faithfulness × validity matrix</figcaption>
+          <p class="matrix-sub">VBU is the target class — the one standard pipelines silently pass.</p>
+          <div class="matrix-grid">
+            <div class="matrix-corner"></div>
+            <div class="matrix-axis-x matrix-axis-label">Formally valid →</div>
+            <div class="matrix-axis-y matrix-axis-label">Faithful to intent →</div>
+
+            <!-- bottom-left of axes = faithful + invalid -->
+            <div class="matrix-cell cell-fi" data-detail="Means the right thing, but the proof checker rejects it. The least costly error: verification catches it and the human gets a clear signal to retry.">
+              <span class="matrix-cell-tag tag-bad">Faithful · Invalid</span>
+              <p class="matrix-cell-title">Honest failure</p>
+              <p class="matrix-cell-desc">Right meaning, fails the check. Caught by verification.</p>
+            </div>
+            <div class="matrix-cell cell-fv is-active" data-detail="The ideal outcome — the formal statement captures the human's intent AND passes the proof checker. The goal of faithful translation.">
+              <span class="matrix-cell-tag tag-good">Faithful · Valid</span>
+              <p class="matrix-cell-title">Correct ✓</p>
+              <p class="matrix-cell-desc">Captures intent and passes the checker. The goal.</p>
+            </div>
+
+            <div class="matrix-cell cell-ui" data-detail="Wrong meaning and fails the checker — also low-risk, because verification rejects it outright before it reaches anyone.">
+              <span class="matrix-cell-tag tag-bad">Unfaithful · Invalid</span>
+              <p class="matrix-cell-title">Obvious failure</p>
+              <p class="matrix-cell-desc">Wrong, and rejected. Verification catches it.</p>
+            </div>
+            <div class="matrix-cell cell-uv vbu" data-detail="VALID-BUT-UNFAITHFUL (VBU): the statement passes every formal check yet does not mean what the human intended. Verification gives a green light on a wrong artifact. This is the class we build a benchmark around and try to detect cheaply.">
+              <span class="matrix-cell-tag tag-target">Unfaithful · Valid — VBU</span>
+              <p class="matrix-cell-title">Silent failure ⚠</p>
+              <p class="matrix-cell-desc">Passes verification but means the wrong thing. The target.</p>
+            </div>
+          </div>
+          <div class="matrix-detail" id="matrix-detail">
+            <strong>Correct ✓</strong> — Captures intent and passes the checker. The goal of faithful translation.
+          </div>
+        </figure>
+      </article>
+
+      <!-- ── Worked Example (chat illustration) ──────────────── -->
+      <article class="section-block" id="example">
+        <h2>Worked Example</h2>
+        <p>
+          A concrete VBU case from group-theory equational reasoning. The human asks for a
+          <strong>left inverse</strong> property; the model returns a statement that
+          type-checks in Lean but quietly means something else. Switch tabs to see a second
+          AI act as an oversight monitor and catch the drift.
+        </p>
+
+        <div class="chat-tabs" role="tablist">
+          <button class="chat-tab is-active" data-scene="scene-human" role="tab">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7.5" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7 8.5-7s8.5 2.6 8.5 7z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><path d="M12 3v3M12 3h0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="3" r="1.5"/></svg>
+            Human → AI
+          </button>
+          <button class="chat-tab" data-scene="scene-oversight" role="tab">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><circle cx="12" cy="3" r="1.5"/></svg>
+            <span style="opacity:.6">↔</span>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><circle cx="12" cy="3" r="1.5"/></svg>
+            AI → AI (oversight)
+          </button>
+        </div>
+
+        <div class="chat-window">
+          <!-- Scene 1: Human ↔ AI -->
+          <div class="chat-scene is-active" id="scene-human">
+            <p class="chat-scene-intent"><strong>Human intent:</strong> "Every element has a left inverse" — for all a, there exists b with b · a = e.</p>
+
+            <div class="chat-msg">
+              <div class="chat-avatar human" title="Human">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7.5" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7 8.5-7s8.5 2.6 8.5 7z"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">Human</p>
+                <p>Formalize this in Lean for a group <code>(G, ·, e)</code>: every element <code>a</code> has a left inverse — some <code>b</code> with <code>b · a = e</code>.</p>
+              </div>
+            </div>
+
+            <div class="chat-msg">
+              <div class="chat-avatar ai" title="AI translator">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><path d="M12 4.5v3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="3.5" r="1.6"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">AI · Translator</p>
+                <p>Here is the formal statement — it type-checks in Lean:</p>
+                <pre class="chat-lean"><span class="kw">theorem</span> left_inverse (G) [Group G] (a : G) :
+  ∃ b : G, a * b = b * a := ⟨a, rfl⟩  <span class="cm">-- ✓ compiles</span></pre>
+                <span class="chat-verdict vbu">⚠ Valid but unfaithful</span>
+              </div>
+            </div>
+
+            <div class="chat-msg">
+              <div class="chat-avatar human" title="Human">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7.5" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7 8.5-7s8.5 2.6 8.5 7z"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">Why it's VBU</p>
+                <p>The checker is happy — but the model wrote <code>a · b = b · a</code> (a <em>commutes</em> with some <code>b</code>), not <code>b · a = e</code> (a left <em>inverse</em>). It's trivially true by taking <code>b = a</code>. Both the operation and the right-hand side drifted. The proof passes; the meaning is wrong.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scene 2: AI ↔ AI oversight -->
+          <div class="chat-scene" id="scene-oversight">
+            <p class="chat-scene-intent"><strong>Oversight setup:</strong> a second model re-derives meaning from the formula and compares it to the stated intent — catching what the proof checker can't.</p>
+
+            <div class="chat-msg">
+              <div class="chat-avatar ai" title="AI translator">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><circle cx="12" cy="3.5" r="1.6"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">AI · Translator</p>
+                <p>Proposed translation of "every element has a left inverse":</p>
+                <pre class="chat-lean"><span class="kw">theorem</span> left_inverse (a : G) :
+  ∃ b : G, a * b = b * a := ⟨a, rfl⟩  <span class="cm">-- ✓ Lean accepts</span></pre>
+                <span class="chat-verdict pass">✓ Proof checker: PASS</span>
+              </div>
+            </div>
+
+            <div class="chat-msg">
+              <div class="chat-avatar monitor" title="AI oversight monitor">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#16302c"/><circle cx="15" cy="13.5" r="1.6" fill="#16302c"/><circle cx="12" cy="3.5" r="1.6"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">AI · Oversight monitor</p>
+                <p>Reading the formula back into English: <em>"for all a, there exists b such that a·b = b·a"</em> — i.e. every element commutes with some element. That's trivially satisfied by <code>b = a</code>.</p>
+                <p>The intent required <code>b · a = e</code> (an inverse yielding identity). The formula has the wrong operand order <em>and</em> no <code>e</code> on the right. Conclusion: the statement is well-formed but does not encode the intent.</p>
+                <span class="chat-verdict flag">✗ Flagged: VBU — semantic mismatch</span>
+              </div>
+            </div>
+
+            <div class="chat-msg">
+              <div class="chat-avatar monitor" title="AI oversight monitor">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#16302c"/><circle cx="15" cy="13.5" r="1.6" fill="#16302c"/><circle cx="12" cy="3.5" r="1.6"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">Suggested faithful form</p>
+                <pre class="chat-lean"><span class="kw">theorem</span> left_inverse (a : G) :
+  ∃ b : G, b * a = e := ...  <span class="cm">-- matches intent</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── Research Questions ──────────────────────────────── -->
+      <article class="section-block" id="questions">
+        <h2>Research Questions</h2>
+        <div class="sidenote-pair">
+          <div class="section-main">
+            <p><strong>Phenomenon.</strong> How often do VBU outputs occur, and how does
+            frequency vary with task difficulty? Which failure types are most common?</p>
+            <p><strong>Prediction.</strong> Can these failures be detected with cheap
+            signals — confidence, self-consistency, semantic similarity, hidden-state probes
+            — before or alongside full verification?<a class="sidenote-ref" href="#sn-2"><sup>2</sup></a></p>
+            <p><strong>Mechanism.</strong> On a constrained subset, where does the model's
+            internal trajectory diverge between faithful and unfaithful outputs? Are matched
+            pairs separable at specific layers?</p>
+          </div>
+          <aside class="sidenote" id="sn-2">
+            A cheap pre-filter would matter most where full verification is expensive or
+            unavailable — flagging suspect translations before paying for a proof.
+          </aside>
+        </div>
+      </article>
+
+      <!-- ── Approach ────────────────────────────────────────── -->
+      <article class="section-block" id="approach">
+        <h2>Approach</h2>
+        <ol>
+          <li>Construct a benchmark of translation attempts spanning
+            {faithful, not-faithful} × {valid, not-valid}, focused on the VBU class.</li>
+          <li>Train and compare lightweight detectors using output-space signals and
+            internal representations.</li>
+          <li>Run focused mechanistic analyses on matched faithful/unfaithful pairs to
+            locate where semantic breakdown becomes visible inside the model.</li>
+        </ol>
+        <div class="callout">
+          <strong>Why equational theories?</strong> Lean-verified equational theories give a
+          clean ground truth: each statement's validity is machine-checkable, so we can
+          isolate <em>faithfulness</em> as the independent variable.
+        </div>
+      </article>
+
+      <!-- ── Timeline ────────────────────────────────────────── -->
+      <article class="section-block" id="timeline">
+        <h2>Timeline <span style="font-family:var(--font-sans);font-size:0.9rem;font-weight:600;color:var(--muted)">— MARS program</span></h2>
+        <ul class="timeline">
+          <li>
+            <span class="timeline-phase">Prework · 2–4 weeks</span>
+            <span class="timeline-body">Background readings, failure taxonomy, a toy
+              end-to-end example, and a minimal pipeline.</span>
+          </li>
+          <li>
+            <span class="timeline-phase">In-person week · July</span>
+            <span class="timeline-body">Benchmark v0 (~100s hand-checked / ~1000s generated
+              examples), first detector baselines, error analysis — an MVP by end of week.</span>
+          </li>
+          <li>
+            <span class="timeline-phase">Remote phase · Aug–Sep · 12–16 weeks</span>
+            <span class="timeline-body">Expand the benchmark, compare detector families, run
+              interpretability studies, do cost–performance analysis vs. full verification,
+              and write up.</span>
+          </li>
+        </ul>
+      </article>
+
+      <!-- ── Expected Outputs ────────────────────────────────── -->
+      <article class="section-block" id="outputs">
+        <h2>Expected Outputs</h2>
+        <ul>
+          <li>A benchmark / dataset of faithful vs. unfaithful formal translations.</li>
+          <li>Baseline methods for cheaply predicting semantically unfaithful outputs.</li>
+          <li>A publication (paper or substantial research post) with a mechanistic analysis
+            of internal signatures of semantic drift — targeted by October.</li>
+        </ul>
+      </article>
+
+      <!-- ── Success Criteria ────────────────────────────────── -->
+      <article class="section-block" id="success">
+        <h2>Success Criteria</h2>
+        <div class="tier-grid">
+          <div class="tier-card tier-min">
+            <p class="tier-label">Minimum</p>
+            <p>A usable benchmark, one above-chance detector, a coherent error taxonomy, and
+              a publishable write-up.</p>
+          </div>
+          <div class="tier-card tier-good">
+            <p class="tier-label">Good</p>
+            <p>A detector usable in practice as a pre-filter, plus evidence on which signal
+              families are most informative.</p>
+          </div>
+          <div class="tier-card tier-stretch">
+            <p class="tier-label">Stretch</p>
+            <p>Cheap detection that generalizes across models / datasets, plus a mechanistic
+              finding on where semantic drift is internally visible — or well-characterized
+              negative results.</p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <footer class="site-footer">
+      <p>Detecting Semantically Unfaithful Formal Translations · Shivam Raval (Harvard) · Luiza Corpaci (AMD) · MARS program</p>
+      <p class="footer-credit">
+        Source on <a href="https://github.com/shivam-raval96/mars-v-project" target="_blank" rel="noopener">GitHub</a>.
+        Single-file static page — edit <code>index.html</code> and refresh.
+      </p>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+   Interactivity — all vanilla JS, no dependencies.
+   1) ToC scroll-spy   2) VBU matrix cells   3) pipeline diagram + tooltip
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. ToC scroll-spy ───────────────────────────────────── */
+(function () {
+  const links = Array.from(document.querySelectorAll(".toc-link"));
+  const sections = links
+    .map(l => document.getElementById(l.getAttribute("href").slice(1)))
+    .filter(Boolean);
+
+  function onScroll() {
+    const y = window.scrollY + 120;
+    let active = sections[0];
+    for (const s of sections) { if (s.offsetTop <= y) active = s; }
+    links.forEach(l => l.classList.toggle("is-active", l.getAttribute("href") === "#" + active.id));
+  }
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (!ticking) { requestAnimationFrame(() => { onScroll(); ticking = false; }); ticking = true; }
+  }, { passive: true });
+  onScroll();
+})();
+
+/* ── 2. VBU matrix ───────────────────────────────────────── */
+(function () {
+  const cells = Array.from(document.querySelectorAll(".matrix-cell"));
+  const detail = document.getElementById("matrix-detail");
+  cells.forEach(cell => {
+    cell.addEventListener("click", () => {
+      cells.forEach(c => c.classList.remove("is-active"));
+      cell.classList.add("is-active");
+      const title = cell.querySelector(".matrix-cell-title").textContent;
+      detail.innerHTML = "<strong>" + title + "</strong> — " + cell.dataset.detail;
+    });
+  });
+})();
+
+/* ── 2b. Chat scene tabs ─────────────────────────────────── */
+(function () {
+  const tabs = Array.from(document.querySelectorAll(".chat-tab"));
+  const scenes = Array.from(document.querySelectorAll(".chat-scene"));
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("is-active"));
+      scenes.forEach(s => s.classList.remove("is-active"));
+      tab.classList.add("is-active");
+      document.getElementById(tab.dataset.scene)?.classList.add("is-active");
+    });
+  });
+})();
+
+/* ── 3. Pipeline diagram ─────────────────────────────────── */
+(function () {
+  const wrap = document.getElementById("pipeline-wrap");
+  if (!wrap) return;
+
+  // Nodes: [id, label, x, y, w, h, fill, stroke, tooltip]
+  const C = {
+    coral:  ["#fceadf", "#d2542b"],
+    teal:   ["#e3f2ee", "#2f9d8a"],
+    purple: ["#eee7f6", "#8a6cc4"],
+    gray:   ["#f1ebe5", "#9a857a"],
+  };
+  const W = 310, H = 320;
+  const nodes = [
+    ["data",     "Lean-verified theories", 30, 16,  250, 44, C.gray,
+      "Clean ground truth: equational theories whose formal validity is machine-checkable."],
+    ["bench",    "Build VBU benchmark", 30, 84,  250, 44, C.coral,
+      "Translation attempts across faithful×valid; focused on the valid-but-unfaithful class."],
+    ["detect",   "Cheap detectors", 22, 152, 132, 56, C.teal,
+      "Output-space signals: confidence, self-consistency, semantic similarity."],
+    ["probe",    "Hidden-state probes", 162, 152, 126, 56, C.purple,
+      "White-box: linear probes on internal representations of matched pairs."],
+    ["mech",     "Mechanistic analysis", 30, 230, 250, 44, C.purple,
+      "Locate where faithful vs. unfaithful trajectories diverge inside the model."],
+    ["paper",    "Benchmark + paper", 30, 290, 250, 30, C.gray,
+      "Public dataset, baseline detectors, and a write-up on internal signatures of drift."],
+  ];
+  const edges = [["data","bench"],["bench","detect"],["bench","probe"],["detect","mech"],["probe","mech"],["mech","paper"]];
+
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  svg.setAttribute("width", "100%");
+  svg.style.display = "block";
+  svg.style.height = "auto";
+
+  const pos = {};
+  nodes.forEach(([id,,x,y,w,h]) => pos[id] = {cx: x+w/2, top: y, bottom: y+h});
+
+  // edges first (under nodes)
+  edges.forEach(([a,b]) => {
+    const line = document.createElementNS(ns, "line");
+    line.setAttribute("x1", pos[a].cx); line.setAttribute("y1", pos[a].bottom);
+    line.setAttribute("x2", pos[b].cx); line.setAttribute("y2", pos[b].top);
+    line.setAttribute("stroke", "#d9c5b8"); line.setAttribute("stroke-width", "1.5");
+    svg.appendChild(line);
+  });
+
+  const tip = document.createElement("div");
+  tip.className = "pipeline-tip";
+  wrap.appendChild(tip);
+
+  nodes.forEach(([id, label, x, y, w, h, [fill, stroke], tooltip]) => {
+    const g = document.createElementNS(ns, "g");
+    g.setAttribute("class", "pnode");
+    const r = document.createElementNS(ns, "rect");
+    r.setAttribute("x", x); r.setAttribute("y", y); r.setAttribute("width", w); r.setAttribute("height", h);
+    r.setAttribute("rx", 9); r.setAttribute("fill", fill); r.setAttribute("stroke", stroke); r.setAttribute("stroke-width", "1.5");
+    g.appendChild(r);
+    const t = document.createElementNS(ns, "text");
+    t.setAttribute("x", x + w/2); t.setAttribute("y", y + h/2 + 4);
+    t.setAttribute("text-anchor", "middle");
+    t.setAttribute("font-size", "11.5"); t.setAttribute("font-weight", "700"); t.setAttribute("fill", "#1a120d");
+    t.textContent = label;
+    g.appendChild(t);
+
+    g.addEventListener("mousemove", (e) => {
+      const rect = wrap.getBoundingClientRect();
+      tip.innerHTML = "<strong>" + label + "</strong><br>" + tooltip;
+      tip.style.opacity = "1";
+      let lx = e.clientX - rect.left + 12;
+      if (lx + 230 > rect.width) lx = rect.width - 234;
+      tip.style.left = Math.max(0, lx) + "px";
+      tip.style.top = (e.clientY - rect.top + 12) + "px";
+    });
+    g.addEventListener("mouseleave", () => { tip.style.opacity = "0"; });
+    svg.appendChild(g);
+  });
+
+  wrap.appendChild(svg);
+})();
+</script>
+</body>
+</html>

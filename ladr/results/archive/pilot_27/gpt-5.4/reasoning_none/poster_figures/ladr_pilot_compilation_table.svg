@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="820" viewBox="0 0 2400 820">
+<rect width="100%" height="100%" fill="white"/>
+<text x="70" y="122" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700" fill="#0f172a" text-anchor="start">LADR Pilot Compilation Results</text>
+<rect x="70" y="190" width="2210" height="100" rx="18" fill="#1e3a8a"/>
+<text x="94" y="253" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="white" text-anchor="start">Condition</text>
+<text x="524" y="253" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="white" text-anchor="start">Input</text>
+<text x="1314" y="253" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="white" text-anchor="start">Compiler feedback</text>
+<text x="1714" y="253" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="white" text-anchor="start">Compiled</text>
+<rect x="70" y="290" width="2210" height="100" fill="#eff6ff"/>
+<line x1="70" y1="290" x2="70" y2="390" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="500" y1="290" x2="500" y2="390" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1290" y1="290" x2="1290" y2="390" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1690" y1="290" x2="1690" y2="390" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="2280" y1="290" x2="2280" y2="390" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="70" y1="390" x2="2280" y2="390" stroke="#bfdbfe" stroke-width="2"/>
+<text x="94" y="354" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#0f172a" text-anchor="start">One-shot A</text>
+<text x="524" y="354" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">statement only</text>
+<text x="1314" y="354" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">No</text>
+<text x="1714" y="354" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#1e40af" text-anchor="start">10/27  (37.0%)</text>
+<rect x="70" y="390" width="2210" height="100" fill="white"/>
+<line x1="70" y1="390" x2="70" y2="490" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="500" y1="390" x2="500" y2="490" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1290" y1="390" x2="1290" y2="490" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1690" y1="390" x2="1690" y2="490" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="2280" y1="390" x2="2280" y2="490" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="70" y1="490" x2="2280" y2="490" stroke="#bfdbfe" stroke-width="2"/>
+<text x="94" y="454" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#0f172a" text-anchor="start">One-shot B</text>
+<text x="524" y="454" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">statement + proof</text>
+<text x="1314" y="454" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">No</text>
+<text x="1714" y="454" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#1e40af" text-anchor="start">9/27  (33.3%)</text>
+<rect x="70" y="490" width="2210" height="100" fill="#eff6ff"/>
+<line x1="70" y1="490" x2="70" y2="590" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="500" y1="490" x2="500" y2="590" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1290" y1="490" x2="1290" y2="590" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1690" y1="490" x2="1690" y2="590" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="2280" y1="490" x2="2280" y2="590" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="70" y1="590" x2="2280" y2="590" stroke="#bfdbfe" stroke-width="2"/>
+<text x="94" y="554" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#0f172a" text-anchor="start">Repair A</text>
+<text x="524" y="554" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">statement only + compiler feedback</text>
+<text x="1314" y="554" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">Yes</text>
+<text x="1714" y="554" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#1e40af" text-anchor="start">23/27  (85.2%)</text>
+<rect x="70" y="590" width="2210" height="100" fill="white"/>
+<line x1="70" y1="590" x2="70" y2="690" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="500" y1="590" x2="500" y2="690" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1290" y1="590" x2="1290" y2="690" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1690" y1="590" x2="1690" y2="690" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="2280" y1="590" x2="2280" y2="690" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="70" y1="690" x2="2280" y2="690" stroke="#bfdbfe" stroke-width="2"/>
+<text x="94" y="654" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#0f172a" text-anchor="start">Repair B</text>
+<text x="524" y="654" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">statement + proof + compiler feedback</text>
+<text x="1314" y="654" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">Yes</text>
+<text x="1714" y="654" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#1e40af" text-anchor="start">20/27  (74.1%)</text>
+<rect x="70" y="690" width="2210" height="100" fill="#eff6ff"/>
+<line x1="70" y1="690" x2="70" y2="790" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="500" y1="690" x2="500" y2="790" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1290" y1="690" x2="1290" y2="790" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="1690" y1="690" x2="1690" y2="790" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="2280" y1="690" x2="2280" y2="790" stroke="#bfdbfe" stroke-width="2"/>
+<line x1="70" y1="790" x2="2280" y2="790" stroke="#bfdbfe" stroke-width="2"/>
+<text x="94" y="754" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#0f172a" text-anchor="start">Multistage C</text>
+<text x="524" y="754" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">proof skeleton -&gt; statement</text>
+<text x="1314" y="754" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="400" fill="#0f172a" text-anchor="start">Yes, per stage</text>
+<text x="1714" y="754" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#1e40af" text-anchor="start">15/27  (55.6%)</text>
+<text x="70" y="784" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="400" fill="#475569" text-anchor="start">Main read: compiler-feedback repair boosts compilation; adding the textbook informal proof does not.</text>
+</svg>

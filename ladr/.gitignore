@@ -1,0 +1,6 @@
+.DS_Store
+
+# Local secrets. Do not commit real API keys.
+.env
+.env.*
+!.env.example

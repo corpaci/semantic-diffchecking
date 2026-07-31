@@ -1,0 +1,55 @@
+theorem_dataset_name	condition	check_status	lean_typechecked	error_class	error_symbol	error_summary	error_kind	returncode	source_index	output_sha256
+LADR_thm_chap_1_26	statement_only	ok	True	ok				0	1	134af7e95cdf3aeef408a3963b4ba5c29a6f0508e1227c8f02a9535112716812
+LADR_thm_chap_1_26	statement_plus_proof	ok	True	ok				0	2	6f604b118c9c54e755eeb074ffbb78562a04a2201fcd76d994daf94fd11c055c
+LADR_thm_chap_1_14	statement_only	ok	True	ok				0	3	d2b8a929dec9c2bd23efb90f91d737ff91786ea7ea0dae102896b54a804c389f
+LADR_thm_chap_1_14	statement_plus_proof	ok	True	ok				0	4	8501ca585f9395d9c1e2a2b558509d61174e011d72205e6eba55f918f676b8bb
+LADR_thm_chap_1_31	statement_only	ok	True	ok				0	5	411fd7c0d406ec58ad0baf838d86bfdb5e25b374c311bfe62730a25a89bc31ec
+LADR_thm_chap_1_31	statement_plus_proof	ok	True	ok				0	6	0b76d5cd6b7edf8c51f22380acdec345a369ed050a333879d9a7d021956acfb8
+LADR_thm_chap_2_25	statement_only	ok	True	ok				0	7	2b67b19251614bffd6200125a8ed7f436158bcf1916e957d17ac58570fd7fbf0
+LADR_thm_chap_2_25	statement_plus_proof	ok	True	ok				0	8	4b7de1f00d219cf773b7095bad7191f3624c90d218985016516c1bb61861b877
+LADR_thm_chap_2_43	statement_only	error	False	unknown_constant	FiniteDimensional.finrank	Unknown constant `FiniteDimensional.finrank`	lean.unknownIdentifier._namedError	1	9	3ace1e2d3fc8f0c17224cbcf4fd85c1685698430ec4d87f543748cb2593f3412
+LADR_thm_chap_2_43	statement_plus_proof	error	False	unknown_constant	FiniteDimensional.finrank	Unknown constant `FiniteDimensional.finrank`	lean.unknownIdentifier._namedError	1	10	cdea72048a83ab2065fe79ce395561328f80c82f0dfeb48bb2647649679600de
+LADR_thm_chap_2_22	statement_only	ok	True	ok				0	11	6a67c0732cbf2c1301d448d7bd68fed7a404ed74e2032b69c2442530f54fd62e
+LADR_thm_chap_2_22	statement_plus_proof	ok	True	ok				0	12	e7cd8991db2a22e957bbac2839108d074bf021bdba73fd9592740ed0fb6dc59f
+LADR_thm_chap_3_132	statement_only	error	False	application_type_mismatch		Application type mismatch: The argument T has type V →ₗ[K] W but is expected to have type (?m.22 → ?m.20) →ₗ[?m.20] ?m.23 → ?m.20 in the application LinearMap.toMatrix' T	[anonymous]	1	13	607ac4ac6f1c883b03a48fce5532f465dd2603be7421e5ee0a91f68a11b1cacd
+LADR_thm_chap_3_132	statement_plus_proof	error	False	application_type_mismatch		Application type mismatch: The argument Module.Free.ChooseBasisIndex K (Module.Dual K W) has type Type (max u_3 u_1) but is expected to have type Module.Basis ?m.23 ?m.20 ?m.27 ...	[anonymous]	1	14	a5f963217660641936f87bf82d1c69fd17a2acf49c54eedd4af29a0c71707e18
+LADR_thm_chap_3_22	statement_only	error	False	unknown_constant	FiniteDimensional.finrank	Unknown constant `FiniteDimensional.finrank`	lean.unknownIdentifier._namedError	1	15	f141e5c015273f533e6645c73320a0ae9937769ea03c55485169d8434544778c
+LADR_thm_chap_3_22	statement_plus_proof	error	False	unknown_constant	FiniteDimensional.finrank	Unknown constant `FiniteDimensional.finrank`	lean.unknownIdentifier._namedError	1	16	80d41a9a1796a9f1a2f75344641c8ca635e5e2ec5582e1985743e5e7b2009c4e
+LADR_thm_chap_3_128	statement_only	error	False	unknown_constant	FiniteDimensional.finrank	Unknown constant `FiniteDimensional.finrank`	lean.unknownIdentifier._namedError	1	17	55824e4116702884a7ce6307b0a9d2e0738ca52012488a30072cf30bf9044964
+LADR_thm_chap_3_128	statement_plus_proof	error	False	unknown_constant	FiniteDimensional.finrank	Unknown constant `FiniteDimensional.finrank`	lean.unknownIdentifier._namedError	1	18	63edd266a59c91b493876dc1d31e79cec9f1c7c50f513160391bbfe39f129dc2
+LADR_thm_chap_4_16	statement_only	error	False	unknown_identifier	C	Function expected at C but this term has type ?m.1 Note: Expected a function because this term is being applied to the argument c Hint: The identifier `C` is unknown, and Lean's...	[anonymous]	1	19	b9fdaaea3910269dce365ea9920bd3d0832ed8c2cc5fe5e15b1676c5b72edf12
+LADR_thm_chap_4_16	statement_plus_proof	error	False	unexpected_token	λ	unexpected token 'λ'; expected '_' or identifier	[anonymous]	1	20	fea045977a732caa76a72f19cf04669ce927bb21f38d06f728c728dfd2496b11
+LADR_thm_chap_4_6	statement_only	error	False	unexpected_token	λ	unexpected token 'λ'; expected '_' or identifier	[anonymous]	1	21	3df09cc0e492f88dc2c5f12c8e4692d2228b2a8900d64e899441f7254bbec766
+LADR_thm_chap_4_6	statement_plus_proof	error	False	unexpected_token	λ	unexpected token 'λ'; expected '_' or identifier	[anonymous]	1	22	ff32803bedfbf40b1ba325b8d6f8b1df63ea6f44324159f5dfcdc0ca944597ab
+LADR_thm_chap_4_12	statement_only	ok	True	ok				0	23	c39801bc242196b1eacef6570e696bb618dc9fdf1a0e5de648949f12db9613bf
+LADR_thm_chap_4_12	statement_plus_proof	error	False	unknown_identifier	IsConstant	Function expected at IsConstant but this term has type ?m.1 Note: Expected a function because this term is being applied to the argument p Hint: The identifier `IsConstant` is u...	[anonymous]	1	24	e0b1ed2dd83a0cbaea80124872aa8e8cadd6cd94281e207f94531b45624a6cfd
+LADR_thm_chap_5_39	statement_only	error	False	application_type_mismatch		Application type mismatch: The argument Fin.is_lt k has type ↑k < n but is expected to have type ↑k + 1 < n in the application Nat.lt_trans (Fin.is_lt i) (Fin.is_lt k)	[anonymous]	1	25	27062cdff94cb74052b141d59c997ed4ecf868b1544b7d9dcd890869f8293058
+LADR_thm_chap_5_39	statement_plus_proof	error	False	unknown_constant	Matrix.upperTriangular	Unknown constant `Matrix.upperTriangular`	lean.unknownIdentifier._namedError	1	26	9f4a18aeb5b3421812c2ef473cea963b2905a31232ac446136cc6b751064f39a
+LADR_thm_chap_5_11	statement_only	ok	True	ok				0	27	0b2783b5b7234b300b564b2c55b2034b5d068bc6eec5732eb54cda9a09c552a1
+LADR_thm_chap_5_11	statement_plus_proof	ok	True	ok				0	28	f1109284ebd5718cb98405a7c7dfdead845aa737b6cbf911a3b531d512e967d8
+LADR_thm_chap_5_7	statement_only	error	False	unexpected_token	λ	unexpected token 'λ'; expected '_' or identifier	[anonymous]	1	29	b19e2fbf5deadd93492109e0d68aabf34176f1c9702a46b6e3971de58c1b0e73
+LADR_thm_chap_5_7	statement_plus_proof	error	False	unexpected_token	λ	unexpected token 'λ'; expected '_' or identifier	[anonymous]	1	30	a6840191a2cfbc793d139a7e30e68a8ae7b50ef1d4e80ed69c8b68aa8fafd63e
+LADR_thm_chap_6_11	statement_only	error	False	expected_token		expected token	[anonymous]	1	31	7539e1c42e063d793357f83359aaa453a55fcbc39504346ee1b624344ffabf28
+LADR_thm_chap_6_11	statement_plus_proof	error	False	expected_token		expected token	[anonymous]	1	32	1c105ba633e6a039ff17352620d6fc15b586a5361032beef0770105d66985575
+LADR_thm_chap_6_21	statement_only	ok	True	ok				0	33	53c6c0870187276640f31808834bb82a76fd0cf753af7c25d23230ef0e223f38
+LADR_thm_chap_6_21	statement_plus_proof	ok	True	ok				0	34	32e38b626dbb55c3abc2ce4c7860e0b4b998a4601deb200139e2a7ee49373796
+LADR_thm_chap_6_24	statement_only	error	False	unknown_identifier	Orthornormal	Function expected at Orthornormal but this term has type ?m.1 Note: Expected a function because this term is being applied to the argument 𝕜 Hint: The identifier `Orthornormal` ...	[anonymous]	1	35	5fca5e831da7732738c78e2da70e647456d2c3b1a984f74670036c4a0f00fecc
+LADR_thm_chap_6_24	statement_plus_proof	error	False	invalid_binder_annotation		invalid binder annotation, type is not a class instance ?m.2 Note: Use the command `set_option checkBinderAnnotations false` to disable the check	[anonymous]	1	36	90e3a67a78e9122223f9f19097894a213140a07719c295e88a98b9c21c9dc3a0
+LADR_thm_chap_7_82	statement_only	error	False	unknown_identifier	IsSingularValue	Function expected at IsSingularValue but this term has type ?m.1 Note: Expected a function because this term is being applied to the argument T Hint: The identifier `IsSingularV...	[anonymous]	1	37	12dd5a772313f576bb939d21d2d53fdb95a9499cf2c77b120e3d540d65488a6f
+LADR_thm_chap_7_82	statement_plus_proof	ok	True	ok				0	38	7f8f37a6954ad8fe8d3d57294c4526de3aa534f5bdd609612ff8d09270e48138
+LADR_thm_chap_7_99	statement_only	ok	True	ok				0	39	463177e52b25e9df0584942f387318236e8876e90592562b4da28d79127f8494
+LADR_thm_chap_7_99	statement_plus_proof	error	False	expected_token		expected token	[anonymous]	1	40	ac73ac7af6a460090e05209b47afd824efaa45ebd991ae18ccd5200df419c162
+LADR_thm_chap_7_5	statement_only	error	False	unexpected_token	λ	unexpected token 'λ'; expected '_' or identifier	[anonymous]	1	41	e2130a0857f5903c5d77b92c608e012195d20e7aea002cbb7dd1dd458cb037c3
+LADR_thm_chap_7_5	statement_plus_proof	error	False	unexpected_token	λ	unexpected token 'λ'; expected '(', '[', '_', '{', '⦃' or identifier	[anonymous]	1	42	aed835ea0f77db28c240fb955a2141b7931ebc6380f4cc5237f5a52f575ac661
+LADR_thm_chap_8_37	statement_only	error	False	unexpected_token	λ	unexpected token 'λ'; expected '_' or identifier	[anonymous]	1	43	7386bd2eb386517ce49a4044b3b4d7feec4df080f6ebddc73de7ec446d773306
+LADR_thm_chap_8_37	statement_plus_proof	error	False	unexpected_token	λ	unexpected token 'λ'; expected '_' or identifier	[anonymous]	1	44	3849f755f0bd966c02b3d05370111acd58f098844cd3a2fe2a759d6035936594
+LADR_thm_chap_8_12	statement_only	ok	True	ok				0	45	8ab3270619d7698f40a00ba9ff58e4e237d53e8a385fbf42009c28e77c1d1581
+LADR_thm_chap_8_12	statement_plus_proof	ok	True	ok				0	46	c24c916e327e9c43ac4b207e2b334137f56462e74001b336bb7f5ae52d60e1a7
+LADR_thm_chap_8_49	statement_only	error	False	expected_token		expected token	[anonymous]	1	47	d910e88a8d65a9011ceba5cde8a4f2389cdab21bea26c6198f99e30a7f544077
+LADR_thm_chap_8_49	statement_plus_proof	error	False	expected_token		expected token	[anonymous]	1	48	87d276d5ca50bda5d5d65d819bd15d35391a0d40a34f5902dd4e2d50c94194c8
+LADR_thm_chap_9_79	statement_only	error	False	typeclass_stuck		typeclass instance problem is stuck HSMul (?m.89 Γ) V V Note: Lean will not try to resolve this typeclass instance problem because the first type argument to `HSMul` contains me...	[anonymous]	1	49	5a09cb7b31f3f078fe630300ec1d978e0d6cf21e1d503bea2894ed8b0d52956a
+LADR_thm_chap_9_79	statement_plus_proof	error	False	unexpected_tactic_term		Tactic `assumption` failed 𝕜 : Type u_1 V : Type u_2 W : Type u_3 U : Type u_4 inst✝⁶ : Field 𝕜 inst✝⁵ : AddCommGroup V inst✝⁴ : Module 𝕜 V inst✝³ : AddCommGroup W inst✝² : Modu...	[anonymous]	1	50	d22f7fd40e230f2a3f21dfceb69f435a9282397ff32cbd08afcb8a668495b162
+LADR_thm_chap_9_65	statement_only	error	False	unexpected_token	in	unexpected token 'in'; expected ','	[anonymous]	1	51	39d117440a46697cf5b2035933d115f174fbe6dda426acb03353a5e73f673876
+LADR_thm_chap_9_65	statement_plus_proof	error	False	unknown_constant	FiniteDimensional.finrank	Unknown constant `FiniteDimensional.finrank`	lean.unknownIdentifier._namedError	1	52	95ff0caeaa8c6019e36fae5a93c93ba680c8835bc9e1df135a0be7e3e5a37b1f
+LADR_thm_chap_9_55	statement_only	error	False	unexpected_token	in	unexpected token 'in'; expected ','	[anonymous]	1	53	0a6839920396be1417f1066e052ecc30b625a9a73b0b679d18f7199f9c3c8cc7
+LADR_thm_chap_9_55	statement_plus_proof	error	False	unexpected_token	in	unexpected token 'in'; expected ','	[anonymous]	1	54	ca57e125c69a3fe5776faaf7b093a84c967ba280906e315d80979dcfd148c431
