@@ -1,0 +1,16 @@
+A mathematician has written down, in words alone, one identity that holds in a
+magma. Recover the identity itself.
+
+The identity involves a single binary operation, written ◇, and holds for all
+values of its variables. Variables are single lowercase letters.
+
+Requirements:
+- Output only the identity, on one line, in the form: left side = right side.
+- Write the operation as ◇ and make every grouping explicit with parentheses:
+  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.
+- Use exactly the variables the description names, each occurring exactly as
+  often, on the side and in the position it describes.
+- Do not restate the description, do not name the law, do not explain, and do
+  not add any other text.
+
+Description: {description}
