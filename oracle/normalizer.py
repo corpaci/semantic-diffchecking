@@ -32,7 +32,7 @@ CANONICAL_OP = "◇"
 CANONICAL_VARS = "xyzwuvtsrqpn"  # first-appearance renaming order
 
 # Infix symbols an LLM plausibly uses for the single binary operation.
-INFIX_OPS = set("◇⋄⬦◆∘○◦·⋅*∗×+-/&%@#!?^~⊕⊗⊙⊖⊘•★†◁▷")
+INFIX_OPS = set("◇⋄⬦◆∘○◦·⋅*∗×+-/&%@#!?^~⊕⊗⊙⊖⊘•★†◁▷⊛⊚□")
 
 # LaTeX operator commands rewritten to *distinct* Unicode symbols. Each command
 # keeps its own symbol rather than collapsing everything to ◇, so an output
@@ -45,6 +45,11 @@ _LATEX_OP_COMMANDS = {
     "oplus": "⊕", "otimes": "⊗", "odot": "⊙", "ominus": "⊖", "oslash": "⊘",
     "bullet": "•", "star": "★", "dagger": "†",
     "triangleleft": "◁", "triangleright": "▷",
+    # Observed in the drift notebook's Qwen2.5-1.5B output when the model was
+    # told to emit ◇ and reached for a similar-looking macro instead. `circ`
+    # above cannot cover these: the negative lookahead stops \circ matching
+    # inside \circledast, which is what leaves them for their own entries.
+    "circledast": "⊛", "circledcirc": "⊚", "Box": "□",
 }
 
 # ---------------------------------------------------------------------------
@@ -193,7 +198,8 @@ def strip_noise(text: str) -> str:
     Handles, in order: markdown code fences and stray backticks; math-mode
     delimiters (`$...$`, and inline `\(`, `\)`, `\[`, `\]`, which small models
     often wrap around every single token); `\text{...}`-style wrappers around
-    variable names; common LaTeX operator macros rewritten to their Unicode
+    variable names and `\mathbin{...}` around an operator; common LaTeX
+    operator macros rewritten to their Unicode
     symbols (each to a *distinct* symbol — see _LATEX_OP_COMMANDS); a leading
     universal-quantifier prefix (`∀ x y,` / `for all ...,`), which is implicit
     for every ETP law and carries no extra meaning; and a trailing sentence
@@ -206,8 +212,12 @@ def strip_noise(text: str) -> str:
     s = s.strip("`").strip()
     # Math-mode delimiters, anywhere in the string: \( \) \[ \] and $ / $$.
     s = re.sub(r"\\[()\[\]]|\$", "", s)
-    # \text{x} / \mathrm{x} wrappers around variable names — keep the content.
-    s = re.sub(r"\\(?:text|mathrm|mathbf|mathit)\{([^{}]*)\}", r"\1", s)
+    # Wrappers that carry no meaning of their own — keep only the content.
+    # \text{x} / \mathrm{x} around variable names, and \mathbin{\triangleleft}
+    # around an operator (which only declares spacing). Unwrapping runs before
+    # the operator-macro loop below, so \mathbin{\triangleleft} → \triangleleft
+    # → ◁. Content that is not in fact an operator still fails in the tokenizer.
+    s = re.sub(r"\\(?:text|mathrm|mathbf|mathit|mathbin)\{([^{}]*)\}", r"\1", s)
     for cmd, sym in _LATEX_OP_COMMANDS.items():
         s = re.sub(rf"\\{cmd}(?![A-Za-z])", sym, s)
     s = s.replace(r"\left", "").replace(r"\right", "")

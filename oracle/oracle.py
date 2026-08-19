@@ -240,6 +240,21 @@ def selftest(oracle: SemanticOracle) -> None:
         (4512, r"\( (x \) ◇ \( y) \) ◇ \( z = x \) ◇ \( (y \) ◇ \( z) \)", "equivalent"),
         ("x ◇ y = y ◇ x", r"$a \oplus b$ = $b \oplus a$", "equivalent"),  # \oplus + inline $
         (43, r"x \oplus y = y \cdot x", "outside-fragment"),  # mixed LaTeX ops stay two distinct ops
+        # More macros from the same notebook run. \circledast / \circledcirc /
+        # \Box are what the model reached for when told to emit ◇; \mathbin{}
+        # wraps the operator rather than a name. Each was a parse-failure until
+        # the macro table and INFIX_OPS learned them.
+        (65, r"\[ x = y \Box (x \Box (y \Box x)) \]", "equivalent"),
+        (359, r"\( x \circledcirc x = (x \circledcirc x) \circledcirc x \)", "equivalent"),
+        (381, r"\[ x \circledast y = (x \circledast z) \circledast y \]", "equivalent"),
+        # \mathbin{\triangleleft} unwraps to ◁; this one is a real order-7
+        # identity, so it parses and is then correctly refused as off-catalogue.
+        (168, r"\( x = ((y \mathbin{\triangleleft} x) \mathbin{\triangleleft} (x \mathbin{\triangleleft} z)) "
+              r"\mathbin{\triangleleft} ((y \mathbin{\triangleleft} x) \mathbin{\triangleleft} "
+              r"(x \mathbin{\triangleleft} z)) \)", "outside-fragment"),
+        # \boxed{y} is NOT read as an operator: the model dropped the operation
+        # symbol entirely, so refusing to guess is the correct behaviour.
+        (46, r"\[ x \boxed{y} = z \boxed{w} \]", "parse-failure"),
     ]
     failures = 0
     for intended, generated, expected in cases:
