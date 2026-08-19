@@ -1,0 +1,10 @@
+Describe the following identity in plain English, for a mathematician who cannot see the formula.
+
+The identity holds for a single binary operation, written ◇, over all values of its variables.
+
+Requirements:
+- Use words only: no ◇, no LaTeX, no notation. You may refer to the variables by their letters.
+- You may name the law if it has a standard name.
+- Output only the description, as a single paragraph.
+
+Identity: {equation}
