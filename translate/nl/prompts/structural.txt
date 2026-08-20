@@ -1,0 +1,12 @@
+Describe the following identity in plain English, for a mathematician who cannot see the formula and must be able to write it down again from your words alone.
+
+The identity holds for a single binary operation, written ◇, over all values of its variables.
+
+Requirements:
+- State the structure exactly: which variables appear, how many times each one occurs, on which side, and how the operation is grouped and nested.
+- Use words only. Do not use ◇, asterisks, dots, LaTeX, parentheses as notation, or any other symbols. You may refer to the variables by their letters.
+- Do not name the law and do not say whether it is well known. Never use words like commutative, associative, idempotent, or the name of any named algebraic identity.
+- Do not give consequences, examples, intuition, or commentary. Describe only the identity itself.
+- Output only the description, as a single paragraph.
+
+Identity: {equation}
