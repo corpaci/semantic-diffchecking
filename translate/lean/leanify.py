@@ -6,17 +6,26 @@ rewrite of its parse tree, not a translation. There is nothing here for a
 language model to guess at, and having one guess would introduce exactly the
 failure this project measures.
 
-The target form is the one the ETP itself uses. In the ETP repository,
+The statement is the one the ETP itself uses. In the ETP repository,
 `equation 43 := x ◇ y = y ◇ x` elaborates (via `Equations/Command.lean`) to a
 reducible definition whose surface Lean is
 
     abbrev Equation43 (G : Type u) [Magma G] : Prop := ∀ x y : G, x ◇ y = y ◇ x
 
-and that is what this module emits: the full signature — carrier type, `Magma`
-instance, `Prop` codomain — with the law universally quantified over its
-variables in first-appearance order. `◇` is the ETP `Magma.op` notation, so the
-output drops directly into a file that has the `Magma` class in scope
-(`build_catalogue.py --lean` writes such a file, self-contained).
+and this module emits that full signature — carrier type, `Magma` instance,
+`Prop` codomain — with the law universally quantified over its variables in
+first-appearance order. The declaration wrapper is a style choice: `abbrev`
+and `def` reproduce the ETP's named form above, while `example` emits the
+same statement anonymously —
+
+    example (G : Type u) [Magma G] : Prop := ∀ x y : G, x ◇ y = y ◇ x
+
+— which is what `build_catalogue.py` uses by default, because a name like
+`Equation43` would carry the ETP equation number into a string that serves as
+test data for representation-translation experiments. `◇` is the ETP
+`Magma.op` notation, so the output drops directly into a file that has the
+`Magma` class in scope (`build_catalogue.py --lean` writes such a file,
+self-contained).
 
 The parse tree comes from [`../../oracle/normalizer.py`](../../oracle/normalizer.py):
 `parse_equation` yields `Equation(lhs, rhs)` over `Op(left, right)` and
@@ -92,7 +101,7 @@ OP = "◇"
 # law whose variable is literally named `G` would capture the carrier binder.
 CARRIER = "G"
 
-DECLS = ("abbrev", "def")
+DECLS = ("abbrev", "def", "example")
 
 # How the carrier is typed. "u" is the ETP's form (universe-polymorphic; a
 # file using it needs a `universe u` line, which `build_catalogue.py --lean`
@@ -135,10 +144,12 @@ class LeanStyle:
     """How an equation is rendered. Every field is recorded in the output.
 
     Fields:
-      decl       "abbrev" (default) or "def". The ETP marks its equations
-                 reducible — the `equation` command compiles to an
+      decl       "abbrev" (default), "def", or "example". The ETP marks its
+                 equations reducible — the `equation` command compiles to an
                  abbrev-hinted definition — so that tactics like `decide`
-                 look through the name; "def" makes the name opaque.
+                 look through the name; "def" makes the name opaque;
+                 "example" is anonymous — no name at all, so nothing in the
+                 emitted string carries the ETP equation number.
       universe   "u" (`Type u`, the ETP's universe-polymorphic form, default),
                  "star" (`Type*`, Mathlib notation — needs Mathlib in scope),
                  or "zero" (plain `Type`).
@@ -162,6 +173,11 @@ class LeanStyle:
             )
         if not _PREFIX.match(self.prefix):
             raise ValueError(f"prefix must be a Lean identifier, got {self.prefix!r}")
+        if self.decl == "example" and self.docstring:
+            raise ValueError(
+                "docstring cannot be combined with decl='example': the doc text "
+                "carries the node number, which the anonymous form exists to omit"
+            )
 
     @property
     def carrier_type(self) -> str:
@@ -232,11 +248,14 @@ def lean_statement(equation: Equation) -> str:
     return f"∀ {' '.join(names)} : {CARRIER}, {body}"
 
 
-def lean_name(style: LeanStyle = DEFAULT_STYLE, node: int | None = None) -> str:
+def lean_name(style: LeanStyle = DEFAULT_STYLE, node: int | None = None) -> str | None:
     """The declaration's name: `Equation43`, or `EquationUnknown` for a law
     with no catalogue node (order > 4, or no catalogue available to look it
     up in). `build_catalogue.py` always has a node; the fallback exists so the
-    CLI can still render exploratory input into a well-formed declaration."""
+    CLI can still render exploratory input into a well-formed declaration.
+    None for the anonymous `example` form, which has no name at all."""
+    if style.decl == "example":
+        return None
     return f"{style.prefix}{node if node is not None else 'Unknown'}"
 
 
@@ -244,12 +263,12 @@ def lean_signature(style: LeanStyle = DEFAULT_STYLE, node: int | None = None) ->
     """The full signature: `Equation43 (G : Type u) [Magma G] : Prop`.
 
     Exactly the ETP's: an explicit carrier, an instance-implicit `Magma`
-    structure on it, and `Prop` as the stated codomain.
+    structure on it, and `Prop` as the stated codomain. The anonymous
+    `example` form is the same signature with the name simply absent.
     """
-    return (
-        f"{lean_name(style, node)} ({CARRIER} : {style.carrier_type}) "
-        f"[Magma {CARRIER}] : Prop"
-    )
+    binders = f"({CARRIER} : {style.carrier_type}) [Magma {CARRIER}] : Prop"
+    name = lean_name(style, node)
+    return binders if name is None else f"{name} {binders}"
 
 
 def lean_decl(
@@ -454,12 +473,19 @@ def style_from_args(args) -> LeanStyle:
         raise SystemExit(str(exc)) from None
 
 
-def add_style_args(parser: argparse.ArgumentParser) -> None:
-    """Register the style flags shared by this CLI and `build_catalogue.py`."""
+def add_style_args(parser: argparse.ArgumentParser, *, default_decl: str = "abbrev") -> None:
+    """Register the style flags shared by this CLI and `build_catalogue.py`.
+
+    `default_decl` lets each CLI pick its own default keyword: this CLI keeps
+    the ETP's `abbrev`, while `build_catalogue.py` defaults to the anonymous
+    `example` so its dataset carries no equation numbers.
+    """
     group = parser.add_argument_group("lean style")
-    group.add_argument("--decl", choices=DECLS, default="abbrev",
-                       help="declaration keyword (default abbrev, the ETP's choice: "
-                            "reducible, so `decide` and friends look through the name)")
+    group.add_argument("--decl", choices=DECLS, default=default_decl,
+                       help=f"declaration keyword (default {default_decl}; abbrev is "
+                            "the ETP's choice: reducible, so `decide` and friends "
+                            "look through the name; example is anonymous — no name, "
+                            "so no equation number in the emitted string)")
     group.add_argument("--universe", choices=tuple(UNIVERSES), default="u",
                        help="carrier type: u -> `Type u` (ETP form, default), "
                             "star -> `Type*` (Mathlib notation), zero -> `Type`")
@@ -497,6 +523,17 @@ _CASES = (
      ":= ∀ x : G, (x ◇ x) ◇ (x ◇ x) = x"),
 )
 
+# The anonymous form: same statement, no name — and hence no node number
+# anywhere in the string, whether or not a node is known.
+_EXAMPLE_CASES = (
+    ("x ◇ y = y ◇ x", 43,
+     "example (G : Type u) [Magma G] : Prop := ∀ x y : G, x ◇ y = y ◇ x"),
+    ("x = x ◇ (x ◇ x)", 8,
+     "example (G : Type u) [Magma G] : Prop := ∀ x : G, x = x ◇ (x ◇ x)"),
+    ("a * (b * c) = (a * b) * c", None,
+     "example (G : Type u) [Magma G] : Prop := ∀ a b c : G, a ◇ (b ◇ c) = (a ◇ b) ◇ c"),
+)
+
 
 def selftest() -> None:
     """Check the rendering cases and the round trip; exit non-zero on failure."""
@@ -508,11 +545,28 @@ def selftest() -> None:
         print(f"[{'ok ' if ok else 'FAIL'}] {text!r} -> {got!r}"
               + ("" if ok else f"  expected {expected!r}"))
 
+    example_style = LeanStyle(decl="example")
+    for text, node, expected in _EXAMPLE_CASES:
+        got = lean_decl(parse_equation(text), example_style, node=node)
+        ok = got == expected
+        failures += not ok
+        print(f"[{'ok ' if ok else 'FAIL'}] example {text!r} -> {got!r}"
+              + ("" if ok else f"  expected {expected!r}"))
+
+    try:
+        LeanStyle(decl="example", docstring=True)
+    except ValueError:
+        print("[ok ] example + docstring is refused")
+    else:
+        failures += 1
+        print("[FAIL] example + docstring was accepted (would leak the node number)")
+
     # Round trip under every style, including the docstring form (whose doc
     # line `read_back` must skip) and a non-default prefix.
     styles = [
         LeanStyle(),
         LeanStyle(decl="def"),
+        LeanStyle(decl="example"),
         LeanStyle(universe="star"),
         LeanStyle(universe="zero"),
         LeanStyle(prefix="ETPLaw"),
