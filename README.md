@@ -35,14 +35,6 @@ experiments of your own as a [design](designs/E0-TEMPLATE.md) sheet and bring it
 The suggested week-by-week plan: [ONBOARDING.md](ONBOARDING.md).
 
 
-
-## Instruments
-
-- [`oracle/`](oracle/README.md) — the formal semantic oracle: normalizes a (possibly messy, LLM-emitted) magma equation, maps it to its node in the [Equational Theories Project](https://github.com/teorth/equational_theories) catalogue, and labels an (intended, generated) pair `equivalent / weaker / stronger / incomparable / unknown` using only proven implications. See its README for setup and usage.
-- [`translate/latex/`](translate/latex/README.md) — formal ETP equation → LaTeX, by structural rewriting of the oracle's parse tree, with no model involved. Renders one equation or exports all 4694 as formal/LaTeX pairs (`etp_equations_latex.json`); every row is verified by parsing the LaTeX back to an identical syntax tree, and the output compiles under `pdflatex`. See its README for usage.
-- [`translate/nl/`](translate/nl/README.md) — formal ETP equation → natural-language description, by prompting a model through [OpenRouter](https://openrouter.ai). One call describes the whole catalogue: same prompt, 4694 equations, one JSON of formal/description pairs with full provenance, per-call cost, checkpointing and resume, and a spend cap. See its README for usage.
-
-
 ## The design-sheet workflow
 
 1. Copy `designs/E0-TEMPLATE.md` to `designs/E<n>-short-keyname.md` and fill it in
