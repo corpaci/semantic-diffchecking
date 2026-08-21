@@ -6,18 +6,27 @@ rewrite of its parse tree, so **no model is involved anywhere in this
 directory** — there is nothing here to guess at, and a guess would introduce
 exactly the kind of silent drift this project exists to measure.
 
-The target form is the ETP's own. In the [Equational Theories Project
+The statement is the ETP's own. In the [Equational Theories Project
 repository](https://github.com/teorth/equational_theories), the command
 `equation 43 := x ◇ y = y ◇ x` elaborates (via `Equations/Command.lean`) to a
-reducible definition whose surface Lean is what this directory emits — the
-complete signature, types and all:
+reducible definition whose surface Lean carries the complete signature, types
+and all. This directory emits that statement — by default under Lean's
+anonymous `example` keyword, so that nothing in the string carries the ETP
+equation number:
 
 ```
-formal (ETP)                 Lean 4
-x ◇ y = y ◇ x                abbrev Equation43 (G : Type u) [Magma G] : Prop := ∀ x y : G, x ◇ y = y ◇ x
-x = x ◇ (x ◇ x)              abbrev Equation8 (G : Type u) [Magma G] : Prop := ∀ x : G, x = x ◇ (x ◇ x)
-x ◇ (y ◇ z) = (x ◇ y) ◇ z    abbrev Equation4512 (G : Type u) [Magma G] : Prop := ∀ x y z : G, x ◇ (y ◇ z) = (x ◇ y) ◇ z
+formal (ETP)                 Lean 4 (catalogue default, --decl example)
+x ◇ y = y ◇ x                example (G : Type u) [Magma G] : Prop := ∀ x y : G, x ◇ y = y ◇ x
+x = x ◇ (x ◇ x)              example (G : Type u) [Magma G] : Prop := ∀ x : G, x = x ◇ (x ◇ x)
+x ◇ (y ◇ z) = (x ◇ y) ◇ z    example (G : Type u) [Magma G] : Prop := ∀ x y z : G, x ◇ (y ◇ z) = (x ◇ y) ◇ z
 ```
+
+The catalogue is test data for representation-translation experiments, and a
+model may well have seen the ETP data — a name like `Equation43` in the string
+would let a translator shortcut through the answer key instead of reading the
+structure. `--decl abbrev` restores the ETP's own named form
+(`abbrev Equation43 (G : Type u) [Magma G] : Prop := …`), which is still what
+the single-equation `leanify.py` CLI emits by default.
 
 `G` is the carrier, `[Magma G]` supplies the one binary operation (`◇` is the
 ETP's notation for `Magma.op`), the codomain is `Prop`, and the law is
@@ -38,8 +47,8 @@ longer be evidence about the same equation.
 |---|---|
 | `leanify.py` | the renderer: `LeanStyle`, `to_lean`, `analyze`, `read_back`, `verify_round_trip`, a CLI, and `--selftest` |
 | `build_catalogue.py` | export all 4694 ETP laws to JSON (and, with `--lean`, to a self-contained compilable Lean file) |
-| `etp_equations_lean.json` | the generated catalogue — 4694 formal/Lean pairs, 1.8 MB |
-| `etp_equations.lean` | the generated Lean file — all 4694 declarations, self-contained, elaborates with plain `lean`, 472 KB |
+| `etp_equations_lean.json` | the generated catalogue — 4694 formal/Lean pairs, 1.7 MB |
+| `etp_equations.lean` | the generated Lean file — all 4694 declarations, self-contained, elaborates with plain `lean`, 419 KB |
 
 Nothing needs installing beyond system `python3` plus a copy of the ETP
 `equations.txt` (located exactly as [`../../oracle`](../../oracle/README.md)
@@ -61,16 +70,16 @@ python3 build_catalogue.py --lean etp_equations.lean --compile   # + the Lean fi
     "generator": "translate/lean/build_catalogue.py",
     "source": "equational_theories/data/equations.txt",
     "count": 4694,
-    "style": { "decl": "abbrev", "universe": "u", "prefix": "Equation",
+    "style": { "decl": "example", "universe": "u", "prefix": "Equation",
                "docstring": false, "carrier": "G" },
     "verified": true,
     "etp_source_crosscheck": { "performed": true, "matched": 4694, "...": null },
-    "compiled": { "lean": "Lean (version 4.33.0, ...)", "seconds": 20.7 }
+    "compiled": { "lean": "Lean (version 4.33.1, ...)", "seconds": 42.2 }
   },
   "equations": [
     { "node": 43, "formal": "x ◇ y = y ◇ x",
-      "name": "Equation43",
-      "lean": "abbrev Equation43 (G : Type u) [Magma G] : Prop := ∀ x y : G, x ◇ y = y ◇ x",
+      "name": null,
+      "lean": "example (G : Type u) [Magma G] : Prop := ∀ x y : G, x ◇ y = y ◇ x",
       "statement": "∀ x y : G, x ◇ y = y ◇ x",
       "order": 2, "variables": ["x", "y"] }
   ]
@@ -80,8 +89,10 @@ python3 build_catalogue.py --lean etp_equations.lean --compile   # + the Lean fi
 `node` is the ETP equation number — line N of `equations.txt` *is* Equation N,
 the invariant `NodeMapper` enforces when it loads the file — so these rows join
 directly against the implication graph, the semantic oracle, and the ETP
-repository's own `EquationN` declarations. `statement` is the bare proposition
-for consumers who want the law without the declaration wrapper.
+repository's own `EquationN` declarations. The number lives only in that row
+metadata: the `lean` string is anonymous, and `name` is null (with
+`--decl abbrev` it becomes the ETP's `EquationN`). `statement` is the bare
+proposition for consumers who want the law without the declaration wrapper.
 
 There is deliberately **no `normalized` field**: the catalogue text is already
 canonical (variables renamed by first appearance, `◇` as the operation), and the
@@ -98,7 +109,7 @@ By order: 2 laws of order 0, 5 of order 1, 39 of order 2, 364 of order 3, and
 | `--compile` | run `lean` on that file after writing it (requires `--lean`) |
 | `--limit N` | only the first N equations |
 | `--no-verify` | skip the per-row and cross-repo checks (not advised) |
-| *style flags* | as below; the chosen style is recorded in `meta` |
+| *style flags* | as below, except that `--decl` defaults to `example` here; the chosen style is recorded in `meta` |
 
 ## Rendering one equation
 
@@ -134,7 +145,7 @@ renders under the name `EquationUnknown` with `node: null`.
 
 | flag | default | effect |
 |---|---|---|
-| `--decl` | `abbrev` | `abbrev` or `def`. The ETP marks its equations reducible (the `equation` command compiles to an abbrev-hinted definition) so that tactics like `decide` look through the name; `def` makes the name opaque |
+| `--decl` | `abbrev` (`example` in `build_catalogue.py`) | `abbrev`, `def`, or `example`. The ETP marks its equations reducible (the `equation` command compiles to an abbrev-hinted definition) so that tactics like `decide` look through the name; `def` makes the name opaque; `example` is anonymous — no name, so no equation number in the emitted string (and `--docstring` is refused with it, since the doc text would leak the number too) |
 | `--universe` | `u` | `u` (`Type u`, the ETP's universe-polymorphic form), `star` (`Type*` — Mathlib notation, needs Mathlib in scope), `zero` (plain `Type`) |
 | `--prefix` | `Equation` | declaration name prefix; the name is `{prefix}{node}`, so the default reproduces the ETP's `Equation43` etc. |
 | `--docstring` | off | prefix each declaration with `/-- Equation N of the ETP catalogue: `…`. -/` |
@@ -160,12 +171,15 @@ returns all three as data (`error: "lean-unrepresentable"` for the last).
 
 ## Decisions worth knowing
 
-**The declaration is the ETP's surface form, not a re-design.** Name
-(`EquationN`), carrier (`G : Type u`), instance-implicit `[Magma G]`, `Prop`
-codomain, one `∀` with all binders ascribed `: G`, binders in first-appearance
-order: each choice is read off what `Equations/Command.lean` elaborates
-`equation N := …` into. The point of this directory is that "the Lean 4 form
-of Equation N" is a checkable claim about the ETP, not a house style.
+**The statement is the ETP's surface form, not a re-design.** Carrier
+(`G : Type u`), instance-implicit `[Magma G]`, `Prop` codomain, one `∀` with
+all binders ascribed `: G`, binders in first-appearance order: each choice is
+read off what `Equations/Command.lean` elaborates `equation N := …` into. The
+point of this directory is that "the Lean 4 form of Equation N" is a checkable
+claim about the ETP, not a house style. Only the wrapper varies: the catalogue
+default `example` states the same proposition anonymously, because the dataset
+must not carry equation numbers inside its representation strings, while
+`--decl abbrev` reproduces the ETP's `EquationN` name as well.
 
 **Every nested operator is parenthesized, on both sides.** `Op(Op(x,y),z)`
 renders as `(x ◇ y) ◇ z`, never `x ◇ y ◇ z`. In LaTeX that was a readability
@@ -181,8 +195,7 @@ proposition than the law). Those raise `Unrepresentable` instead of emitting a
 declaration that does not mean its equation.
 
 **The ETP declares 20 laws beyond the catalogue.** `Equation5093`,
-`Equation28770`, … up to `Equation1875916474` are higher-order laws (order
-> 4) studied individually in the ETP source. They have no line in
+`Equation28770`, … up to `Equation1875916474` are higher-order laws (order > 4) studied individually in the ETP source. They have no line in
 `equations.txt`, no node in the implication graph the oracle reasons over, and
 so no row here; the source cross-check counts and ignores them.
 
@@ -198,17 +211,17 @@ Four independent checks, all runnable here:
 
 | check | what it proves | how |
 |---|---|---|
-| round trip | the *structure* is right — parenthesization, variable placement, orientation, binder list. `read_back` strips the declaration head and `∀ … : G,` binder off the emitted string itself, re-parses the body with the oracle's parser, and requires the syntax trees to be **equal** (frozen dataclasses, so `==` compares shape and names exactly) and the binders to match first-appearance order | every row of `build_catalogue.py`; 7 styles × 8 equations in `leanify.py --selftest` |
+| round trip | the *structure* is right — parenthesization, variable placement, orientation, binder list. `read_back` strips the declaration head and `∀ … : G,` binder off the emitted string itself, re-parses the body with the oracle's parser, and requires the syntax trees to be **equal** (frozen dataclasses, so `==` compares shape and names exactly) and the binders to match first-appearance order | every row of `build_catalogue.py`; 8 styles × 8 equations in `leanify.py --selftest` |
 | canonical form | the catalogue text really is already normalized, so omitting a `normalized` field stays honest | every row of `build_catalogue.py` |
-| source cross-check | the *naming* is right — our `EquationN` states exactly what the ETP's `EquationN` states. Every `equation N := law` command in the ETP repo's `Equations/*.lean` (commented copies included) is extracted, and the law must be byte-identical to catalogue line N | `build_catalogue.py`, automatically when the ETP source sits next to `equations.txt`; result recorded in `meta` |
+| source cross-check | the *correspondence* is right — row N states exactly what the ETP's `EquationN` states, whether the row spells that name (`--decl abbrev`) or not (the anonymous default). Every `equation N := law` command in the ETP repo's `Equations/*.lean` (commented copies included) is extracted, and the law must be byte-identical to catalogue line N | `build_catalogue.py`, automatically when the ETP source sits next to `equations.txt`; result recorded in `meta` |
 | elaboration | the output is valid Lean 4, not merely well-formed to us | `build_catalogue.py --lean out.lean --compile` |
 
 A failure in any of the first three aborts the build with the offending node,
 before anything is written — a partially-wrong catalogue is worse than none.
 The round trip is the check that matters most: a dropped parenthesis still
 *looks* like a plausible declaration, and nothing else would catch it. The
-cross-check is what turns "we call it Equation43" from a convention into a
-statement about the ETP repository.
+cross-check is what turns "row 43 states the ETP's Equation43" from a
+convention into a statement about the ETP repository.
 
 Unlike the LaTeX renderer there is no `readable_style` indirection: every
 style option here (keyword, universe, prefix, docstring) leaves the statement
