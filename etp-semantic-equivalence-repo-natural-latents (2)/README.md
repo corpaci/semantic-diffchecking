@@ -22,13 +22,23 @@ src/                    Core library -- import these directly, or run the notebo
   rule_based_clean.py       Clean (bug-fixed) rule-based classifier over algebraic properties
 
 notebooks/
-  notebook.ipynb             Full comparison notebook -- run this to reproduce all results
-  notebook_executed.ipynb    Same notebook, already executed -- open to see results directly
+  notebook.ipynb                  Full comparison notebook -- run this to reproduce all results.
+                                   Includes Section 6B: symmetric baselines (cosine similarity,
+                                   Euclidean distance, tree edit distance), proven directly on real
+                                   data to give identical confusion-matrix rows for "stronger" vs
+                                   "weaker" -- the precise, classifier-independent signature of why
+                                   symmetric measures cannot recover direction.
+  notebook_with_pairs200k.ipynb   Modified notebook with integrated pairs_200k.csv support.
+                                   Toggle between pre-generated pairs (faster) and on-the-fly
+                                   generation (original method). See DATA_INTEGRATION_GUIDE.md
+  notebook_executed.ipynb         Same notebook, already executed at full scale (1,200 equations,
+                                   15,000 pairs, 5 independent splits) -- open to see results directly
 
 data/
   equations_representations.json   4,694 real ETP equations, 5 representations each
-  oracle_labeled_pairs.csv          50,000 pairs, real Lean-proof-backed ground truth
-  matrix.bin + decode_matrix.py     The COMPLETE relationship matrix -- all ~22M pairs, compact
+  oracle_labeled_pairs.csv         50,000 pairs, real Lean-proof-backed ground truth
+  pairs_200k.csv                   45,000 pre-generated pairs for faster experimentation
+  matrix.bin + decode_matrix.py    The COMPLETE relationship matrix -- all ~22M pairs, compact
   (see data/README.md for full details)
 
 paper/
@@ -61,6 +71,31 @@ result = compare_equations("x = y \u25c7 y", "x \u25c7 y = y \u25c7 x")
 print(result)
 ```
 
+## Data Integration: Using Pre-Generated Pairs
+
+The repository now includes **two ways** to run the notebook:
+
+### Option 1: Pre-generated pairs (NEW - Recommended for faster runs)
+```bash
+cd notebooks
+jupyter notebook notebook_with_pairs200k.ipynb
+# Set USE_PREGENERATED_PAIRS = True in Cell 5
+```
+- \u2705 **Faster**: No matrix generation overhead
+- \u2705 **Reproducible**: Exact same pairs every run
+- \u2705 Uses `data/pairs_200k.csv` (45K pairs) filtered to your equation sample
+
+### Option 2: On-the-fly generation (Original method)
+```bash
+cd notebooks
+jupyter notebook notebook_with_pairs200k.ipynb
+# Set USE_PREGENERATED_PAIRS = False in Cell 5
+```
+- \u2705 **Flexible**: Generate exactly the pairs you need
+- \u2705 **Controlled**: Guarantee symmetric pair inclusion
+
+**See [DATA_INTEGRATION_GUIDE.md](DATA_INTEGRATION_GUIDE.md) for detailed information** on how all data components (equations, pairs, matrix) interconnect and flow through the pipeline.
+
 ## Headline results
 
 | Approach | Best result |
@@ -79,7 +114,12 @@ in `paper/`, or the earlier project documentation referenced there.
 **Any symmetric comparison function is provably incapable of distinguishing
 "stronger" from "weaker."** Proven directly: cosine similarity returns
 bit-identical floating point values for `f(A,B)` and `f(B,A)`. Confirmed
-empirically across every symmetric measure tested, with zero exceptions.
+empirically across every symmetric measure tested (cosine similarity,
+Euclidean distance, tree edit distance -- see Section 6B of the notebook),
+with the precise, classifier-independent signature: for every symmetric
+measure, the "stronger" and "weaker" rows of the confusion matrix are
+exactly, digit-for-digit identical, at full scale (verified on real counts
+in the hundreds per cell, not just a small test sample).
 
 **Keeping multiple representations separate through scoring ("late fusion")
 consistently outperforms pooling them into one summary first.** This one
