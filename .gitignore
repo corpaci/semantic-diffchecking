@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .venv/
 .env
+
+# Large data files (>100MB - exceeds GitHub limit)
+data/pairs_all_possible.csv
