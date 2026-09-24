@@ -1,0 +1,4194 @@
+{
+  "meta": {
+    "generator": "semantic-diff-test/build_sample.py",
+    "source": "/home/malpat/equational_theories/data/equations.txt",
+    "seed": 20260830,
+    "excluded_nodes": [
+      1,
+      2
+    ],
+    "excluded_reason": "degenerate for implication grading",
+    "strata": {
+      "low": {
+        "population": 44,
+        "sampled": 44,
+        "weight": 1.0
+      },
+      "3": {
+        "population": 364,
+        "sampled": 150,
+        "weight": 2.4266666666666667
+      },
+      "4": {
+        "population": 4284,
+        "sampled": 306,
+        "weight": 14.0
+      }
+    },
+    "count": 500,
+    "repeat_arm": {
+      "k": 3,
+      "count": 150,
+      "quotas": {
+        "low": 13,
+        "3": 45,
+        "4": 92
+      },
+      "seed": 20260831
+    }
+  },
+  "equations": [
+    {
+      "node": 3,
+      "formal": "x = x ◇ x",
+      "order": 1,
+      "depth": 1,
+      "variables": 1,
+      "stratum": "low"
+    },
+    {
+      "node": 4,
+      "formal": "x = x ◇ y",
+      "order": 1,
+      "depth": 1,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 5,
+      "formal": "x = y ◇ x",
+      "order": 1,
+      "depth": 1,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 6,
+      "formal": "x = y ◇ y",
+      "order": 1,
+      "depth": 1,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 7,
+      "formal": "x = y ◇ z",
+      "order": 1,
+      "depth": 1,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 8,
+      "formal": "x = x ◇ (x ◇ x)",
+      "order": 2,
+      "depth": 2,
+      "variables": 1,
+      "stratum": "low"
+    },
+    {
+      "node": 9,
+      "formal": "x = x ◇ (x ◇ y)",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 10,
+      "formal": "x = x ◇ (y ◇ x)",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 11,
+      "formal": "x = x ◇ (y ◇ y)",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 12,
+      "formal": "x = x ◇ (y ◇ z)",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 13,
+      "formal": "x = y ◇ (x ◇ x)",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 14,
+      "formal": "x = y ◇ (x ◇ y)",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 15,
+      "formal": "x = y ◇ (x ◇ z)",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 16,
+      "formal": "x = y ◇ (y ◇ x)",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 17,
+      "formal": "x = y ◇ (y ◇ y)",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 18,
+      "formal": "x = y ◇ (y ◇ z)",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 19,
+      "formal": "x = y ◇ (z ◇ x)",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 20,
+      "formal": "x = y ◇ (z ◇ y)",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 21,
+      "formal": "x = y ◇ (z ◇ z)",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 22,
+      "formal": "x = y ◇ (z ◇ w)",
+      "order": 2,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "low"
+    },
+    {
+      "node": 23,
+      "formal": "x = (x ◇ x) ◇ x",
+      "order": 2,
+      "depth": 2,
+      "variables": 1,
+      "stratum": "low"
+    },
+    {
+      "node": 24,
+      "formal": "x = (x ◇ x) ◇ y",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 25,
+      "formal": "x = (x ◇ y) ◇ x",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 26,
+      "formal": "x = (x ◇ y) ◇ y",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 27,
+      "formal": "x = (x ◇ y) ◇ z",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 28,
+      "formal": "x = (y ◇ x) ◇ x",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 29,
+      "formal": "x = (y ◇ x) ◇ y",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 30,
+      "formal": "x = (y ◇ x) ◇ z",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 31,
+      "formal": "x = (y ◇ y) ◇ x",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 32,
+      "formal": "x = (y ◇ y) ◇ y",
+      "order": 2,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 33,
+      "formal": "x = (y ◇ y) ◇ z",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 34,
+      "formal": "x = (y ◇ z) ◇ x",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 35,
+      "formal": "x = (y ◇ z) ◇ y",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 36,
+      "formal": "x = (y ◇ z) ◇ z",
+      "order": 2,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 37,
+      "formal": "x = (y ◇ z) ◇ w",
+      "order": 2,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "low"
+    },
+    {
+      "node": 38,
+      "formal": "x ◇ x = x ◇ y",
+      "order": 2,
+      "depth": 1,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 39,
+      "formal": "x ◇ x = y ◇ x",
+      "order": 2,
+      "depth": 1,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 40,
+      "formal": "x ◇ x = y ◇ y",
+      "order": 2,
+      "depth": 1,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 41,
+      "formal": "x ◇ x = y ◇ z",
+      "order": 2,
+      "depth": 1,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 42,
+      "formal": "x ◇ y = x ◇ z",
+      "order": 2,
+      "depth": 1,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 43,
+      "formal": "x ◇ y = y ◇ x",
+      "order": 2,
+      "depth": 1,
+      "variables": 2,
+      "stratum": "low"
+    },
+    {
+      "node": 44,
+      "formal": "x ◇ y = y ◇ z",
+      "order": 2,
+      "depth": 1,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 45,
+      "formal": "x ◇ y = z ◇ y",
+      "order": 2,
+      "depth": 1,
+      "variables": 3,
+      "stratum": "low"
+    },
+    {
+      "node": 46,
+      "formal": "x ◇ y = z ◇ w",
+      "order": 2,
+      "depth": 1,
+      "variables": 4,
+      "stratum": "low"
+    },
+    {
+      "node": 47,
+      "formal": "x = x ◇ (x ◇ (x ◇ x))",
+      "order": 3,
+      "depth": 3,
+      "variables": 1,
+      "stratum": "3"
+    },
+    {
+      "node": 48,
+      "formal": "x = x ◇ (x ◇ (x ◇ y))",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 52,
+      "formal": "x = x ◇ (y ◇ (x ◇ x))",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 53,
+      "formal": "x = x ◇ (y ◇ (x ◇ y))",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 54,
+      "formal": "x = x ◇ (y ◇ (x ◇ z))",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 55,
+      "formal": "x = x ◇ (y ◇ (y ◇ x))",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 57,
+      "formal": "x = x ◇ (y ◇ (y ◇ z))",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 60,
+      "formal": "x = x ◇ (y ◇ (z ◇ z))",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 61,
+      "formal": "x = x ◇ (y ◇ (z ◇ w))",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 62,
+      "formal": "x = y ◇ (x ◇ (x ◇ x))",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 63,
+      "formal": "x = y ◇ (x ◇ (x ◇ y))",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 65,
+      "formal": "x = y ◇ (x ◇ (y ◇ x))",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 66,
+      "formal": "x = y ◇ (x ◇ (y ◇ y))",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 67,
+      "formal": "x = y ◇ (x ◇ (y ◇ z))",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 68,
+      "formal": "x = y ◇ (x ◇ (z ◇ x))",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 72,
+      "formal": "x = y ◇ (y ◇ (x ◇ x))",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 83,
+      "formal": "x = y ◇ (z ◇ (x ◇ y))",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 87,
+      "formal": "x = y ◇ (z ◇ (y ◇ y))",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 88,
+      "formal": "x = y ◇ (z ◇ (y ◇ z))",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 89,
+      "formal": "x = y ◇ (z ◇ (y ◇ w))",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 91,
+      "formal": "x = y ◇ (z ◇ (z ◇ y))",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 96,
+      "formal": "x = y ◇ (z ◇ (w ◇ z))",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 97,
+      "formal": "x = y ◇ (z ◇ (w ◇ w))",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 98,
+      "formal": "x = y ◇ (z ◇ (w ◇ u))",
+      "order": 3,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "3"
+    },
+    {
+      "node": 99,
+      "formal": "x = x ◇ ((x ◇ x) ◇ x)",
+      "order": 3,
+      "depth": 3,
+      "variables": 1,
+      "stratum": "3"
+    },
+    {
+      "node": 100,
+      "formal": "x = x ◇ ((x ◇ x) ◇ y)",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 102,
+      "formal": "x = x ◇ ((x ◇ y) ◇ y)",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 113,
+      "formal": "x = x ◇ ((y ◇ z) ◇ w)",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 114,
+      "formal": "x = y ◇ ((x ◇ x) ◇ x)",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 115,
+      "formal": "x = y ◇ ((x ◇ x) ◇ y)",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 116,
+      "formal": "x = y ◇ ((x ◇ x) ◇ z)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 117,
+      "formal": "x = y ◇ ((x ◇ y) ◇ x)",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 118,
+      "formal": "x = y ◇ ((x ◇ y) ◇ y)",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 120,
+      "formal": "x = y ◇ ((x ◇ z) ◇ x)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 121,
+      "formal": "x = y ◇ ((x ◇ z) ◇ y)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 122,
+      "formal": "x = y ◇ ((x ◇ z) ◇ z)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 123,
+      "formal": "x = y ◇ ((x ◇ z) ◇ w)",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 126,
+      "formal": "x = y ◇ ((y ◇ x) ◇ z)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 130,
+      "formal": "x = y ◇ ((y ◇ z) ◇ x)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 132,
+      "formal": "x = y ◇ ((y ◇ z) ◇ z)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 135,
+      "formal": "x = y ◇ ((z ◇ x) ◇ y)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 136,
+      "formal": "x = y ◇ ((z ◇ x) ◇ z)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 140,
+      "formal": "x = y ◇ ((z ◇ y) ◇ z)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 143,
+      "formal": "x = y ◇ ((z ◇ z) ◇ y)",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 145,
+      "formal": "x = y ◇ ((z ◇ z) ◇ w)",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 147,
+      "formal": "x = y ◇ ((z ◇ w) ◇ y)",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 148,
+      "formal": "x = y ◇ ((z ◇ w) ◇ z)",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 149,
+      "formal": "x = y ◇ ((z ◇ w) ◇ w)",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 150,
+      "formal": "x = y ◇ ((z ◇ w) ◇ u)",
+      "order": 3,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "3"
+    },
+    {
+      "node": 157,
+      "formal": "x = (x ◇ y) ◇ (x ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 158,
+      "formal": "x = (x ◇ y) ◇ (x ◇ z)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 165,
+      "formal": "x = (x ◇ y) ◇ (z ◇ w)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 168,
+      "formal": "x = (y ◇ x) ◇ (x ◇ z)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 171,
+      "formal": "x = (y ◇ x) ◇ (y ◇ z)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 172,
+      "formal": "x = (y ◇ x) ◇ (z ◇ x)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 173,
+      "formal": "x = (y ◇ x) ◇ (z ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 176,
+      "formal": "x = (y ◇ y) ◇ (x ◇ x)",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 178,
+      "formal": "x = (y ◇ y) ◇ (x ◇ z)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 185,
+      "formal": "x = (y ◇ y) ◇ (z ◇ w)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 191,
+      "formal": "x = (y ◇ z) ◇ (y ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 192,
+      "formal": "x = (y ◇ z) ◇ (y ◇ z)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 193,
+      "formal": "x = (y ◇ z) ◇ (y ◇ w)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 195,
+      "formal": "x = (y ◇ z) ◇ (z ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 198,
+      "formal": "x = (y ◇ z) ◇ (w ◇ x)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 199,
+      "formal": "x = (y ◇ z) ◇ (w ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 200,
+      "formal": "x = (y ◇ z) ◇ (w ◇ z)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 201,
+      "formal": "x = (y ◇ z) ◇ (w ◇ w)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 203,
+      "formal": "x = (x ◇ (x ◇ x)) ◇ x",
+      "order": 3,
+      "depth": 3,
+      "variables": 1,
+      "stratum": "3"
+    },
+    {
+      "node": 204,
+      "formal": "x = (x ◇ (x ◇ x)) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 209,
+      "formal": "x = (x ◇ (y ◇ x)) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 213,
+      "formal": "x = (x ◇ (y ◇ y)) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 217,
+      "formal": "x = (x ◇ (y ◇ z)) ◇ w",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 218,
+      "formal": "x = (y ◇ (x ◇ x)) ◇ x",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 221,
+      "formal": "x = (y ◇ (x ◇ y)) ◇ x",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 225,
+      "formal": "x = (y ◇ (x ◇ z)) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 227,
+      "formal": "x = (y ◇ (x ◇ z)) ◇ w",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 232,
+      "formal": "x = (y ◇ (y ◇ y)) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 233,
+      "formal": "x = (y ◇ (y ◇ y)) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 237,
+      "formal": "x = (y ◇ (y ◇ z)) ◇ w",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 239,
+      "formal": "x = (y ◇ (z ◇ x)) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 240,
+      "formal": "x = (y ◇ (z ◇ x)) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 241,
+      "formal": "x = (y ◇ (z ◇ x)) ◇ w",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 246,
+      "formal": "x = (y ◇ (z ◇ z)) ◇ x",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 248,
+      "formal": "x = (y ◇ (z ◇ z)) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 251,
+      "formal": "x = (y ◇ (z ◇ w)) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 252,
+      "formal": "x = (y ◇ (z ◇ w)) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 253,
+      "formal": "x = (y ◇ (z ◇ w)) ◇ w",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 254,
+      "formal": "x = (y ◇ (z ◇ w)) ◇ u",
+      "order": 3,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "3"
+    },
+    {
+      "node": 256,
+      "formal": "x = ((x ◇ x) ◇ x) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 257,
+      "formal": "x = ((x ◇ x) ◇ y) ◇ x",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 261,
+      "formal": "x = ((x ◇ y) ◇ x) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 266,
+      "formal": "x = ((x ◇ y) ◇ z) ◇ x",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 268,
+      "formal": "x = ((x ◇ y) ◇ z) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 271,
+      "formal": "x = ((y ◇ x) ◇ x) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 272,
+      "formal": "x = ((y ◇ x) ◇ x) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 274,
+      "formal": "x = ((y ◇ x) ◇ y) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 276,
+      "formal": "x = ((y ◇ x) ◇ z) ◇ x",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 277,
+      "formal": "x = ((y ◇ x) ◇ z) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 279,
+      "formal": "x = ((y ◇ x) ◇ z) ◇ w",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 284,
+      "formal": "x = ((y ◇ y) ◇ y) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 285,
+      "formal": "x = ((y ◇ y) ◇ y) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 286,
+      "formal": "x = ((y ◇ y) ◇ z) ◇ x",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 288,
+      "formal": "x = ((y ◇ y) ◇ z) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 289,
+      "formal": "x = ((y ◇ y) ◇ z) ◇ w",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 290,
+      "formal": "x = ((y ◇ z) ◇ x) ◇ x",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 291,
+      "formal": "x = ((y ◇ z) ◇ x) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 297,
+      "formal": "x = ((y ◇ z) ◇ y) ◇ w",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 299,
+      "formal": "x = ((y ◇ z) ◇ z) ◇ y",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 300,
+      "formal": "x = ((y ◇ z) ◇ z) ◇ z",
+      "order": 3,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 305,
+      "formal": "x = ((y ◇ z) ◇ w) ◇ w",
+      "order": 3,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 307,
+      "formal": "x ◇ x = x ◇ (x ◇ x)",
+      "order": 3,
+      "depth": 2,
+      "variables": 1,
+      "stratum": "3"
+    },
+    {
+      "node": 308,
+      "formal": "x ◇ x = x ◇ (x ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 317,
+      "formal": "x ◇ x = y ◇ (y ◇ z)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 318,
+      "formal": "x ◇ x = y ◇ (z ◇ x)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 323,
+      "formal": "x ◇ y = x ◇ (x ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 327,
+      "formal": "x ◇ y = x ◇ (y ◇ z)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 329,
+      "formal": "x ◇ y = x ◇ (z ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 331,
+      "formal": "x ◇ y = x ◇ (z ◇ w)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 336,
+      "formal": "x ◇ y = y ◇ (y ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 338,
+      "formal": "x ◇ y = y ◇ (z ◇ x)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 339,
+      "formal": "x ◇ y = y ◇ (z ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 341,
+      "formal": "x ◇ y = y ◇ (z ◇ w)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 342,
+      "formal": "x ◇ y = z ◇ (x ◇ x)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 343,
+      "formal": "x ◇ y = z ◇ (x ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 355,
+      "formal": "x ◇ y = z ◇ (w ◇ y)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 356,
+      "formal": "x ◇ y = z ◇ (w ◇ z)",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 359,
+      "formal": "x ◇ x = (x ◇ x) ◇ x",
+      "order": 3,
+      "depth": 2,
+      "variables": 1,
+      "stratum": "3"
+    },
+    {
+      "node": 361,
+      "formal": "x ◇ x = (x ◇ y) ◇ x",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 364,
+      "formal": "x ◇ x = (y ◇ x) ◇ x",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 365,
+      "formal": "x ◇ x = (y ◇ x) ◇ y",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 366,
+      "formal": "x ◇ x = (y ◇ x) ◇ z",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 368,
+      "formal": "x ◇ x = (y ◇ y) ◇ y",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 369,
+      "formal": "x ◇ x = (y ◇ y) ◇ z",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 370,
+      "formal": "x ◇ x = (y ◇ z) ◇ x",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 377,
+      "formal": "x ◇ y = (x ◇ y) ◇ x",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 383,
+      "formal": "x ◇ y = (x ◇ z) ◇ w",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 385,
+      "formal": "x ◇ y = (y ◇ x) ◇ y",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 386,
+      "formal": "x ◇ y = (y ◇ x) ◇ z",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 387,
+      "formal": "x ◇ y = (y ◇ y) ◇ x",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 388,
+      "formal": "x ◇ y = (y ◇ y) ◇ y",
+      "order": 3,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "3"
+    },
+    {
+      "node": 391,
+      "formal": "x ◇ y = (y ◇ z) ◇ y",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 394,
+      "formal": "x ◇ y = (z ◇ x) ◇ x",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 396,
+      "formal": "x ◇ y = (z ◇ x) ◇ z",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 397,
+      "formal": "x ◇ y = (z ◇ x) ◇ w",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 398,
+      "formal": "x ◇ y = (z ◇ y) ◇ x",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 399,
+      "formal": "x ◇ y = (z ◇ y) ◇ y",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 400,
+      "formal": "x ◇ y = (z ◇ y) ◇ z",
+      "order": 3,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "3"
+    },
+    {
+      "node": 405,
+      "formal": "x ◇ y = (z ◇ z) ◇ w",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 408,
+      "formal": "x ◇ y = (z ◇ w) ◇ z",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 409,
+      "formal": "x ◇ y = (z ◇ w) ◇ w",
+      "order": 3,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "3"
+    },
+    {
+      "node": 436,
+      "formal": "x = x ◇ (y ◇ (y ◇ (x ◇ x)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 469,
+      "formal": "x = y ◇ (x ◇ (x ◇ (z ◇ x)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 480,
+      "formal": "x = y ◇ (x ◇ (y ◇ (z ◇ y)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 525,
+      "formal": "x = y ◇ (y ◇ (z ◇ (y ◇ y)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 547,
+      "formal": "x = y ◇ (z ◇ (x ◇ (z ◇ z)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 563,
+      "formal": "x = y ◇ (z ◇ (y ◇ (z ◇ y)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 565,
+      "formal": "x = y ◇ (z ◇ (y ◇ (z ◇ w)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 568,
+      "formal": "x = y ◇ (z ◇ (y ◇ (w ◇ z)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 569,
+      "formal": "x = y ◇ (z ◇ (y ◇ (w ◇ w)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 574,
+      "formal": "x = y ◇ (z ◇ (z ◇ (x ◇ w)))",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 614,
+      "formal": "x = x ◇ (x ◇ ((x ◇ x) ◇ x))",
+      "order": 4,
+      "depth": 4,
+      "variables": 1,
+      "stratum": "4"
+    },
+    {
+      "node": 626,
+      "formal": "x = x ◇ (x ◇ ((y ◇ z) ◇ y))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 667,
+      "formal": "x = y ◇ (x ◇ ((x ◇ x) ◇ y))",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 678,
+      "formal": "x = y ◇ (x ◇ ((y ◇ x) ◇ z))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 686,
+      "formal": "x = y ◇ (x ◇ ((z ◇ x) ◇ x))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 690,
+      "formal": "x = y ◇ (x ◇ ((z ◇ y) ◇ x))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 693,
+      "formal": "x = y ◇ (x ◇ ((z ◇ y) ◇ w))",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 702,
+      "formal": "x = y ◇ (x ◇ ((z ◇ w) ◇ u))",
+      "order": 4,
+      "depth": 4,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 709,
+      "formal": "x = y ◇ (y ◇ ((x ◇ z) ◇ x))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 725,
+      "formal": "x = y ◇ (y ◇ ((z ◇ x) ◇ z))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 744,
+      "formal": "x = y ◇ (z ◇ ((x ◇ y) ◇ x))",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 788,
+      "formal": "x = y ◇ (z ◇ ((z ◇ w) ◇ z))",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 791,
+      "formal": "x = y ◇ (z ◇ ((w ◇ x) ◇ x))",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 802,
+      "formal": "x = y ◇ (z ◇ ((w ◇ z) ◇ y))",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 803,
+      "formal": "x = y ◇ (z ◇ ((w ◇ z) ◇ z))",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 823,
+      "formal": "x = x ◇ ((x ◇ y) ◇ (x ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 841,
+      "formal": "x = x ◇ ((y ◇ x) ◇ (z ◇ w))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 873,
+      "formal": "x = y ◇ ((x ◇ x) ◇ (y ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 874,
+      "formal": "x = y ◇ ((x ◇ x) ◇ (y ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 882,
+      "formal": "x = y ◇ ((x ◇ y) ◇ (y ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 891,
+      "formal": "x = y ◇ ((x ◇ z) ◇ (x ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 896,
+      "formal": "x = y ◇ ((x ◇ z) ◇ (y ◇ w))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 914,
+      "formal": "x = y ◇ ((y ◇ x) ◇ (z ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 936,
+      "formal": "x = y ◇ ((y ◇ z) ◇ (z ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 937,
+      "formal": "x = y ◇ ((y ◇ z) ◇ (z ◇ w))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 947,
+      "formal": "x = y ◇ ((z ◇ x) ◇ (y ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 958,
+      "formal": "x = y ◇ ((z ◇ x) ◇ (w ◇ w))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 974,
+      "formal": "x = y ◇ ((z ◇ y) ◇ (w ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 975,
+      "formal": "x = y ◇ ((z ◇ y) ◇ (w ◇ w))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 985,
+      "formal": "x = y ◇ ((z ◇ z) ◇ (z ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1005,
+      "formal": "x = y ◇ ((z ◇ w) ◇ (z ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1013,
+      "formal": "x = y ◇ ((z ◇ w) ◇ (w ◇ u))",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 1028,
+      "formal": "x = x ◇ ((x ◇ (y ◇ y)) ◇ x)",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1052,
+      "formal": "x = x ◇ ((y ◇ (y ◇ z)) ◇ y)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1057,
+      "formal": "x = x ◇ ((y ◇ (z ◇ x)) ◇ z)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1063,
+      "formal": "x = x ◇ ((y ◇ (z ◇ z)) ◇ x)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1069,
+      "formal": "x = x ◇ ((y ◇ (z ◇ w)) ◇ z)",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1101,
+      "formal": "x = y ◇ ((x ◇ (z ◇ z)) ◇ y)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1102,
+      "formal": "x = y ◇ ((x ◇ (z ◇ z)) ◇ z)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1107,
+      "formal": "x = y ◇ ((x ◇ (z ◇ w)) ◇ w)",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1115,
+      "formal": "x = y ◇ ((y ◇ (x ◇ z)) ◇ x)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1125,
+      "formal": "x = y ◇ ((y ◇ (y ◇ z)) ◇ x)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1127,
+      "formal": "x = y ◇ ((y ◇ (y ◇ z)) ◇ z)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1143,
+      "formal": "x = y ◇ ((y ◇ (z ◇ w)) ◇ z)",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1150,
+      "formal": "x = y ◇ ((z ◇ (x ◇ y)) ◇ x)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1196,
+      "formal": "x = y ◇ ((z ◇ (z ◇ w)) ◇ u)",
+      "order": 4,
+      "depth": 4,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 1210,
+      "formal": "x = y ◇ ((z ◇ (w ◇ z)) ◇ w)",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1232,
+      "formal": "x = x ◇ (((x ◇ y) ◇ y) ◇ y)",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1252,
+      "formal": "x = x ◇ (((y ◇ y) ◇ y) ◇ y)",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1257,
+      "formal": "x = x ◇ (((y ◇ y) ◇ z) ◇ w)",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1299,
+      "formal": "x = y ◇ (((x ◇ z) ◇ y) ◇ x)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1303,
+      "formal": "x = y ◇ (((x ◇ z) ◇ z) ◇ x)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1350,
+      "formal": "x = y ◇ (((z ◇ x) ◇ x) ◇ y)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1354,
+      "formal": "x = y ◇ (((z ◇ x) ◇ y) ◇ y)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1359,
+      "formal": "x = y ◇ (((z ◇ x) ◇ z) ◇ z)",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1386,
+      "formal": "x = y ◇ (((z ◇ z) ◇ x) ◇ w)",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1428,
+      "formal": "x = (x ◇ x) ◇ (x ◇ (y ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1434,
+      "formal": "x = (x ◇ x) ◇ (y ◇ (y ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1435,
+      "formal": "x = (x ◇ x) ◇ (y ◇ (y ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1436,
+      "formal": "x = (x ◇ x) ◇ (y ◇ (y ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1463,
+      "formal": "x = (x ◇ y) ◇ (z ◇ (x ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1476,
+      "formal": "x = (x ◇ y) ◇ (z ◇ (w ◇ w))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1507,
+      "formal": "x = (y ◇ x) ◇ (z ◇ (z ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1531,
+      "formal": "x = (y ◇ y) ◇ (y ◇ (z ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1551,
+      "formal": "x = (y ◇ y) ◇ (z ◇ (w ◇ u))",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 1570,
+      "formal": "x = (y ◇ z) ◇ (y ◇ (x ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1595,
+      "formal": "x = (y ◇ z) ◇ (z ◇ (z ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1601,
+      "formal": "x = (y ◇ z) ◇ (z ◇ (w ◇ w))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1602,
+      "formal": "x = (y ◇ z) ◇ (z ◇ (w ◇ u))",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 1618,
+      "formal": "x = (y ◇ z) ◇ (w ◇ (w ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1623,
+      "formal": "x = (y ◇ z) ◇ (w ◇ (u ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 1643,
+      "formal": "x = (x ◇ x) ◇ ((y ◇ z) ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1644,
+      "formal": "x = (x ◇ y) ◇ ((x ◇ x) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1650,
+      "formal": "x = (x ◇ y) ◇ ((x ◇ z) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1671,
+      "formal": "x = (x ◇ y) ◇ ((z ◇ y) ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1682,
+      "formal": "x = (y ◇ x) ◇ ((x ◇ x) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1708,
+      "formal": "x = (y ◇ x) ◇ ((z ◇ y) ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1721,
+      "formal": "x = (y ◇ y) ◇ ((x ◇ y) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1749,
+      "formal": "x = (y ◇ y) ◇ ((z ◇ z) ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1768,
+      "formal": "x = (y ◇ z) ◇ ((x ◇ w) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1774,
+      "formal": "x = (y ◇ z) ◇ ((y ◇ x) ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1783,
+      "formal": "x = (y ◇ z) ◇ ((y ◇ z) ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1785,
+      "formal": "x = (y ◇ z) ◇ ((y ◇ w) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1834,
+      "formal": "x = (x ◇ (x ◇ x)) ◇ (y ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1837,
+      "formal": "x = (x ◇ (x ◇ y)) ◇ (x ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1839,
+      "formal": "x = (x ◇ (x ◇ y)) ◇ (x ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1856,
+      "formal": "x = (x ◇ (y ◇ x)) ◇ (z ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1867,
+      "formal": "x = (x ◇ (y ◇ z)) ◇ (x ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1870,
+      "formal": "x = (x ◇ (y ◇ z)) ◇ (x ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1883,
+      "formal": "x = (x ◇ (y ◇ z)) ◇ (w ◇ u)",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 1889,
+      "formal": "x = (y ◇ (x ◇ x)) ◇ (y ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1897,
+      "formal": "x = (y ◇ (x ◇ y)) ◇ (y ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 1903,
+      "formal": "x = (y ◇ (x ◇ y)) ◇ (z ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1943,
+      "formal": "x = (y ◇ (y ◇ z)) ◇ (x ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1962,
+      "formal": "x = (y ◇ (z ◇ x)) ◇ (y ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1964,
+      "formal": "x = (y ◇ (z ◇ x)) ◇ (y ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 1965,
+      "formal": "x = (y ◇ (z ◇ x)) ◇ (y ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1988,
+      "formal": "x = (y ◇ (z ◇ y)) ◇ (w ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 1993,
+      "formal": "x = (y ◇ (z ◇ z)) ◇ (x ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2009,
+      "formal": "x = (y ◇ (z ◇ w)) ◇ (x ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2012,
+      "formal": "x = (y ◇ (z ◇ w)) ◇ (x ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2023,
+      "formal": "x = (y ◇ (z ◇ w)) ◇ (z ◇ u)",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 2028,
+      "formal": "x = (y ◇ (z ◇ w)) ◇ (w ◇ u)",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 2040,
+      "formal": "x = ((x ◇ x) ◇ y) ◇ (x ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 2052,
+      "formal": "x = ((x ◇ y) ◇ x) ◇ (x ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2068,
+      "formal": "x = ((x ◇ y) ◇ y) ◇ (z ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2075,
+      "formal": "x = ((x ◇ y) ◇ z) ◇ (y ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2107,
+      "formal": "x = ((y ◇ x) ◇ z) ◇ (x ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2114,
+      "formal": "x = ((y ◇ x) ◇ z) ◇ (y ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2128,
+      "formal": "x = ((y ◇ y) ◇ x) ◇ (y ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 2130,
+      "formal": "x = ((y ◇ y) ◇ x) ◇ (z ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2167,
+      "formal": "x = ((y ◇ z) ◇ x) ◇ (y ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2193,
+      "formal": "x = ((y ◇ z) ◇ y) ◇ (w ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2199,
+      "formal": "x = ((y ◇ z) ◇ z) ◇ (y ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2203,
+      "formal": "x = ((y ◇ z) ◇ z) ◇ (z ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2211,
+      "formal": "x = ((y ◇ z) ◇ z) ◇ (w ◇ u)",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 2213,
+      "formal": "x = ((y ◇ z) ◇ w) ◇ (x ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2219,
+      "formal": "x = ((y ◇ z) ◇ w) ◇ (y ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2222,
+      "formal": "x = ((y ◇ z) ◇ w) ◇ (z ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2234,
+      "formal": "x = ((y ◇ z) ◇ w) ◇ (u ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 2235,
+      "formal": "x = ((y ◇ z) ◇ w) ◇ (u ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 2244,
+      "formal": "x = (x ◇ (x ◇ (y ◇ x))) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 2257,
+      "formal": "x = (x ◇ (y ◇ (x ◇ y))) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 2280,
+      "formal": "x = (x ◇ (y ◇ (z ◇ y))) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2305,
+      "formal": "x = (y ◇ (x ◇ (y ◇ y))) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2313,
+      "formal": "x = (y ◇ (x ◇ (z ◇ x))) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2329,
+      "formal": "x = (y ◇ (y ◇ (x ◇ x))) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2344,
+      "formal": "x = (y ◇ (y ◇ (y ◇ z))) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2423,
+      "formal": "x = (y ◇ (z ◇ (w ◇ y))) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2480,
+      "formal": "x = (x ◇ ((y ◇ z) ◇ y)) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2482,
+      "formal": "x = (x ◇ ((y ◇ z) ◇ y)) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2509,
+      "formal": "x = (y ◇ ((x ◇ y) ◇ z)) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2521,
+      "formal": "x = (y ◇ ((x ◇ z) ◇ z)) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2527,
+      "formal": "x = (y ◇ ((x ◇ z) ◇ w)) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2531,
+      "formal": "x = (y ◇ ((y ◇ x) ◇ x)) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 2538,
+      "formal": "x = (y ◇ ((y ◇ x) ◇ z)) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2557,
+      "formal": "x = (y ◇ ((y ◇ z) ◇ y)) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2569,
+      "formal": "x = (y ◇ ((z ◇ x) ◇ x)) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2583,
+      "formal": "x = (y ◇ ((z ◇ x) ◇ w)) ◇ u",
+      "order": 4,
+      "depth": 4,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 2600,
+      "formal": "x = (y ◇ ((z ◇ y) ◇ w)) ◇ u",
+      "order": 4,
+      "depth": 4,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 2613,
+      "formal": "x = (y ◇ ((z ◇ z) ◇ w)) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2631,
+      "formal": "x = (y ◇ ((z ◇ w) ◇ z)) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2639,
+      "formal": "x = (y ◇ ((z ◇ w) ◇ u)) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 2690,
+      "formal": "x = ((x ◇ y) ◇ (z ◇ z)) ◇ w",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2701,
+      "formal": "x = ((y ◇ x) ◇ (x ◇ y)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2716,
+      "formal": "x = ((y ◇ x) ◇ (z ◇ x)) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2721,
+      "formal": "x = ((y ◇ x) ◇ (z ◇ y)) ◇ y",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2726,
+      "formal": "x = ((y ◇ x) ◇ (z ◇ z)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2738,
+      "formal": "x = ((y ◇ y) ◇ (x ◇ y)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2758,
+      "formal": "x = ((y ◇ y) ◇ (z ◇ y)) ◇ y",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2759,
+      "formal": "x = ((y ◇ y) ◇ (z ◇ y)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2761,
+      "formal": "x = ((y ◇ y) ◇ (z ◇ z)) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2778,
+      "formal": "x = ((y ◇ z) ◇ (x ◇ z)) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2796,
+      "formal": "x = ((y ◇ z) ◇ (y ◇ z)) ◇ y",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2836,
+      "formal": "x = ((y ◇ z) ◇ (w ◇ w)) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2867,
+      "formal": "x = ((x ◇ (y ◇ x)) ◇ y) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2882,
+      "formal": "x = ((x ◇ (y ◇ z)) ◇ x) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2888,
+      "formal": "x = ((x ◇ (y ◇ z)) ◇ y) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2894,
+      "formal": "x = ((x ◇ (y ◇ z)) ◇ w) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2911,
+      "formal": "x = ((y ◇ (x ◇ y)) ◇ x) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2938,
+      "formal": "x = ((y ◇ (y ◇ x)) ◇ x) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 2940,
+      "formal": "x = ((y ◇ (y ◇ x)) ◇ y) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 2946,
+      "formal": "x = ((y ◇ (y ◇ y)) ◇ x) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 2970,
+      "formal": "x = ((y ◇ (y ◇ z)) ◇ w) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 2984,
+      "formal": "x = ((y ◇ (z ◇ x)) ◇ z) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3017,
+      "formal": "x = ((y ◇ (z ◇ z)) ◇ z) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3036,
+      "formal": "x = ((y ◇ (z ◇ w)) ◇ z) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3051,
+      "formal": "x = (((x ◇ x) ◇ x) ◇ x) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3070,
+      "formal": "x = (((x ◇ y) ◇ x) ◇ y) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3090,
+      "formal": "x = (((x ◇ y) ◇ z) ◇ y) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3102,
+      "formal": "x = (((y ◇ x) ◇ x) ◇ x) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3137,
+      "formal": "x = (((y ◇ x) ◇ z) ◇ w) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3142,
+      "formal": "x = (((y ◇ y) ◇ x) ◇ y) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3152,
+      "formal": "x = (((y ◇ y) ◇ y) ◇ y) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3158,
+      "formal": "x = (((y ◇ y) ◇ y) ◇ z) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3166,
+      "formal": "x = (((y ◇ y) ◇ z) ◇ y) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3169,
+      "formal": "x = (((y ◇ y) ◇ z) ◇ z) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3193,
+      "formal": "x = (((y ◇ z) ◇ y) ◇ x) ◇ x",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3208,
+      "formal": "x = (((y ◇ z) ◇ y) ◇ w) ◇ w",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3215,
+      "formal": "x = (((y ◇ z) ◇ z) ◇ y) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3220,
+      "formal": "x = (((y ◇ z) ◇ z) ◇ z) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3224,
+      "formal": "x = (((y ◇ z) ◇ z) ◇ w) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3233,
+      "formal": "x = (((y ◇ z) ◇ w) ◇ y) ◇ y",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3239,
+      "formal": "x = (((y ◇ z) ◇ w) ◇ z) ◇ z",
+      "order": 4,
+      "depth": 4,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3279,
+      "formal": "x ◇ x = y ◇ (y ◇ (x ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3298,
+      "formal": "x ◇ x = y ◇ (z ◇ (z ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3304,
+      "formal": "x ◇ x = y ◇ (z ◇ (w ◇ u))",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 3305,
+      "formal": "x ◇ y = x ◇ (x ◇ (x ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3323,
+      "formal": "x ◇ y = x ◇ (y ◇ (z ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3334,
+      "formal": "x ◇ y = x ◇ (z ◇ (z ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3344,
+      "formal": "x ◇ y = y ◇ (x ◇ (x ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3366,
+      "formal": "x ◇ y = y ◇ (z ◇ (y ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3378,
+      "formal": "x ◇ y = y ◇ (z ◇ (w ◇ u))",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 3381,
+      "formal": "x ◇ y = z ◇ (x ◇ (x ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3390,
+      "formal": "x ◇ y = z ◇ (x ◇ (z ◇ w))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3421,
+      "formal": "x ◇ y = z ◇ (z ◇ (z ◇ x))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3422,
+      "formal": "x ◇ y = z ◇ (z ◇ (z ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3424,
+      "formal": "x ◇ y = z ◇ (z ◇ (z ◇ w))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3441,
+      "formal": "x ◇ y = z ◇ (w ◇ (z ◇ y))",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3452,
+      "formal": "x ◇ y = z ◇ (w ◇ (u ◇ z))",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 3471,
+      "formal": "x ◇ x = y ◇ ((x ◇ x) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3485,
+      "formal": "x ◇ x = y ◇ ((y ◇ y) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3487,
+      "formal": "x ◇ x = y ◇ ((y ◇ z) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3498,
+      "formal": "x ◇ x = y ◇ ((z ◇ y) ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3500,
+      "formal": "x ◇ x = y ◇ ((z ◇ z) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3507,
+      "formal": "x ◇ x = y ◇ ((z ◇ w) ◇ u)",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 3512,
+      "formal": "x ◇ y = x ◇ ((x ◇ y) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3525,
+      "formal": "x ◇ y = x ◇ ((y ◇ z) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3531,
+      "formal": "x ◇ y = x ◇ ((z ◇ x) ◇ w)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3532,
+      "formal": "x ◇ y = x ◇ ((z ◇ y) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3570,
+      "formal": "x ◇ y = y ◇ ((z ◇ y) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3571,
+      "formal": "x ◇ y = y ◇ ((z ◇ y) ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3573,
+      "formal": "x ◇ y = y ◇ ((z ◇ z) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3599,
+      "formal": "x ◇ y = z ◇ ((y ◇ x) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3605,
+      "formal": "x ◇ y = z ◇ ((y ◇ y) ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3608,
+      "formal": "x ◇ y = z ◇ ((y ◇ z) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3609,
+      "formal": "x ◇ y = z ◇ ((y ◇ z) ◇ z)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3624,
+      "formal": "x ◇ y = z ◇ ((z ◇ z) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3628,
+      "formal": "x ◇ y = z ◇ ((z ◇ w) ◇ x)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3629,
+      "formal": "x ◇ y = z ◇ ((z ◇ w) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3634,
+      "formal": "x ◇ y = z ◇ ((w ◇ x) ◇ y)",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3677,
+      "formal": "x ◇ x = (y ◇ x) ◇ (y ◇ x)",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3678,
+      "formal": "x ◇ x = (y ◇ x) ◇ (y ◇ y)",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3682,
+      "formal": "x ◇ x = (y ◇ x) ◇ (z ◇ z)",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3685,
+      "formal": "x ◇ x = (y ◇ y) ◇ (x ◇ y)",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3719,
+      "formal": "x ◇ y = (x ◇ x) ◇ (z ◇ z)",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3746,
+      "formal": "x ◇ y = (x ◇ z) ◇ (w ◇ w)",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3752,
+      "formal": "x ◇ y = (y ◇ x) ◇ (y ◇ y)",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3761,
+      "formal": "x ◇ y = (y ◇ y) ◇ (y ◇ x)",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3784,
+      "formal": "x ◇ y = (y ◇ z) ◇ (w ◇ u)",
+      "order": 4,
+      "depth": 2,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 3803,
+      "formal": "x ◇ y = (z ◇ y) ◇ (x ◇ y)",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3812,
+      "formal": "x ◇ y = (z ◇ y) ◇ (z ◇ z)",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3815,
+      "formal": "x ◇ y = (z ◇ y) ◇ (w ◇ y)",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3821,
+      "formal": "x ◇ y = (z ◇ z) ◇ (x ◇ z)",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3836,
+      "formal": "x ◇ y = (z ◇ w) ◇ (x ◇ x)",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3844,
+      "formal": "x ◇ y = (z ◇ w) ◇ (y ◇ w)",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3885,
+      "formal": "x ◇ x = (y ◇ (x ◇ z)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3904,
+      "formal": "x ◇ x = (y ◇ (z ◇ y)) ◇ w",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3928,
+      "formal": "x ◇ y = (x ◇ (y ◇ y)) ◇ y",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 3942,
+      "formal": "x ◇ y = (x ◇ (z ◇ z)) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3948,
+      "formal": "x ◇ y = (x ◇ (z ◇ w)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 3963,
+      "formal": "x ◇ y = (y ◇ (y ◇ x)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3966,
+      "formal": "x ◇ y = (y ◇ (y ◇ y)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 3990,
+      "formal": "x ◇ y = (z ◇ (x ◇ x)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4013,
+      "formal": "x ◇ y = (z ◇ (y ◇ z)) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4018,
+      "formal": "x ◇ y = (z ◇ (y ◇ w)) ◇ y",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4028,
+      "formal": "x ◇ y = (z ◇ (z ◇ y)) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4034,
+      "formal": "x ◇ y = (z ◇ (z ◇ w)) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4035,
+      "formal": "x ◇ y = (z ◇ (z ◇ w)) ◇ y",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4052,
+      "formal": "x ◇ y = (z ◇ (w ◇ z)) ◇ w",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4071,
+      "formal": "x ◇ x = ((x ◇ y) ◇ x) ◇ y",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 4092,
+      "formal": "x ◇ x = ((y ◇ y) ◇ x) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4093,
+      "formal": "x ◇ x = ((y ◇ y) ◇ y) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 4110,
+      "formal": "x ◇ x = ((y ◇ z) ◇ z) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4112,
+      "formal": "x ◇ x = ((y ◇ z) ◇ w) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4122,
+      "formal": "x ◇ y = ((x ◇ x) ◇ y) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4161,
+      "formal": "x ◇ y = ((y ◇ x) ◇ z) ◇ y",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4173,
+      "formal": "x ◇ y = ((y ◇ y) ◇ z) ◇ w",
+      "order": 4,
+      "depth": 3,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4184,
+      "formal": "x ◇ y = ((y ◇ z) ◇ z) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4201,
+      "formal": "x ◇ y = ((z ◇ x) ◇ z) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4207,
+      "formal": "x ◇ y = ((z ◇ x) ◇ w) ◇ u",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 4224,
+      "formal": "x ◇ y = ((z ◇ y) ◇ w) ◇ u",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 4225,
+      "formal": "x ◇ y = ((z ◇ z) ◇ x) ◇ x",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4227,
+      "formal": "x ◇ y = ((z ◇ z) ◇ x) ◇ z",
+      "order": 4,
+      "depth": 3,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4265,
+      "formal": "x ◇ y = ((z ◇ w) ◇ u) ◇ w",
+      "order": 4,
+      "depth": 3,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 4268,
+      "formal": "x ◇ (x ◇ x) = x ◇ (x ◇ y)",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 4269,
+      "formal": "x ◇ (x ◇ x) = x ◇ (y ◇ x)",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 4292,
+      "formal": "x ◇ (x ◇ y) = y ◇ (x ◇ z)",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4293,
+      "formal": "x ◇ (x ◇ y) = y ◇ (y ◇ x)",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 4297,
+      "formal": "x ◇ (x ◇ y) = y ◇ (z ◇ z)",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4345,
+      "formal": "x ◇ (y ◇ y) = y ◇ (z ◇ x)",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4349,
+      "formal": "x ◇ (y ◇ y) = z ◇ (x ◇ w)",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4392,
+      "formal": "x ◇ (x ◇ x) = (y ◇ z) ◇ y",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4394,
+      "formal": "x ◇ (x ◇ x) = (y ◇ z) ◇ w",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4400,
+      "formal": "x ◇ (x ◇ y) = (x ◇ y) ◇ z",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4401,
+      "formal": "x ◇ (x ◇ y) = (x ◇ z) ◇ x",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4404,
+      "formal": "x ◇ (x ◇ y) = (x ◇ z) ◇ w",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4414,
+      "formal": "x ◇ (x ◇ y) = (y ◇ z) ◇ w",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4432,
+      "formal": "x ◇ (y ◇ x) = (x ◇ x) ◇ x",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 4436,
+      "formal": "x ◇ (y ◇ x) = (x ◇ y) ◇ y",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 4443,
+      "formal": "x ◇ (y ◇ x) = (y ◇ x) ◇ y",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 4451,
+      "formal": "x ◇ (y ◇ x) = (y ◇ z) ◇ w",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4473,
+      "formal": "x ◇ (y ◇ y) = (x ◇ y) ◇ y",
+      "order": 4,
+      "depth": 2,
+      "variables": 2,
+      "stratum": "4"
+    },
+    {
+      "node": 4481,
+      "formal": "x ◇ (y ◇ y) = (y ◇ x) ◇ z",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4502,
+      "formal": "x ◇ (y ◇ y) = (z ◇ w) ◇ y",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4510,
+      "formal": "x ◇ (y ◇ z) = (x ◇ y) ◇ x",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4530,
+      "formal": "x ◇ (y ◇ z) = (y ◇ y) ◇ w",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4542,
+      "formal": "x ◇ (y ◇ z) = (z ◇ x) ◇ z",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4557,
+      "formal": "x ◇ (y ◇ z) = (w ◇ x) ◇ x",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4566,
+      "formal": "x ◇ (y ◇ z) = (w ◇ y) ◇ u",
+      "order": 4,
+      "depth": 2,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 4568,
+      "formal": "x ◇ (y ◇ z) = (w ◇ z) ◇ y",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4578,
+      "formal": "x ◇ (y ◇ z) = (w ◇ u) ◇ y",
+      "order": 4,
+      "depth": 2,
+      "variables": 5,
+      "stratum": "4"
+    },
+    {
+      "node": 4654,
+      "formal": "(x ◇ y) ◇ y = (x ◇ y) ◇ z",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4656,
+      "formal": "(x ◇ y) ◇ y = (x ◇ z) ◇ z",
+      "order": 4,
+      "depth": 2,
+      "variables": 3,
+      "stratum": "4"
+    },
+    {
+      "node": 4657,
+      "formal": "(x ◇ y) ◇ y = (x ◇ z) ◇ w",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    },
+    {
+      "node": 4667,
+      "formal": "(x ◇ y) ◇ y = (z ◇ y) ◇ w",
+      "order": 4,
+      "depth": 2,
+      "variables": 4,
+      "stratum": "4"
+    }
+  ],
+  "repeat_nodes": [
+    8,
+    15,
+    17,
+    21,
+    23,
+    26,
+    29,
+    31,
+    32,
+    35,
+    38,
+    41,
+    46,
+    53,
+    57,
+    63,
+    66,
+    87,
+    99,
+    100,
+    115,
+    116,
+    120,
+    121,
+    122,
+    132,
+    135,
+    136,
+    145,
+    158,
+    171,
+    172,
+    178,
+    193,
+    203,
+    204,
+    232,
+    233,
+    239,
+    246,
+    248,
+    251,
+    253,
+    274,
+    277,
+    279,
+    289,
+    297,
+    299,
+    318,
+    329,
+    343,
+    355,
+    364,
+    368,
+    388,
+    397,
+    398,
+    568,
+    614,
+    667,
+    725,
+    791,
+    882,
+    891,
+    914,
+    947,
+    975,
+    985,
+    1005,
+    1028,
+    1102,
+    1125,
+    1232,
+    1252,
+    1257,
+    1354,
+    1507,
+    1531,
+    1551,
+    1602,
+    1644,
+    1721,
+    1785,
+    1834,
+    1839,
+    1867,
+    1870,
+    1943,
+    2012,
+    2040,
+    2052,
+    2068,
+    2167,
+    2193,
+    2199,
+    2222,
+    2257,
+    2423,
+    2569,
+    2631,
+    2721,
+    2738,
+    2759,
+    2882,
+    2911,
+    2940,
+    2970,
+    3137,
+    3169,
+    3224,
+    3233,
+    3334,
+    3344,
+    3366,
+    3381,
+    3498,
+    3500,
+    3525,
+    3609,
+    3628,
+    3677,
+    3682,
+    3746,
+    3784,
+    3812,
+    3815,
+    3836,
+    3844,
+    3928,
+    4035,
+    4071,
+    4092,
+    4093,
+    4122,
+    4161,
+    4224,
+    4225,
+    4227,
+    4292,
+    4349,
+    4394,
+    4400,
+    4432,
+    4443,
+    4502,
+    4557,
+    4566,
+    4578,
+    4667
+  ]
+}

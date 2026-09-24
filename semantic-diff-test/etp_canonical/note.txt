@@ -1,0 +1,1 @@
+The operation is written ◇ between its two arguments. Variables are single lowercase letters. Grouping is shown by parentheses around each nested operation.

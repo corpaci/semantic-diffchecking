@@ -1,0 +1,26 @@
+[gemini-2.5-flash      ]   300/900 $0.03 err=0
+[qwen3-30b-a3b         ]   300/900 $0.01 err=0
+[mistral-small-3.2-24b ]   300/900 $0.01 err=0
+[llama-4-maverick      ]   300/900 $0.03 err=0
+[gpt-5.2               ]   300/900 $0.22 err=0
+[gemini-2.5-flash      ]   600/900 $0.06 err=0
+[qwen3-30b-a3b         ]   600/900 $0.02 err=0
+[claude-opus-5         ]   300/900 $0.71 err=0
+[llama-4-maverick      ]   600/900 $0.06 err=0
+[mistral-small-3.2-24b ]   600/900 $0.01 err=0
+[gpt-5.2               ]   600/900 $0.44 err=0
+[gemini-2.5-flash      ]   900/900 $0.09 err=0
+[qwen3-30b-a3b         ]   900/900 $0.02 err=0
+[mistral-small-3.2-24b ]   900/900 $0.02 err=0
+[gpt-5.2               ]   900/900 $0.69 err=0
+[llama-4-maverick      ]   900/900 $0.09 err=0
+[claude-opus-5         ]   600/900 $2.13 err=0
+[claude-opus-5         ]   900/900 $3.20 err=0
+mistralai/mistral-small-3.2-24b-instruct      900 err=0 $0.018
+qwen/qwen3-30b-a3b-instruct-2507              900 err=0 $0.023
+google/gemini-2.5-flash                       900 err=0 $0.094
+meta-llama/llama-4-maverick                   900 err=0 $0.089
+openai/gpt-5.2                                900 err=0 $0.690
+anthropic/claude-opus-5                       900 err=0 $3.197
+total $4.11 in 3.3 min
+DOSE EXIT: 0
