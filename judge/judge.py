@@ -8,7 +8,7 @@ Classifies the logical relation between two equational laws:
 The label describes B relative to A, matching the oracle's convention
 (`weaker` = B drops constraints). Scoring is a single forward pass whose
 logits are restricted to the four label tokens, so the judge cannot emit an
-invalid answer and every prediction carries a calibrated probability.
+invalid label. Scores are normalized over four labels, not calibrated guarantees.
 
 CLI
 ---
@@ -24,8 +24,7 @@ Library
     j.compare("x * y = y * x", "a * b = b * a")     # -> Verdict
     j.probs([(a, b), ...])                          # -> (n, 4) ndarray
 
-No GPU required. A single comparison takes a couple of seconds on CPU;
-CUDA and Apple-Silicon MPS are used automatically when present.
+CPU, CUDA, and Apple-Silicon MPS are supported. Runtime depends on the hardware.
 """
 from __future__ import annotations
 
@@ -37,6 +36,7 @@ from dataclasses import dataclass, asdict
 
 LABELS = ("equivalent", "weaker", "stronger", "incomparable")
 DEFAULT_BASE = "google/gemma-2-2b"
+DEFAULT_TEMPLATE = "A: {a}\nB: {b}\nRelation:"
 
 
 @dataclass
@@ -49,6 +49,10 @@ class Verdict:
 
     def __str__(self) -> str:
         return f"{self.label} ({self.confidence:.3f})"
+
+    def to_dict(self) -> dict:
+        """Return JSON-compatible fields for a notebook or another pipeline."""
+        return asdict(self)
 
 
 class Judge:
@@ -101,19 +105,46 @@ class Judge:
                 base, torch_dtype=td, attn_implementation=attn)
         self.model = PeftModel.from_pretrained(model, adapter).to(device).eval()
 
+        # An adapter records the prompt it was trained with. Serving it under a
+        # different template loads fine, answers fine, and is wrong. Older
+        # adapters predate the file and used the default, which is what the
+        # fallback assumes.
+        self.template = DEFAULT_TEMPLATE
+        tpl = os.path.join(adapter, "prompt_template.json")
+        if os.path.isfile(tpl):
+            with open(tpl, encoding="utf-8") as f:
+                self.template = json.load(f).get("template", DEFAULT_TEMPLATE)
+            if self.template != DEFAULT_TEMPLATE:
+                print(f"note: this adapter uses a non-default prompt: "
+                      f"{self.template!r}", file=sys.stderr)
+
     @staticmethod
     def prompt(text_a: str, text_b: str) -> str:
-        return f"A: {text_a}\nB: {text_b}\nRelation:"
+        """The DEFAULT prompt. Use `j.format_prompt` to honour an adapter's own
+        recorded template; this static form is kept for callers that build
+        prompts without a loaded Judge."""
+        return DEFAULT_TEMPLATE.format(a=text_a, b=text_b)
+
+    def format_prompt(self, text_a: str, text_b: str) -> str:
+        return self.template.format(a=text_a, b=text_b)
 
     def probs(self, pairs, batch_size: int = 32):
         """pairs: iterable of (text_a, text_b). Returns an (n, 4) float array."""
+        if not isinstance(batch_size, int) or isinstance(batch_size, bool) or batch_size < 1:
+            raise ValueError("batch_size must be a positive integer")
         torch = self.torch
         pairs = list(pairs)
+        for pair in pairs:
+            if not isinstance(pair, (tuple, list)) or len(pair) != 2:
+                raise ValueError("each pair must contain two equation strings")
+            if any(not isinstance(text, str) or not text.strip() for text in pair):
+                raise ValueError("equations must be non-empty strings")
         out = []
         with torch.no_grad():
             for i in range(0, len(pairs), batch_size):
                 chunk = pairs[i:i + batch_size]
-                enc = [self.tok(self.prompt(a, b), add_special_tokens=True).input_ids
+                enc = [self.tok(self.format_prompt(a, b),
+                                add_special_tokens=True).input_ids
                        for a, b in chunk]
                 m = max(len(e) for e in enc)
                 pad = self.tok.pad_token_id
@@ -130,14 +161,28 @@ class Judge:
                 # answer impossible rather than merely unlikely.
                 lg = lg[torch.arange(lg.size(0), device=self.device), last][:, self.label_ids]
                 out.append(torch.softmax(lg.float(), -1).cpu())
-        return torch.cat(out).numpy() if out else None
+        return (torch.cat(out).numpy() if out
+                else torch.empty((0, len(LABELS)), dtype=torch.float32).numpy())
 
     def compare(self, text_a: str, text_b: str) -> Verdict:
-        p = self.probs([(text_a, text_b)])[0]
-        k = int(p.argmax())
-        return Verdict(label=LABELS[k], confidence=float(p[k]),
-                       probs={l: float(v) for l, v in zip(LABELS, p)},
-                       text_a=text_a, text_b=text_b)
+        return self.compare_many([(text_a, text_b)])[0]
+
+    def __call__(self, text_a: str, text_b: str) -> Verdict:
+        """Equivalent to compare(A, B); reuses the already loaded model."""
+        return self.compare(text_a, text_b)
+
+    def compare_many(self, pairs, batch_size: int = 32) -> list[Verdict]:
+        """Score pairs in batches and return verdicts in input order."""
+        pairs = list(pairs)
+        probabilities = self.probs(pairs, batch_size=batch_size)
+        results = []
+        for (a, b), p in zip(pairs, probabilities):
+            k = int(p.argmax())
+            results.append(Verdict(
+                label=LABELS[k], confidence=float(p[k]),
+                probs={label: float(value) for label, value in zip(LABELS, p)},
+                text_a=a, text_b=b))
+        return results
 
     def rank(self, intended: str, candidates):
         """Order candidates by P(equivalent to `intended`), best first.

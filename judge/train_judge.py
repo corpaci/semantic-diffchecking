@@ -22,6 +22,14 @@ import json
 import os
 
 
+def save_prompt_metadata(directory, template):
+    """Keep the inference prompt beside every saved adapter."""
+    os.makedirs(directory, exist_ok=True)
+    with open(os.path.join(directory, "prompt_template.json"), "w", encoding="utf-8") as sink:
+        json.dump({"template": template,
+                   "labels": ["equivalent", "weaker", "stronger", "incomparable"]}, sink, indent=2)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", default="data")
@@ -58,7 +66,7 @@ def main() -> None:
     from datasets import load_dataset
     from peft import LoraConfig, get_peft_model
     from transformers import (AutoModelForCausalLM, AutoTokenizer,
-                              Trainer, TrainingArguments, set_seed)
+                              Trainer, TrainerCallback, TrainingArguments, set_seed)
 
     set_seed(args.seed)
     LABELS = ["equivalent", "weaker", "stronger", "incomparable"]
@@ -82,8 +90,14 @@ def main() -> None:
         raise SystemExit(f"label first-tokens collide under {args.model}: {collisions}\n"
                          "pick single-token label synonyms before training.")
 
+    # The prompt is a research variable, so it comes from the config via the
+    # environment. It MUST match judge.py at inference; both default to the
+    # same string, and a mismatch would be silent.
+    TEMPLATE = os.environ.get("SDC_PROMPT_TEMPLATE", "A: {a}\nB: {b}\nRelation:")
+    print(f"prompt template: {TEMPLATE!r}")
+
     def fmt(row):
-        prompt = f"A: {row['text_a']}\nB: {row['text_b']}\nRelation:"
+        prompt = TEMPLATE.format(a=row["text_a"], b=row["text_b"])
         ids = tok(prompt, add_special_tokens=True).input_ids
         input_ids = ids + [label_ids[row["label"]]]
         labels = [-100] * len(ids) + [label_ids[row["label"]]]
@@ -202,12 +216,19 @@ def main() -> None:
         bf16=True, report_to="none", seed=args.seed,
         dataloader_num_workers=2, remove_unused_columns=False,
     )
+    class SavePrompt(TrainerCallback):
+        def on_save(self, args, state, control, **kwargs):
+            directory = os.path.join(args.output_dir, f"checkpoint-{state.global_step}")
+            save_prompt_metadata(directory, TEMPLATE)
+            tok.save_pretrained(directory)
+
     trainer = Trainer(
         model=model, args=targs,
         train_dataset=ds["train"],
         eval_dataset={"pairs": curve["pairs_val"], "classes": curve["classes_val"]},
         data_collator=collate, compute_metrics=compute_metrics,
         preprocess_logits_for_metrics=preprocess_logits,
+        callbacks=[SavePrompt()],
     )
     trainer.train()
 
@@ -220,7 +241,9 @@ def main() -> None:
     adapter_dir = os.path.join(args.out, "adapter-final")
     trainer.save_model(adapter_dir)
     tok.save_pretrained(adapter_dir)
+    save_prompt_metadata(adapter_dir, TEMPLATE)
     print(f"saved adapter + tokenizer to {adapter_dir}")
+    print(f"recorded prompt template: {TEMPLATE!r}")
 
     with open(os.path.join(args.out, "run_config.json"), "w") as f:
         json.dump(vars(args), f, indent=2, default=str)

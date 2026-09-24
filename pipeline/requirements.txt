@@ -1,0 +1,4 @@
+PyYAML
+numpy
+
+# Inference and training dependencies are in judge/requirements.txt.

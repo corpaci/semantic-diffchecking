@@ -33,7 +33,8 @@ import random
 import sys
 from collections import Counter, defaultdict
 
-ORACLE_DIR = os.path.expanduser("~/Documents/semantic-diffchecking-repo/oracle")
+ORACLE_DIR = os.environ.get("SDC_ORACLE", os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "oracle"))
 sys.path.insert(0, ORACLE_DIR)
 os.environ.setdefault("ETP_EQUATIONS", os.path.join(ORACLE_DIR, "data", "equations.txt"))
 
@@ -64,7 +65,16 @@ def render(term, mapping, op, top=True):
 
 
 def augment(eq: Equation, rng: random.Random) -> str:
-    """Render a parsed law with random variable names, op symbol, orientation."""
+    """Render a law using the configured representation and surface choices."""
+    # Preserve the original RNG sequence when using its default infix recipe.
+    kind = os.environ.get("SDC_RENDER_KIND", "infix")
+    rename = os.environ.get("SDC_RENDER_RENAME", "True") == "True"
+    flip = os.environ.get("SDC_RENDER_FLIP", "True") == "True"
+    symbol = os.environ.get("SDC_RENDER_OP") or None
+    if kind != "infix" or not rename or not flip or symbol is not None:
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        from pipeline.representations import render as render_view
+        return render_view(eq, rng, kind=kind, op=symbol, rename=rename, flip=flip)
     varnames: list = []
     eq.lhs.variables(varnames)
     eq.rhs.variables(varnames)

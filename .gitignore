@@ -3,5 +3,6 @@ __pycache__/
 
 # judge/: generated dataset and trained weights (regenerable / too large)
 judge/data/
+judge/data-*/
 judge/runs/
 *.tar.gz
