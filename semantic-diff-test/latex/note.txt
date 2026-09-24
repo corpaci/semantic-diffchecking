@@ -1,0 +1,1 @@
+This is LaTeX. The operation is written \diamond between its two arguments. Variables are single letters. Grouping is shown by parentheses.

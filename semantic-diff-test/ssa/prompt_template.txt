@@ -1,0 +1,18 @@
+A single identity that holds in a magma is written below. Recover the identity
+itself.
+
+The identity involves one binary operation and holds for all values of its
+variables. The operation is on an arbitrary set: it is not assumed to be
+associative or commutative, and there is no identity element.
+
+The operation is written ◇ between its two arguments. Variables are single lowercase letters; names starting with t are intermediate results. Grouping is shown by which results each line uses.
+
+Requirements:
+- Output only the identity, on one line, in the form: left side = right side.
+- Write the operation as ◇ and make every grouping explicit with parentheses:
+  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.
+- Use single lowercase letters for variables; you may choose any letters.
+- Do not restate the input, do not name the identity, do not explain, and do not
+  add any other text.
+
+{body}

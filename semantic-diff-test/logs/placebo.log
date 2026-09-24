@@ -1,0 +1,16 @@
+[gemini-2.5-flash      ]   400/600 $0.05 err=0
+[qwen3-30b-a3b         ]   400/600 $0.01 err=0
+[gemini-2.5-flash      ]   600/600 $0.07 err=0
+[gpt-5.2               ]   400/600 $0.33 err=0
+[qwen3-30b-a3b         ]   600/600 $0.02 err=0
+[gpt-5.2               ]   600/600 $0.50 err=0
+[claude-opus-5         ]   400/600 $3.72 err=0
+[claude-opus-5         ]   600/600 $5.02 err=0
+
+model                                          new  skipped   err     cost
+qwen/qwen3-30b-a3b-instruct-2507               600    1,800     0 $  0.018
+google/gemini-2.5-flash                        600    1,800     0 $  0.074
+openai/gpt-5.2                                 600    1,800     0 $  0.498
+anthropic/claude-opus-5                        600    1,800     0 $  5.018
+total $5.61 in 3.7 min
+PLACEBO EXIT: 0

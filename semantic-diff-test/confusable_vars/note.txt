@@ -1,0 +1,1 @@
+The operation is written ◇ between its two arguments. Variables are the identifiers; different identifiers are different variables. Grouping is shown by parentheses.
