@@ -1,0 +1,7 @@
+# Existing label-balanced sampler and original infix input format.
+name: judge-v0-baseline
+seed: 0
+data:
+  out_dir: judge/data
+train:
+  out_dir: judge/runs/judge-v0

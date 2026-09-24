@@ -35,6 +35,15 @@ experiments of your own as a [design](designs/E0-TEMPLATE.md) sheet and bring it
 The suggested week-by-week plan: [ONBOARDING.md](ONBOARDING.md).
 
 
+
+## Instruments
+
+- [`judge/`](judge/README.md) — callable learned relation judge and CLI.
+- [`pipeline/`](pipeline/README.md) — configuration-driven data, training, and evaluation functions.
+
+- [`oracle/`](oracle/README.md) — the formal semantic oracle: normalizes a (possibly messy, LLM-emitted) magma equation, maps it to its node in the [Equational Theories Project](https://github.com/teorth/equational_theories) catalogue, and labels an (intended, generated) pair `equivalent / weaker / stronger / incomparable / unknown` using only proven implications. See its README for setup and usage.
+
+
 ## The design-sheet workflow
 
 1. Copy `designs/E0-TEMPLATE.md` to `designs/E<n>-short-keyname.md` and fill it in

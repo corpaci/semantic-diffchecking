@@ -1,0 +1,9 @@
+# Separate data and output paths prevent accidental reuse of infix examples.
+name: judge-lean
+seed: 0
+data:
+  out_dir: judge/data-lean
+render:
+  kind: lean
+train:
+  out_dir: judge/runs/judge-lean
