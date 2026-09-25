@@ -1,9 +1,0 @@
-Method,Family,Type,Representations,Description
-SEM Magma counter-model rule (no training),semantic,rule,"formal (executed, = py_cayley_table semantics)","A => B iff no magma in the bank satisfies A but not B; no classifier, no training"
-STRUCT WL (h=3) + structural invariants,structural,learned,formal,local subtree patterns + global invariants
-STRUCT Structural invariants (formal),structural,learned,formal,13 global properties of each equation tree
-STRUCT Weisfeiler-Lehman subtree features (h=3),structural,learned,formal,counts of WL subtree patterns (vocabulary from training equations only)
-"NL Representation-specific, RAW | Direct latents [z(A),z(B),z(A)-z(B)] (19 views)",natural-latents,learned,all 19,the latents themselves instead of losses between them
-"NL Representation-specific, RESAMPLED | Direct latents [z(A),z(B),z(A)-z(B)] (19 views)",natural-latents,learned,all 19,the latents themselves instead of losses between them
-"SEM Condensation engine, corrected (size-2+3 magmas; unresolvable -> incomparable)",semantic,rule,formal (executed),"same, but Loss = 0 only when P(B|A) = 1 (disjoint model sets refute the implication)"
-"SEM Condensation engine, as published (size-2+3 magmas; unresolvable -> incomparable)",semantic,rule,formal (executed),"src/condensation_engine.py exactly: conditional entropy of model sets over 19,699 magmas, H(0)=0 so disjoint model sets count as implication; no-model pairs scored as incomparable"
