@@ -20,6 +20,9 @@ src/                    Core library -- import these directly, or run the notebo
   losses.py                 KL divergence, cross-entropy, rank-based info gain, signed LLR, PMI
   rich_model_counting.py    Executes real equation-checking code against 35,699 candidate magmas
   rule_based_clean.py       Clean (bug-fixed) rule-based classifier over algebraic properties
+  embeddings_enhanced.py    Family-specific tokenizers for all 19 representations
+  magma_fingerprints.py     Semantic view: satisfaction bits over ~25k finite magmas (exact,
+                            vectorised) + sound counter-model rule for implication
 
 notebooks/
   notebook.ipynb                  Full comparison notebook -- run this to reproduce all results.
@@ -31,6 +34,11 @@ notebooks/
   notebook_with_pairs200k.ipynb   Modified notebook with integrated pairs_200k.csv support.
                                    Toggle between pre-generated pairs (faster) and on-the-fly
                                    generation (original method). See DATA_INTEGRATION_GUIDE.md
+  notebook_all_representations.ipynb
+                                  All 19 representations of equations_representations_v2.json:
+                                   5-vs-19 views, per-family/per-view ablations, symmetric
+                                   controls, advanced metrics, direct-latent models, and the
+                                   semantic (magma counter-model) setup that reaches ~99%.
   notebook_executed.ipynb         Same notebook, already executed at full scale (1,200 equations,
                                    15,000 pairs, 5 independent splits) -- open to see results directly
 
