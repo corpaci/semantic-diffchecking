@@ -1,0 +1,19 @@
+{
+  "n": 4694,
+  "source": "2024-11-10-outcomes.json.zip",
+  "orientation": "byte at [i*n + j] = status of Equation(i+1) => Equation(j+1)",
+  "status_names": [
+    "proof_false",
+    "proof_true",
+    "conjecture_false",
+    "conjecture_true",
+    "unknown"
+  ],
+  "counts": {
+    "proof_false": 13855167,
+    "proof_true": 8178279,
+    "conjecture_false": 186,
+    "conjecture_true": 0,
+    "unknown": 4
+  }
+}
