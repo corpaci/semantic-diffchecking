@@ -8,3 +8,7 @@ jupyter>=1.0
 nbformat>=5.9
 nbconvert>=7.0
 zss>=1.2
+openpyxl>=3.1
+edist>=1.2
+rapidfuzz>=3.0
+joblib>=1.3
