@@ -10,6 +10,7 @@ Examples
   python run_all.py --match "WL|Magma"                # only methods whose name matches a regex
   python run_all.py --classifier rf                   # same run with the Random Forest as base classifier
   python run_all.py --list                            # list every method and exit
+  python run_all.py --export-dataset                  # write the evaluation data (equations, pairs, splits)
   python run_all.py --resume                          # continue a stopped run (results are
                                                       # checkpointed after every method; Ctrl-C
                                                       # or kill still writes the sheet)
@@ -54,6 +55,8 @@ def parse_args():
     p.add_argument('--no-png', action='store_true', help='skip confusion-matrix images')
     p.add_argument('--quick', action='store_true', help='smoke test: 300 equations, 3,000 pairs, 2 splits')
     p.add_argument('--list', action='store_true', help='list methods and exit')
+    p.add_argument('--export-dataset', action='store_true',
+                   help='write the evaluation dataset (equations, labelled pairs, splits) to <results>/evaluation_dataset and exit')
     p.add_argument('--resume', action='store_true',
                    help='skip methods already saved in <results>/checkpoint.pkl (same settings only)')
     return p.parse_args()
@@ -98,6 +101,14 @@ def main():
                      f'or use another --out directory.\n  checkpoint: {saved["config"]}\n  now: {fingerprint}')
         done = saved['results']
         print(f'[resume] {len(done)} methods already finished in {ckpt_path}')
+
+    if a.export_dataset:
+        from pipeline.utils.dataset_export import export_dataset
+        out, summary = export_dataset(Context(cfg), os.path.join(cfg.results_dir, 'evaluation_dataset'))
+        print(f'[dataset] written to {out}')
+        for k, v in summary:
+            print(f'  {k}: {v}')
+        return
 
     print(f'[run] {len(methods)} methods | base classifier: {describe_classifier(cfg)}')
     t0 = time.time()
