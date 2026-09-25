@@ -297,11 +297,11 @@ PAIR_SAMPLE_SIZE = 30000  # More pairs
 
 ### Level 9: Common Questions & Answers
 
-#### Q1: Why is accuracy only 40-46%?
+#### Q1: Why is accuracy only 50-70%?
 **A**: This is a genuinely hard problem! 
-- 4-way classification (25% is chance)
+- 4-way classification 
 - Semantic equivalence requires deep logical reasoning
-- Even 40% significantly beats chance
+- Even 55% significantly beats chance
 - True breakthrough would need formal reasoning integration
 
 #### Q2: Why not use LLMs directly?
