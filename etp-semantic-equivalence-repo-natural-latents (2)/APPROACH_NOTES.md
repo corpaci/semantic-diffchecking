@@ -83,7 +83,7 @@ matrix are **exactly identical**. The sheet checks this for every method.
 
 **Direction-aware:** weakly. The KL-type scores differ between directions only
 because the local spread around A and around B differ.
-**Results:** single losses 0.43–0.46; **Mix (all 4 losses, 19 views) about 0.47**
+**Results:** single losses 0.43–0.46; **Mix (all 4 losses, 19 views) about 0.47 with the Random Forest, 0.48–0.51 with gradient boosting** (pipeline run)
 (0.49 with gradient boosting); original 5 views 0.40–0.41; PMI 0.37–0.38.
 - 19 views beat 5 views by about 6–7 points.
 - Resampled vs raw, and generic vs family-specific vs representation-specific,
@@ -238,3 +238,19 @@ the 112 methods under the same base classifier.
    - add a prover (Vampire, Prover9, egg) to *certify* the "implies" side;
    - apply transitive closure;
    - use learned models only for whatever remains unresolved.
+
+---
+
+## Running the comparison
+
+```bash
+python run_all.py --list        # all 112 methods
+python run_all.py               # everything (~2 h on 4 CPUs); Ctrl-C / kill still writes the sheet
+python run_all.py --resume      # continue a stopped run: each method is checkpointed as it finishes
+python run_all.py --modules symmetric structural semantic thresholds   # ~15 min, skips Natural Latents
+```
+
+`results/partial_run_87_of_112.xlsx` holds the first full run, which was stopped
+after 87 methods, before checkpointing existed. It has only balanced accuracy,
+accuracy and macro F1 per method. Re-run with `--resume` for the full per-class
+and confusion-matrix sheet.

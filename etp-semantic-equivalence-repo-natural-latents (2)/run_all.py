@@ -10,12 +10,17 @@ Examples
   python run_all.py --match "WL|Magma"                # only methods whose name matches a regex
   python run_all.py --classifier rf                   # same run with the Random Forest as base classifier
   python run_all.py --list                            # list every method and exit
+  python run_all.py --resume                          # continue a stopped run (results are
+                                                      # checkpointed after every method; Ctrl-C
+                                                      # or kill still writes the sheet)
 
 Method modules: symmetric, natural_latents, advanced, structural, thresholds, semantic
 """
 import argparse
 import os
+import pickle
 import re
+import signal
 import sys
 import time
 import warnings
@@ -33,6 +38,10 @@ from pipeline.utils.context import Context                     # noqa: E402
 from pipeline.utils.reporting import write_all                 # noqa: E402
 
 
+def _raise_keyboard_interrupt(signum, frame):
+    raise KeyboardInterrupt
+
+
 def parse_args():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--modules', nargs='+', choices=list(MODULES), help='only these method modules')
@@ -45,6 +54,8 @@ def parse_args():
     p.add_argument('--no-png', action='store_true', help='skip confusion-matrix images')
     p.add_argument('--quick', action='store_true', help='smoke test: 300 equations, 3,000 pairs, 2 splits')
     p.add_argument('--list', action='store_true', help='list methods and exit')
+    p.add_argument('--resume', action='store_true',
+                   help='skip methods already saved in <results>/checkpoint.pkl (same settings only)')
     return p.parse_args()
 
 
@@ -76,18 +87,48 @@ def main():
         print(f'{len(methods)} methods')
         return
 
+    ckpt_path = os.path.join(cfg.results_dir, 'checkpoint.pkl')
+    fingerprint = {k: v for k, v in cfg.as_dict().items() if k not in ('results_dir', 'save_confusion_pngs', 'n_jobs')}
+    done = {}
+    if a.resume and os.path.exists(ckpt_path):
+        with open(ckpt_path, 'rb') as f:
+            saved = pickle.load(f)
+        if saved['config'] != fingerprint:
+            sys.exit('[resume] checkpoint was made with different settings; run without --resume '
+                     f'or use another --out directory.\n  checkpoint: {saved["config"]}\n  now: {fingerprint}')
+        done = saved['results']
+        print(f'[resume] {len(done)} methods already finished in {ckpt_path}')
+
     print(f'[run] {len(methods)} methods | base classifier: {describe_classifier(cfg)}')
     t0 = time.time()
     ctx = Context(cfg)
-    results = []
-    for k, m in enumerate(methods, 1):
-        r = run_method(ctx, m)
-        results.append(r)
-        o = r['overall']
-        print(f"[{k:3d}/{len(methods)}] {m.name[:78]:78s} bal={o['balanced_accuracy']:.3f}"
-              f"±{o['balanced_accuracy_std']:.3f} acc={o['accuracy']:.3f} F1={o['macro_f1']:.3f} "
-              f"({r['runtime_s']:.0f}s)", flush=True)
 
+    # a kill (SIGTERM) behaves like Ctrl-C: stop, keep what finished, write the report
+    signal.signal(signal.SIGTERM, _raise_keyboard_interrupt)
+    os.makedirs(cfg.results_dir, exist_ok=True)
+    stopped = False
+    try:
+        for k, m in enumerate(methods, 1):
+            if m.name in done:
+                continue
+            r = run_method(ctx, m)
+            done[m.name] = r
+            with open(ckpt_path + '.tmp', 'wb') as f:          # checkpoint after EVERY method
+                pickle.dump({'config': fingerprint, 'results': done}, f)
+            os.replace(ckpt_path + '.tmp', ckpt_path)
+            o = r['overall']
+            print(f"[{k:3d}/{len(methods)}] {m.name[:78]:78s} bal={o['balanced_accuracy']:.3f}"
+                  f"±{o['balanced_accuracy_std']:.3f} acc={o['accuracy']:.3f} F1={o['macro_f1']:.3f} "
+                  f"({r['runtime_s']:.0f}s)", flush=True)
+    except KeyboardInterrupt:
+        stopped = True
+        print(f'\n[stopped] writing the report for the {len(done)} finished methods '
+              f'(continue later with --resume)', flush=True)
+
+    results = [done[m.name] for m in methods if m.name in done]
+    if not results:
+        print('[stopped] nothing finished yet')
+        return
     config_rows = [(k, str(v)) for k, v in cfg.as_dict().items()] + [
         ('base classifier', describe_classifier(cfg)),
         ('equations', len(ctx.node_order)), ('ordered pairs', len(ctx.y)),
@@ -95,10 +136,11 @@ def main():
          .reindex(['equivalent', 'stronger', 'weaker', 'incomparable']).tolist()),
         ('test pairs per split', [int(s.test_pairs.sum()) for s in ctx.splits]),
         ('train pairs per split', [int(s.train_pairs.sum()) for s in ctx.splits]),
-        ('methods', len(methods)), ('total runtime (s)', round(time.time() - t0, 1)),
+        ('methods finished / selected', f'{len(results)} / {len(methods)}' + (' (run stopped early)' if stopped else '')),
+        ('total runtime this session (s)', round(time.time() - t0, 1)),
     ]
     xlsx, tables = write_all(results, ctx, config_rows)
-    print(f'\n[done] {len(results)} methods in {time.time() - t0:.0f}s -> {xlsx}')
+    print(f'\n[done] {len(results)}/{len(methods)} methods -> {xlsx}')
     print(tables['Summary'][['Rank', 'Family', 'Method', 'Balanced accuracy', 'Accuracy', 'Macro F1']]
           .head(15).to_string(index=False, float_format='%.3f'))
 
