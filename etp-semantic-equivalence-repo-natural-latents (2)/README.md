@@ -34,7 +34,7 @@ notebooks/
   notebook_with_pairs200k.ipynb   Modified notebook with integrated pairs_200k.csv support.
                                    Toggle between pre-generated pairs (faster) and on-the-fly
                                    generation (original method). See DATA_INTEGRATION_GUIDE.md
-  notebook_all_representations.ipynb
+  notebook_all_representations.ipynb   (results logged in RESULTS_ALL_REPRESENTATIONS.md)
                                   All 19 representations of equations_representations_v2.json:
                                    5-vs-19 views, per-family/per-view ablations, symmetric
                                    controls, advanced metrics, direct-latent models, and the
