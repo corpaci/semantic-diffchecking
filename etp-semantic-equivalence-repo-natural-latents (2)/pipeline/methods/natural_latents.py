@@ -97,6 +97,12 @@ def get_methods(cfg):
                 f'{tag} | Direct latents [z(A),z(B),z(A)-z(B)] (19 views)', 'natural-latents',
                 'the latents themselves instead of losses between them', 'all 19',
                 features=lambda ctx, s, a=scheme, b=state: direct_latent_features(ctx, a, b)))
+            out.append(Method(
+                f'{tag} | Direct latents + Mix losses (19 views)', 'natural-latents',
+                'direct latents [z(A),z(B),z(A)-z(B)] (456) plus KL+CE+Rank+LLR in both directions (152), '
+                'one model', 'all 19',
+                features=lambda ctx, s, a=scheme, b=state: np.concatenate([
+                    direct_latent_features(ctx, a, b), loss_features(ctx, a, b, MIX, ALL_VIEWS)], axis=1)))
             for sym in ('CosineSimilarity', 'Euclidean'):
                 out.append(Method(
                     f'{tag} | SYMMETRIC {sym} on latents (19 views)', 'symmetric',
