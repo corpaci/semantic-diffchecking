@@ -7,3 +7,5 @@ __pycache__/
 data/pairs_all_possible.csv
 results/checkpoint.pkl
 results/checkpoint.pkl.tmp
+**/checkpoint.pkl
+**/checkpoint.pkl.tmp
