@@ -71,7 +71,7 @@ unsettled entries in this snapshot surface as `unknown`.
 | `normalizer.py` | parser + normalizer for messy LLM output (many op symbols, `op(a,b)` style, LaTeX/markdown noise, quantifier prefixes). Rejects ambiguous chains, constants, multiple ops, chained `=` — argument order and grouping are **never** normalized away. Runnable directly to inspect the parsed/normalized form of an equation |
 | `mapper.py` | normalized equation → ETP node, via canonical keys (variables renamed by first appearance, `=` orientation-independent). Distinguishes `mapped` / `parse-failure` / `outside-fragment` |
 | `build_matrix.py` | one-time: outcomes JSON → compact binary matrix |
-| `oracle.py` | the formal semantic oracle: labels a pair `equivalent / weaker / stronger / incomparable / unknown` (or `parse-failure` / `outside-fragment`), with the evidence |
+| `oracle.py` | the formal semantic oracle: labels a pair `equal / equivalent / weaker / stronger / incomparable / unknown` (or `parse-failure` / `outside-fragment`), with the evidence |
 
 ## Usage
 
@@ -88,11 +88,41 @@ off the implication matrix.
 | `--selftest` | — | run the built-in battery of known pairs and exit non-zero on any mismatch; ignores `--intended`/`--generated` |
 
 `--intended` and `--generated` are both required unless you pass `--selftest`.
-The verdict is one of `equivalent / weaker / stronger / incomparable /
+The verdict is one of `equal / equivalent / weaker / stronger / incomparable /
 unknown`, or an off-graph status (`parse-failure` / `outside-fragment`) when a
 side does not map to a node. `weaker`/`stronger` describe the **generated**
 equation relative to the intended one: weaker = under-specified, stronger =
 over-specified.
+
+`equal` means the two parsed equations are syntactically identical, allowing
+the two sides of `=` to be swapped: `x * y = x` and `x = x * y` are `equal`.
+The comparison preserves variable names, argument order, and grouping. The
+parser still accepts its usual notation variants (such as `*` and `◇`),
+whitespace, redundant parentheses, and LaTeX wrappers. Equation numbers are
+expanded to their catalogue equations before comparison.
+
+`equivalent` now means **equivalent but not equal**: both equations imply each
+other, but their parsed syntax differs even after allowing equality symmetry.
+This includes variable renamings (such as `x * y = x` versus `a * b = a`,
+which map to the same node) and distinct ETP nodes in the same semantic
+equivalence class. For example, Equation 2 (`x = y`) and Equation 7
+(`x = y ◇ z`) imply each other but are syntactically different, so their
+verdict is `equivalent`. Sharing an ETP node alone does not establish `equal`,
+because node mapping also ignores variable names.
+
+Both verdicts indicate semantic preservation; consumers counting successful
+comparisons should include both labels. `equal` takes precedence over
+`equivalent` for mapped equations and does not require matrix proofs. The
+`forward` and `backward` fields still report the raw matrix statuses. Inputs
+that fail to map retain their existing off-graph verdicts.
+
+**Equality, including swapped sides:**
+
+```bash
+python3 oracle.py --intended "x * y = x" --generated "x = x * y"
+# ...
+#   verdict: EQUAL  (same parsed equation up to symmetry of equality)
+```
 
 **Default (human-readable) output** — each side's mapping, both implication
 directions, then the verdict with its evidence:
@@ -140,7 +170,7 @@ exits 0 only if all pass):
 ```bash
 python3 oracle.py --selftest
 # [ok ] intended='x ◇ y = y ◇ x' generated='a * b = b * a' -> equivalent | both map to Equation 43
-# ... (12 cases) ...
+# ... (additional equality, graph-relation, and rejection cases) ...
 # selftest: all passed
 ```
 
