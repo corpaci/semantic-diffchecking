@@ -5,7 +5,8 @@ equation numbers), map both to ETP nodes and read the PROVEN relation off the
 resolved implication matrix (built by build_matrix.py):
 
     label            forward (intended => generated)   backward (generated => intended)
-    equivalent       proved TRUE                       proved TRUE
+    equal            same parsed terms, up to swapping the sides of '='
+    equivalent       proved TRUE                       proved TRUE (but not equal)
     weaker           proved TRUE                       proved FALSE
     stronger         proved FALSE                      proved TRUE
     incomparable     proved FALSE                      proved FALSE
@@ -54,6 +55,8 @@ class Verdict:
     unresolved / off-graph one.
 
     `label` is the headline relation, one of:
+      equal                                           — syntactically identical
+                                                        up to equality symmetry,
       equivalent / weaker / stronger / incomparable  — resolved by the graph,
       unknown                                         — in-fragment but the
                                                         graph did not settle it,
@@ -62,7 +65,7 @@ class Verdict:
     weaker/stronger are stated from the *generated* equation's point of view.
     """
 
-    label: str                     # equivalent | weaker | stronger | incomparable |
+    label: str                     # equal | equivalent | weaker | stronger | incomparable |
                                    # unknown | outside-fragment | parse-failure | internal-error
     intended: dict
     generated: dict
@@ -144,8 +147,11 @@ class SemanticOracle:
              the verdict carries that side's failure status directly (and a note
              pointing to the Lean / finite-magma fallbacks that would be needed
              to resolve it otherwise).
-          2. Otherwise read both directed edges and combine them into a
-             relation via the truth table below. Only genuine proofs and
+          2. Otherwise compare the parsed terms, preserving variable names:
+             identical equations, including swapped equality sides, are "equal".
+          3. For all other pairs, read both directed edges and combine them into
+             a relation via the truth table below. "equivalent" means mutually
+             implying but not syntactically equal. Only genuine proofs and
              counterexamples resolve a relation; any unsettled edge yields
              "unknown".
         Returns a fully-populated Verdict; never raises for ordinary bad input.
@@ -171,9 +177,15 @@ class SemanticOracle:
         bwd = self.implication_status(rg.node, ri.node)
         fb = (STATUS_NAMES.index(fwd), STATUS_NAMES.index(bwd))
 
+        # Compare the parsed ASTs before alpha-normalization: mapping to the
+        # same node also allows variable renaming, which is only equivalent.
+        ei, eg = ri.equation, rg.equation
+        if ei == eg or (ei.lhs == eg.rhs and ei.rhs == eg.lhs):
+            label = "equal"
+            evidence = "same parsed equation up to symmetry of equality"
         # Truth table over (intended=>generated, generated=>intended). The
         # same-node shortcut avoids depending on the diagonal being populated.
-        if ri.node == rg.node:
+        elif ri.node == rg.node:
             label, evidence = "equivalent", f"both map to Equation {ri.node}"
         elif fb == (PROOF_TRUE, PROOF_TRUE):
             label = "equivalent"
@@ -215,7 +227,8 @@ def selftest(oracle: SemanticOracle) -> None:
     any mismatch.
 
     Doubles as executable documentation of every verdict category: normalization
-    invariance (renaming + orientation → equivalent), the four graph relations,
+    equality (including swapped sides), normalization invariance (renaming →
+    equivalent), the four graph relations,
     and each off-graph rejection (ambiguous chain, two operators, chained `=`,
     over-order identity). An `expected` of None means "don't assert the label,
     just exercise the path" — used where the interesting thing is that it runs
@@ -223,6 +236,16 @@ def selftest(oracle: SemanticOracle) -> None:
     """
     cases = [
         # (intended, generated, expected label)
+        ("x * y = x", "x * y = x", "equal"),                    # identical
+        ("x * y = x", "x = x * y", "equal"),                    # equality symmetry
+        (4, 4, "equal"),                                         # catalogue numbers
+        ("4", "x * y = x", "equal"),                            # number + swapped formula
+        ("x * y = x", " (x) = (x ◇ y) ", "equal"),             # formatting + symbol
+        ("x * y = x", "a = a * b", "equivalent"),              # renamed + swapped
+        ("x * y = x", "y * x = y", "equivalent"),              # renaming canonical letters
+        (2, 7, "equivalent"),                                    # different nodes, mutual proofs
+        ("x * y = x", "y * x = x", "incomparable"),            # argument order matters
+        ("x=x*(y*z)", "x=(x*y)*z", "weaker"),                  # grouping matters
         ("x ◇ y = y ◇ x", "a * b = b * a", "equivalent"),        # renaming + symbol
         ("x ◇ y = y ◇ x", "b * a = a * b", "equivalent"),        # + orientation flip
         (43, "a * (b * c) = (a * b) * c", "incomparable"),        # commutativity vs associativity
@@ -237,16 +260,16 @@ def selftest(oracle: SemanticOracle) -> None:
         (4512, "x*(y*(z*w)) = ((x*y)*z)*w", "outside-fragment"),  # order 6 identity
         # LaTeX noise actually produced by a small model (Qwen2.5-1.5B) in the
         # semantic-drift notebook: every token wrapped in \( \).
-        (4512, r"\( (x \) ◇ \( y) \) ◇ \( z = x \) ◇ \( (y \) ◇ \( z) \)", "equivalent"),
+        (4512, r"\( (x \) ◇ \( y) \) ◇ \( z = x \) ◇ \( (y \) ◇ \( z) \)", "equal"),
         ("x ◇ y = y ◇ x", r"$a \oplus b$ = $b \oplus a$", "equivalent"),  # \oplus + inline $
         (43, r"x \oplus y = y \cdot x", "outside-fragment"),  # mixed LaTeX ops stay two distinct ops
         # More macros from the same notebook run. \circledast / \circledcirc /
         # \Box are what the model reached for when told to emit ◇; \mathbin{}
         # wraps the operator rather than a name. Each was a parse-failure until
         # the macro table and INFIX_OPS learned them.
-        (65, r"\[ x = y \Box (x \Box (y \Box x)) \]", "equivalent"),
-        (359, r"\( x \circledcirc x = (x \circledcirc x) \circledcirc x \)", "equivalent"),
-        (381, r"\[ x \circledast y = (x \circledast z) \circledast y \]", "equivalent"),
+        (65, r"\[ x = y \Box (x \Box (y \Box x)) \]", "equal"),
+        (359, r"\( x \circledcirc x = (x \circledcirc x) \circledcirc x \)", "equal"),
+        (381, r"\[ x \circledast y = (x \circledast z) \circledast y \]", "equal"),
         # \mathbin{\triangleleft} unwraps to ◁; this one is a real order-7
         # identity, so it parses and is then correctly refused as off-catalogue.
         (168, r"\( x = ((y \mathbin{\triangleleft} x) \mathbin{\triangleleft} (x \mathbin{\triangleleft} z)) "
