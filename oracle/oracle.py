@@ -5,7 +5,8 @@ equation numbers), map both to ETP nodes and read the PROVEN relation off the
 resolved implication matrix (built by build_matrix.py):
 
     label            forward (intended => generated)   backward (generated => intended)
-    equal            same parsed terms, up to swapping the sides of '='
+    equal            same equation up to equality symmetry, bijective variable
+                     renaming, and binary operation-symbol changes
     equivalent       proved TRUE                       proved TRUE (but not equal)
     weaker           proved TRUE                       proved FALSE
     stronger         proved FALSE                      proved TRUE
@@ -16,8 +17,9 @@ resolved implication matrix (built by build_matrix.py):
 one (weaker = the LLM under-specified, stronger = it over-specified).
 
 Per the ground rules, conjectures and open cases are never treated as
-evidence: anything short of a Lean proof / verified counterexample in both
-directions yields "unknown" (with the partial evidence reported).
+evidence: for distinct catalogue nodes, anything short of a Lean proof /
+verified counterexample in both directions yields "unknown" (with the
+partial evidence reported). Equality is established by canonical node mapping.
 
 CLI:
     python3 oracle.py --intended "x ◇ y = y ◇ x" --generated "a*(b*c)=(a*b)*c"
@@ -55,8 +57,9 @@ class Verdict:
     unresolved / off-graph one.
 
     `label` is the headline relation, one of:
-      equal                                           — syntactically identical
-                                                        up to equality symmetry,
+      equal                                           — identical up to equality
+                                                        symmetry, bijective variable
+                                                        renaming, and op symbols,
       equivalent / weaker / stronger / incomparable  — resolved by the graph,
       unknown                                         — in-fragment but the
                                                         graph did not settle it,
@@ -147,13 +150,14 @@ class SemanticOracle:
              the verdict carries that side's failure status directly (and a note
              pointing to the Lean / finite-magma fallbacks that would be needed
              to resolve it otherwise).
-          2. Otherwise compare the parsed terms, preserving variable names:
-             identical equations, including swapped equality sides, are "equal".
+          2. Equations mapping to the same node are "equal": node mapping
+             allows equality symmetry, consistent bijective variable renaming,
+             and a change of the single binary operation's symbol.
           3. For all other pairs, read both directed edges and combine them into
              a relation via the truth table below. "equivalent" means mutually
-             implying but not syntactically equal. Only genuine proofs and
-             counterexamples resolve a relation; any unsettled edge yields
-             "unknown".
+             implying but not equal under those transformations. Only genuine
+             proofs and counterexamples resolve a relation; any unsettled edge
+             yields "unknown".
         Returns a fully-populated Verdict; never raises for ordinary bad input.
         """
         ri, rg = self._resolve(intended), self._resolve(generated)
@@ -177,16 +181,12 @@ class SemanticOracle:
         bwd = self.implication_status(rg.node, ri.node)
         fb = (STATUS_NAMES.index(fwd), STATUS_NAMES.index(bwd))
 
-        # Compare the parsed ASTs before alpha-normalization: mapping to the
-        # same node also allows variable renaming, which is only equivalent.
-        ei, eg = ri.equation, rg.equation
-        if ei == eg or (ei.lhs == eg.rhs and ei.rhs == eg.lhs):
-            label = "equal"
-            evidence = "same parsed equation up to symmetry of equality"
-        # Truth table over (intended=>generated, generated=>intended). The
-        # same-node shortcut avoids depending on the diagonal being populated.
-        elif ri.node == rg.node:
-            label, evidence = "equivalent", f"both map to Equation {ri.node}"
+        # The mapper's canonical keys identify exactly the allowed syntactic
+        # transformations: equality symmetry, bijective variable renaming,
+        # and operation-symbol changes. The same-node shortcut also avoids
+        # depending on the diagonal being populated with proof_true.
+        if ri.node == rg.node:
+            label, evidence = "equal", f"both map to Equation {ri.node}"
         elif fb == (PROOF_TRUE, PROOF_TRUE):
             label = "equivalent"
             evidence = f"Lean proofs of Eq{ri.node} => Eq{rg.node} and Eq{rg.node} => Eq{ri.node}"
@@ -226,10 +226,10 @@ def selftest(oracle: SemanticOracle) -> None:
     """Run a small battery of known pairs through `compare` and exit non-zero on
     any mismatch.
 
-    Doubles as executable documentation of every verdict category: normalization
-    equality (including swapped sides), normalization invariance (renaming →
-    equivalent), the four graph relations,
-    and each off-graph rejection (ambiguous chain, two operators, chained `=`,
+    Doubles as executable documentation of the verdict categories: equality
+    under side swaps, bijective variable renaming, and operation-symbol changes;
+    the four graph relations; and each off-graph rejection (ambiguous chain,
+    two operators, chained `=`,
     over-order identity). An `expected` of None means "don't assert the label,
     just exercise the path" — used where the interesting thing is that it runs
     without error. Intended to be invoked via `--selftest`.
@@ -241,13 +241,21 @@ def selftest(oracle: SemanticOracle) -> None:
         (4, 4, "equal"),                                         # catalogue numbers
         ("4", "x * y = x", "equal"),                            # number + swapped formula
         ("x * y = x", " (x) = (x ◇ y) ", "equal"),             # formatting + symbol
-        ("x * y = x", "a = a * b", "equivalent"),              # renamed + swapped
-        ("x * y = x", "y * x = y", "equivalent"),              # renaming canonical letters
+        ("x * y = x", "a = a * b", "equal"),                   # renamed + swapped
+        ("x * y = x", "y * x = y", "equal"),                   # renaming canonical letters
+        ("x * y = x", "l * I = l", "equal"),                   # confusable variables
+        ("x * y = x", "l = l ⊕ I", "equal"),                  # all three transformations
+        ("x = y * (x * y)", "I ⊕ (l ⊕ I) = l", "equal"),     # flip changes first-appearance order
+        ("x * y = x", "x ⊕ y = x", "equal"),                  # operation symbol only
+        ("x * y = x", "op(l, I) = l", "equal"),                # functional operation notation
         (2, 7, "equivalent"),                                    # different nodes, mutual proofs
         ("x * y = x", "y * x = x", "incomparable"),            # argument order matters
+        ("x * y = x", "l * I = I", "incomparable"),            # inconsistent variable renaming
+        ("x * y = x", "l * l = l", "weaker"),                  # merging variables is not bijective
+        ("x * x = x", "l * I = l", "stronger"),                # splitting occurrences is not consistent
         ("x=x*(y*z)", "x=(x*y)*z", "weaker"),                  # grouping matters
-        ("x ◇ y = y ◇ x", "a * b = b * a", "equivalent"),        # renaming + symbol
-        ("x ◇ y = y ◇ x", "b * a = a * b", "equivalent"),        # + orientation flip
+        ("x ◇ y = y ◇ x", "a * b = b * a", "equal"),             # renaming + symbol
+        ("x ◇ y = y ◇ x", "b * a = a * b", "equal"),             # + orientation flip
         (43, "a * (b * c) = (a * b) * c", "incomparable"),        # commutativity vs associativity
         (2, "p * q = q * p", "weaker"),                           # x=y implies commutativity
         (43, "x = x", "weaker"),                                  # everything implies Eq1
@@ -261,7 +269,7 @@ def selftest(oracle: SemanticOracle) -> None:
         # LaTeX noise actually produced by a small model (Qwen2.5-1.5B) in the
         # semantic-drift notebook: every token wrapped in \( \).
         (4512, r"\( (x \) ◇ \( y) \) ◇ \( z = x \) ◇ \( (y \) ◇ \( z) \)", "equal"),
-        ("x ◇ y = y ◇ x", r"$a \oplus b$ = $b \oplus a$", "equivalent"),  # \oplus + inline $
+        ("x ◇ y = y ◇ x", r"$a \oplus b$ = $b \oplus a$", "equal"),  # \oplus + inline $
         (43, r"x \oplus y = y \cdot x", "outside-fragment"),  # mixed LaTeX ops stay two distinct ops
         # More macros from the same notebook run. \circledast / \circledcirc /
         # \Box are what the model reached for when told to emit ◇; \mathbin{}
