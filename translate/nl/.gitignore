@@ -1,6 +1,0 @@
-__pycache__/
-*.pyc
-.env
-.cache/
-*.partial.jsonl
-*.json
