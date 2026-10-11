@@ -1,0 +1,1 @@
+The operation is ◇, written before its two arguments. Variables are single lowercase letters. Grouping is shown by position: each ◇ takes the two terms after it.

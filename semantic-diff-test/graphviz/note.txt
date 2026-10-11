@@ -1,0 +1,1 @@
+This is Graphviz DOT. Each ◇ node is an operation. Variables are letters in node labels. A node's two out-edges are its arguments, left first.

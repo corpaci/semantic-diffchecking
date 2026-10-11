@@ -1,0 +1,113 @@
+9 models x 18 representations, full sample, phase=repeat
+[grok-4.20               ]    500/5,400 ( 12.5/s, ~  6.5 min left) err=0 filt=0 $0.09
+[gemini-2.5-flash        ]    500/5,400 ( 12.4/s, ~  6.6 min left) err=0 filt=0 $0.05
+[mistral-small-3.2-24b   ]    500/5,400 ( 10.4/s, ~  7.9 min left) err=0 filt=0 $0.01
+[llama-4-maverick        ]    500/5,400 ( 10.2/s, ~  8.0 min left) err=0 filt=0 $0.04
+[qwen3-30b-a3b           ]    500/5,400 (  8.3/s, ~  9.8 min left) err=0 filt=0 $0.02
+[llama-4-maverick        ]  1,000/5,400 ( 11.2/s, ~  6.6 min left) err=0 filt=0 $0.09
+[mistral-small-3.2-24b   ]  1,000/5,400 ( 10.6/s, ~  6.9 min left) err=0 filt=0 $0.03
+[deepseek-v3.2           ]    500/5,400 (  4.5/s, ~ 18.0 min left) err=0 filt=0 $0.03
+[gpt-5.2                 ]    500/5,400 (  4.4/s, ~ 18.5 min left) err=0 filt=0 $0.38
+[phi-4                   ]    500/5,400 (  4.4/s, ~ 18.8 min left) err=0 filt=0 $0.02
+[qwen3-30b-a3b           ]  1,000/5,400 (  8.5/s, ~  8.6 min left) err=0 filt=0 $0.03
+[mistral-small-3.2-24b   ]  1,500/5,400 ( 11.0/s, ~  5.9 min left) err=0 filt=0 $0.04
+[gemini-2.5-flash        ]  1,000/5,400 (  7.3/s, ~ 10.1 min left) err=0 filt=0 $0.11
+[grok-4.20               ]  1,000/5,400 (  7.2/s, ~ 10.1 min left) err=0 filt=0 $0.17
+[llama-4-maverick        ]  1,500/5,400 ( 10.8/s, ~  6.0 min left) err=0 filt=0 $0.13
+[claude-opus-5           ]    500/5,400 (  3.3/s, ~ 24.9 min left) err=0 filt=3 $2.00
+[gpt-5.2                 ]  1,000/5,400 (  6.0/s, ~ 12.1 min left) err=0 filt=0 $0.76
+[qwen3-30b-a3b           ]  1,500/5,400 (  8.6/s, ~  7.6 min left) err=0 filt=0 $0.05
+[mistral-small-3.2-24b   ]  2,000/5,400 ( 10.9/s, ~  5.2 min left) err=0 filt=0 $0.05
+[llama-4-maverick        ]  2,000/5,400 ( 10.9/s, ~  5.2 min left) err=0 filt=0 $0.17
+[deepseek-v3.2           ]  1,000/5,400 (  5.0/s, ~ 14.7 min left) err=0 filt=0 $0.07
+[grok-4.20               ]  1,500/5,400 (  7.0/s, ~  9.3 min left) err=0 filt=0 $0.26
+[phi-4                   ]  1,000/5,400 (  4.4/s, ~ 16.6 min left) err=0 filt=0 $0.05
+[mistral-small-3.2-24b   ]  2,500/5,400 ( 10.9/s, ~  4.4 min left) err=0 filt=0 $0.06
+[gemini-2.5-flash        ]  1,500/5,400 (  6.5/s, ~ 10.0 min left) err=0 filt=0 $0.17
+[llama-4-maverick        ]  2,500/5,400 ( 10.8/s, ~  4.5 min left) err=0 filt=0 $0.22
+[qwen3-30b-a3b           ]  2,000/5,400 (  8.5/s, ~  6.7 min left) err=0 filt=0 $0.06
+[grok-4.20               ]  2,000/5,400 (  7.5/s, ~  7.5 min left) err=0 filt=0 $0.34
+[gemini-2.5-flash        ]  2,000/5,400 (  7.5/s, ~  7.6 min left) err=0 filt=0 $0.22
+[llama-4-maverick        ]  3,000/5,400 ( 10.8/s, ~  3.7 min left) err=0 filt=0 $0.26
+[gpt-5.2                 ]  1,500/5,400 (  5.4/s, ~ 12.0 min left) err=0 filt=0 $1.15
+[mistral-small-3.2-24b   ]  3,000/5,400 ( 10.8/s, ~  3.7 min left) err=0 filt=0 $0.08
+[deepseek-v3.2           ]  1,500/5,400 (  5.4/s, ~ 12.1 min left) err=0 filt=0 $0.10
+[claude-opus-5           ]  1,000/5,400 (  3.4/s, ~ 21.4 min left) err=0 filt=6 $3.99
+[qwen3-30b-a3b           ]  2,500/5,400 (  8.3/s, ~  5.8 min left) err=0 filt=0 $0.08
+[llama-4-maverick        ]  3,500/5,400 ( 10.6/s, ~  3.0 min left) err=0 filt=0 $0.30
+[mistral-small-3.2-24b   ]  3,500/5,400 ( 10.4/s, ~  3.0 min left) err=0 filt=0 $0.09
+[phi-4                   ]  1,500/5,400 (  4.5/s, ~ 14.6 min left) err=0 filt=0 $0.07
+[grok-4.20               ]  2,500/5,400 (  7.2/s, ~  6.7 min left) err=0 filt=0 $0.43
+[gemini-2.5-flash        ]  2,500/5,400 (  6.9/s, ~  7.0 min left) err=0 filt=0 $0.28
+[qwen3-30b-a3b           ]  3,000/5,400 (  8.2/s, ~  4.9 min left) err=0 filt=0 $0.09
+[deepseek-v3.2           ]  2,000/5,400 (  5.4/s, ~ 10.4 min left) err=0 filt=0 $0.13
+[llama-4-maverick        ]  4,000/5,400 ( 10.7/s, ~  2.2 min left) err=0 filt=0 $0.34
+[gpt-5.2                 ]  2,000/5,400 (  5.2/s, ~ 10.9 min left) err=0 filt=0 $1.53
+[grok-4.20               ]  3,000/5,400 (  7.7/s, ~  5.2 min left) err=0 filt=0 $0.52
+[gemini-2.5-flash        ]  3,000/5,400 (  7.5/s, ~  5.3 min left) err=0 filt=0 $0.33
+[mistral-small-3.2-24b   ]  4,000/5,400 (  9.9/s, ~  2.4 min left) err=0 filt=0 $0.10
+[llama-4-maverick        ]  4,500/5,400 ( 10.7/s, ~  1.4 min left) err=0 filt=0 $0.39
+[qwen3-30b-a3b           ]  3,500/5,400 (  8.1/s, ~  3.9 min left) err=0 filt=0 $0.10
+[claude-opus-5           ]  1,500/5,400 (  3.4/s, ~ 19.1 min left) err=0 filt=7 $6.28
+[phi-4                   ]  2,000/5,400 (  4.5/s, ~ 12.6 min left) err=0 filt=0 $0.10
+[deepseek-v3.2           ]  2,500/5,400 (  5.6/s, ~  8.7 min left) err=0 filt=0 $0.16
+[gpt-5.2                 ]  2,500/5,400 (  5.4/s, ~  8.9 min left) err=0 filt=0 $1.91
+[mistral-small-3.2-24b   ]  4,500/5,400 (  9.7/s, ~  1.5 min left) err=0 filt=0 $0.12
+[llama-4-maverick        ]  5,000/5,400 ( 10.7/s, ~  0.6 min left) err=0 filt=0 $0.43
+[grok-4.20               ]  3,500/5,400 (  7.3/s, ~  4.3 min left) err=0 filt=0 $0.61
+[gemini-2.5-flash        ]  3,500/5,400 (  7.2/s, ~  4.4 min left) err=0 filt=0 $0.39
+[qwen3-30b-a3b           ]  4,000/5,400 (  8.1/s, ~  2.9 min left) err=0 filt=0 $0.12
+[llama-4-maverick        ]  5,400/5,400 ( 10.6/s, ~  0.0 min left) err=0 filt=0 $0.46
+[mistral-small-3.2-24b   ]  5,000/5,400 (  9.7/s, ~  0.7 min left) err=0 filt=0 $0.13
+[gpt-5.2                 ]  3,000/5,400 (  5.8/s, ~  6.9 min left) err=0 filt=0 $2.29
+[grok-4.20               ]  4,000/5,400 (  7.6/s, ~  3.1 min left) err=0 filt=0 $0.70
+[deepseek-v3.2           ]  3,000/5,400 (  5.7/s, ~  7.0 min left) err=0 filt=0 $0.19
+[gemini-2.5-flash        ]  4,000/5,400 (  7.6/s, ~  3.1 min left) err=0 filt=0 $0.44
+[phi-4                   ]  2,500/5,400 (  4.5/s, ~ 10.8 min left) err=0 filt=0 $0.12
+[qwen3-30b-a3b           ]  4,500/5,400 (  8.0/s, ~  1.9 min left) err=0 filt=0 $0.13
+[claude-opus-5           ]  2,000/5,400 (  3.5/s, ~ 16.0 min left) err=0 filt=12 $8.41
+[mistral-small-3.2-24b   ]  5,400/5,400 (  9.5/s, ~  0.0 min left) err=0 filt=0 $0.14
+[grok-4.20               ]  4,500/5,400 (  7.7/s, ~  2.0 min left) err=0 filt=0 $0.78
+[gpt-5.2                 ]  3,500/5,400 (  5.9/s, ~  5.3 min left) err=0 filt=0 $2.68
+[gemini-2.5-flash        ]  4,500/5,400 (  7.3/s, ~  2.1 min left) err=0 filt=0 $0.50
+[qwen3-30b-a3b           ]  5,000/5,400 (  8.0/s, ~  0.8 min left) err=0 filt=0 $0.15
+[grok-4.20               ]  5,000/5,400 (  8.0/s, ~  0.8 min left) err=0 filt=0 $0.86
+[deepseek-v3.2           ]  3,500/5,400 (  5.5/s, ~  5.7 min left) err=0 filt=0 $0.22
+[gpt-5.2                 ]  4,000/5,400 (  6.1/s, ~  3.8 min left) err=0 filt=0 $3.06
+[phi-4                   ]  3,000/5,400 (  4.5/s, ~  9.0 min left) err=0 filt=0 $0.15
+[qwen3-30b-a3b           ]  5,400/5,400 (  7.9/s, ~  0.0 min left) err=0 filt=0 $0.16
+[claude-opus-5           ]  2,500/5,400 (  3.6/s, ~ 13.3 min left) err=0 filt=16 $10.44
+[grok-4.20               ]  5,400/5,400 (  7.8/s, ~  0.0 min left) err=0 filt=0 $0.93
+[deepseek-v3.2           ]  4,000/5,400 (  5.6/s, ~  4.2 min left) err=0 filt=0 $0.26
+[gemini-2.5-flash        ]  5,000/5,400 (  7.0/s, ~  1.0 min left) err=0 filt=0 $0.55
+[gpt-5.2                 ]  4,500/5,400 (  6.2/s, ~  2.4 min left) err=0 filt=0 $3.44
+[gemini-2.5-flash        ]  5,400/5,400 (  7.2/s, ~  0.0 min left) err=0 filt=0 $0.60
+[gpt-5.2                 ]  5,000/5,400 (  6.4/s, ~  1.0 min left) err=0 filt=0 $3.83
+[phi-4                   ]  3,500/5,400 (  4.5/s, ~  7.1 min left) err=0 filt=0 $0.17
+[deepseek-v3.2           ]  4,500/5,400 (  5.7/s, ~  2.6 min left) err=0 filt=0 $0.29
+[claude-opus-5           ]  3,000/5,400 (  3.8/s, ~ 10.7 min left) err=0 filt=17 $12.52
+[gpt-5.2                 ]  5,400/5,400 (  6.6/s, ~  0.0 min left) err=0 filt=0 $4.13
+[deepseek-v3.2           ]  5,000/5,400 (  5.8/s, ~  1.1 min left) err=0 filt=0 $0.32
+[phi-4                   ]  4,000/5,400 (  4.4/s, ~  5.3 min left) err=0 filt=0 $0.20
+[deepseek-v3.2           ]  5,400/5,400 (  5.9/s, ~  0.0 min left) err=0 filt=0 $0.35
+[claude-opus-5           ]  3,500/5,400 (  3.8/s, ~  8.3 min left) err=0 filt=19 $14.71
+[phi-4                   ]  4,500/5,400 (  4.4/s, ~  3.4 min left) err=0 filt=0 $0.22
+[claude-opus-5           ]  4,000/5,400 (  3.9/s, ~  6.0 min left) err=0 filt=21 $16.80
+[phi-4                   ]  5,000/5,400 (  4.4/s, ~  1.5 min left) err=0 filt=0 $0.25
+[claude-opus-5           ]  4,500/5,400 (  3.9/s, ~  3.8 min left) err=0 filt=24 $18.81
+[phi-4                   ]  5,400/5,400 (  4.4/s, ~  0.0 min left) err=0 filt=0 $0.27
+[claude-opus-5           ]  5,000/5,400 (  4.0/s, ~  1.7 min left) err=0 filt=28 $20.92
+[claude-opus-5           ]  5,400/5,400 (  4.0/s, ~  0.0 min left) err=0 filt=30 $22.67
+
+model                                          new  skipped   err  filt     cost
+mistralai/mistral-small-3.2-24b-instruct     5,400    9,000     0     0 $  0.140
+qwen/qwen3-30b-a3b-instruct-2507             5,400    9,000     0     0 $  0.159
+microsoft/phi-4                              5,400    9,000     0     0 $  0.271
+google/gemini-2.5-flash                      5,400    9,000     0     0 $  0.599
+meta-llama/llama-4-maverick                  5,400    9,000     0     0 $  0.462
+x-ai/grok-4.20                               5,400    9,000     0     0 $  0.929
+deepseek/deepseek-v3.2                       5,400    9,000     0     0 $  0.345
+openai/gpt-5.2                               5,400    9,000     0     0 $  4.133
+anthropic/claude-opus-5                      5,400    9,000     0    30 $ 22.673
+total $29.71 in 22.5 min
+REPEAT PHASE EXIT: 0

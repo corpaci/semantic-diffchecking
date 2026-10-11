@@ -1,0 +1,1 @@
+This is JSON. The operation is an object keyed ◇ holding two arguments. Variables are the strings. Grouping is shown by how the objects nest.

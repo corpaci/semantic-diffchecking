@@ -1,0 +1,48 @@
+==============================================================================
+SIMPLE  -  Equation 8   x = x ◇ (x ◇ x)
+  order 2, depth 2, 1 distinct variables
+==============================================================================
+
+A single identity that holds in a magma is written below. Recover the identity
+itself.
+
+The identity involves one binary operation and holds for all values of its
+variables. The operation is on an arbitrary set: it is not assumed to be
+associative or commutative, and there is no identity element.
+
+This is LaTeX. The operation is written \diamond between its two arguments. Variables are single letters. Grouping is shown by parentheses.
+
+Requirements:
+- Output only the identity, on one line, in the form: left side = right side.
+- Write the operation as ◇ and make every grouping explicit with parentheses:
+  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.
+- Use single lowercase letters for variables; you may choose any letters.
+- Do not restate the input, do not name the identity, do not explain, and do not
+  add any other text.
+
+x = x \diamond (x \diamond x)
+
+
+==============================================================================
+COMPLEX  -  Equation 436   x = x ◇ (y ◇ (y ◇ (x ◇ x)))
+  order 4, depth 4, 2 distinct variables
+==============================================================================
+
+A single identity that holds in a magma is written below. Recover the identity
+itself.
+
+The identity involves one binary operation and holds for all values of its
+variables. The operation is on an arbitrary set: it is not assumed to be
+associative or commutative, and there is no identity element.
+
+This is LaTeX. The operation is written \diamond between its two arguments. Variables are single letters. Grouping is shown by parentheses.
+
+Requirements:
+- Output only the identity, on one line, in the form: left side = right side.
+- Write the operation as ◇ and make every grouping explicit with parentheses:
+  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.
+- Use single lowercase letters for variables; you may choose any letters.
+- Do not restate the input, do not name the identity, do not explain, and do not
+  add any other text.
+
+x = x \diamond (y \diamond (y \diamond (x \diamond x)))

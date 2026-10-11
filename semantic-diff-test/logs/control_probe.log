@@ -1,0 +1,30 @@
+[phi-4                 ]   400/1,200 $0.01 err=0
+[gemini-2.5-flash      ]   400/1,200 $0.04 err=0
+[grok-4.20             ]   400/1,200 $0.08 err=0
+[qwen3-30b-a3b         ]   400/1,200 $0.01 err=0
+[mistral-small-3.2-24b ]   400/1,200 $0.01 err=0
+[gpt-5.2               ]   400/1,200 $0.28 err=0
+[llama-4-maverick      ]   400/1,200 $0.03 err=0
+[phi-4                 ]   800/1,200 $0.02 err=0
+[gemini-2.5-flash      ]   800/1,200 $0.08 err=0
+[grok-4.20             ]   800/1,200 $0.17 err=0
+[qwen3-30b-a3b         ]   800/1,200 $0.02 err=0
+[llama-4-maverick      ]   800/1,200 $0.07 err=0
+[gpt-5.2               ]   800/1,200 $0.56 err=0
+[gemini-2.5-flash      ] 1,200/1,200 $0.12 err=0
+[grok-4.20             ] 1,200/1,200 $0.24 err=0
+[qwen3-30b-a3b         ] 1,200/1,200 $0.03 err=0
+[phi-4                 ] 1,200/1,200 $0.03 err=0
+[llama-4-maverick      ] 1,200/1,200 $0.10 err=0
+[gpt-5.2               ] 1,200/1,200 $0.84 err=0
+[mistral-small-3.2-24b ]   800/1,200 $0.02 err=0
+[mistral-small-3.2-24b ] 1,200/1,200 $0.02 err=0
+mistralai/mistral-small-3.2-24b-instruct    1,200 err=0 $0.024
+qwen/qwen3-30b-a3b-instruct-2507            1,200 err=0 $0.029
+microsoft/phi-4                             1,200 err=0 $0.029
+google/gemini-2.5-flash                     1,200 err=0 $0.118
+meta-llama/llama-4-maverick                 1,200 err=0 $0.100
+x-ai/grok-4.20                              1,200 err=0 $0.245
+openai/gpt-5.2                              1,200 err=0 $0.835
+total $1.38 in 4.3 min
+CONTROL PROBE EXIT: 0

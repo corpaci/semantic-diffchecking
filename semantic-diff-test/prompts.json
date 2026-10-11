@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "frame_sha256": "3948ca47ce0c0e038a0801c8c14bbd9a2380c572c4c8c28a6d4741c29248a90a",
+    "note_budget": [
+      25,
+      40
+    ],
+    "equations": 500,
+    "representations": 18,
+    "prompts": 9000
+  },
+  "representations": {
+    "ascii_tree": {
+      "note": "Each ◇ is one operation. Variables are the lowercase letters at the leaves. Grouping is shown by indentation: a node's two children are its arguments, the left one first.",
+      "note_tokens": 37,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nEach ◇ is one operation. Variables are the lowercase letters at the leaves. Grouping is shown by indentation: a node's two children are its arguments, the left one first.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "1e38321fc2da4171c6133eff112b8a45108fb1dacc50b7694c17fe441eb7094c",
+      "prompt_tokens_mean": 268.1
+    },
+    "confusable_vars": {
+      "note": "The operation is written ◇ between its two arguments. Variables are the identifiers; different identifiers are different variables. Grouping is shown by parentheses.",
+      "note_tokens": 29,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThe operation is written ◇ between its two arguments. Variables are the identifiers; different identifiers are different variables. Grouping is shown by parentheses.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "5043795f951070a68c1ed1ba878606daed068627c21b25b1b9bffd06463dc008",
+      "prompt_tokens_mean": 220.8
+    },
+    "etp_canonical": {
+      "note": "The operation is written ◇ between its two arguments. Variables are single lowercase letters. Grouping is shown by parentheses around each nested operation.",
+      "note_tokens": 28,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThe operation is written ◇ between its two arguments. Variables are single lowercase letters. Grouping is shown by parentheses around each nested operation.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "873f20a86fcbf63af8e4e080021bf6244b730d2a7545ea5e6241928215f5587a",
+      "prompt_tokens_mean": 219.4
+    },
+    "graphviz": {
+      "note": "This is Graphviz DOT. Each ◇ node is an operation. Variables are letters in node labels. A node's two out-edges are its arguments, left first.",
+      "note_tokens": 35,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThis is Graphviz DOT. Each ◇ node is an operation. Variables are letters in node labels. A node's two out-edges are its arguments, left first.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "703d90d0085bcc7215c8cce49d94045a176fb729497b0891d990cdda843a3aac",
+      "prompt_tokens_mean": 364.9
+    },
+    "json_ast": {
+      "note": "This is JSON. The operation is an object keyed ◇ holding two arguments. Variables are the strings. Grouping is shown by how the objects nest.",
+      "note_tokens": 31,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThis is JSON. The operation is an object keyed ◇ holding two arguments. Variables are the strings. Grouping is shown by how the objects nest.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "0fa1c5736fb0a57739fa2154bf9ca779949966adcc5a654f50079b2242b8258c",
+      "prompt_tokens_mean": 242.1
+    },
+    "latex": {
+      "note": "This is LaTeX. The operation is written \\diamond between its two arguments. Variables are single letters. Grouping is shown by parentheses.",
+      "note_tokens": 27,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThis is LaTeX. The operation is written \\diamond between its two arguments. Variables are single letters. Grouping is shown by parentheses.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "9c0dd1b73e0e7b0c38836c68c88f9971b2520485e5b9fa88fbbdfbbf5151e2d6",
+      "prompt_tokens_mean": 218.4
+    },
+    "lean": {
+      "note": "This is Lean. The operation is written ◇ between its two arguments. Variables are the ones bound by the ∀. Grouping is shown by parentheses.",
+      "note_tokens": 31,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThis is Lean. The operation is written ◇ between its two arguments. Variables are the ones bound by the ∀. Grouping is shown by parentheses.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "b9223350dd5717e202d764801f0cb0ccc6b721408a0cde313026f92618d84e21",
+      "prompt_tokens_mean": 244.5
+    },
+    "polish": {
+      "note": "The operation is ◇, written before its two arguments. Variables are single lowercase letters. Grouping is shown by position: each ◇ takes the two terms after it.",
+      "note_tokens": 35,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThe operation is ◇, written before its two arguments. Variables are single lowercase letters. Grouping is shown by position: each ◇ takes the two terms after it.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "b70699954cf94c33b26599d82fd161cb5efa039620247fb382eb010907919e90",
+      "prompt_tokens_mean": 223.5
+    },
+    "py_cayley_table": {
+      "note": "This is Python. The operation is the lookup table[a][b]. Variables are the names quantified in the comprehension. Grouping is shown by how the lookups nest.",
+      "note_tokens": 35,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThis is Python. The operation is the lookup table[a][b]. Variables are the names quantified in the comprehension. Grouping is shown by how the lookups nest.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "1bcfb6408f1c094abbf48ee035bffa5b4e142485977dfc51569401700cffdb7d",
+      "prompt_tokens_mean": 256.1
+    },
+    "py_lambda": {
+      "note": "This is Python. The operation is the call op(a, b). Variables are the lambda's parameters after op. Grouping is shown by how the calls nest.",
+      "note_tokens": 33,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThis is Python. The operation is the call op(a, b). Variables are the lambda's parameters after op. Grouping is shown by how the calls nest.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "0c526227dae45c8e8a7527060356c7249bc3dbfc2d0e6dfef7725ca9c126db97",
+      "prompt_tokens_mean": 231.1
+    },
+    "rpn": {
+      "note": "The operation is ◇, written after its two arguments. Variables are single lowercase letters. Grouping is shown by position: each ◇ takes the two values before it.",
+      "note_tokens": 35,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThe operation is ◇, written after its two arguments. Variables are single lowercase letters. Grouping is shown by position: each ◇ takes the two values before it.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "d33e77584b2374bb1e32fac857995a049fda49f826911928f73d8e430de95c24",
+      "prompt_tokens_mean": 222.5
+    },
+    "slots": {
+      "note": "The operation is a two-element list. Variables are numbers, and equal numbers are the same variable. Grouping is shown by how the lists nest; the outermost list holds the two sides.",
+      "note_tokens": 39,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThe operation is a two-element list. Variables are numbers, and equal numbers are the same variable. Grouping is shown by how the lists nest; the outermost list holds the two sides.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "137b734982ddcb10680d9ef2e947c8c7153e201e7bd4f73235e60693c8882df2",
+      "prompt_tokens_mean": 230.2
+    },
+    "smtlib": {
+      "note": "This is SMT-LIB. The operation is the application (op a b). Variables are the names bound by the forall. Grouping is shown by how the applications nest.",
+      "note_tokens": 36,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThis is SMT-LIB. The operation is the application (op a b). Variables are the names bound by the forall. Grouping is shown by how the applications nest.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "1540077edf10f2fb5875ff649b8a28301272126b4d1e8202552d3a478846877d",
+      "prompt_tokens_mean": 260.7
+    },
+    "ssa": {
+      "note": "The operation is written ◇ between its two arguments. Variables are single lowercase letters; names starting with t are intermediate results. Grouping is shown by which results each line uses.",
+      "note_tokens": 36,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThe operation is written ◇ between its two arguments. Variables are single lowercase letters; names starting with t are intermediate results. Grouping is shown by which results each line uses.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "50afd54fbbe729fddcc2c5446681ae244d0e2e1130a69d3703ff6d24796dd62c",
+      "prompt_tokens_mean": 246.6
+    },
+    "text": {
+      "note": "The operation is the word diamond between its two arguments. Variables are single lowercase letters. Grouping is shown by the words open bracket and close bracket.",
+      "note_tokens": 30,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThe operation is the word diamond between its two arguments. Variables are single lowercase letters. Grouping is shown by the words open bracket and close bracket.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "b88e62535c0dc5cb5c3c4e75133aec3ace3af8aef3e1b9b05da8ad5639f5b7db",
+      "prompt_tokens_mean": 223.8
+    },
+    "text2": {
+      "note": "The operation is the phrase 'the diamond of A and B'. Variables are single lowercase letters. Grouping is shown by how those phrases nest.",
+      "note_tokens": 29,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThe operation is the phrase 'the diamond of A and B'. Variables are single lowercase letters. Grouping is shown by how those phrases nest.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "e117588ea90c31ba7b1d0479ad0d060d1c310899c9fd8c240bb7a5b5032bdddc",
+      "prompt_tokens_mean": 224.6
+    },
+    "tptp": {
+      "note": "This is TPTP. The operation is the term op(A, B). Variables are the upper-case names bound by the quantifier. Grouping is shown by how the terms nest.",
+      "note_tokens": 38,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThis is TPTP. The operation is the term op(A, B). Variables are the upper-case names bound by the quantifier. Grouping is shown by how the terms nest.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "b7da453a6fd3ae94805fca24b60c9d8bd3c945502266fc3f54403bfcb23ac8f2",
+      "prompt_tokens_mean": 239.0
+    },
+    "word_problem": {
+      "note": "The operation is welding one part to another, in that order. Variables are the lowercase letters naming parts. Grouping is shown by which part each welding uses.",
+      "note_tokens": 32,
+      "template": "A single identity that holds in a magma is written below. Recover the identity\nitself.\n\nThe identity involves one binary operation and holds for all values of its\nvariables. The operation is on an arbitrary set: it is not assumed to be\nassociative or commutative, and there is no identity element.\n\nThe operation is welding one part to another, in that order. Variables are the lowercase letters naming parts. Grouping is shown by which part each welding uses.\n\nRequirements:\n- Output only the identity, on one line, in the form: left side = right side.\n- Write the operation as ◇ and make every grouping explicit with parentheses:\n  write x ◇ (y ◇ z) or (x ◇ y) ◇ z, never x ◇ y ◇ z.\n- Use single lowercase letters for variables; you may choose any letters.\n- Do not restate the input, do not name the identity, do not explain, and do not\n  add any other text.\n\n{body}\n",
+      "template_sha256": "fe5bc7b68f8de66a01b6e8dce70f7f5e31bed6bd66c66748449aba6216bc0439",
+      "prompt_tokens_mean": 292.6
+    }
+  }
+}

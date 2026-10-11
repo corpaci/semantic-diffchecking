@@ -1,0 +1,426 @@
+{
+  "levels": [
+    "canonical",
+    "alpha",
+    "indexed",
+    "confusable",
+    "repeat",
+    "homoglyph"
+  ],
+  "schemes": {
+    "canonical": [
+      "x",
+      "y",
+      "z",
+      "w",
+      "u",
+      "v"
+    ],
+    "alpha": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f"
+    ],
+    "indexed": [
+      "v1",
+      "v2",
+      "v3",
+      "v4",
+      "v5",
+      "v6"
+    ],
+    "confusable": [
+      "l",
+      "I",
+      "ll",
+      "lI",
+      "Il",
+      "II"
+    ],
+    "repeat": [
+      "l",
+      "ll",
+      "lll",
+      "llll",
+      "lllll",
+      "llllll"
+    ],
+    "homoglyph": [
+      "a",
+      "\u0430",
+      "e",
+      "\u0435",
+      "o",
+      "\u043e"
+    ]
+  },
+  "pooled": {
+    "canonical": {
+      "acc": [
+        580,
+        900
+      ],
+      "merge": [
+        106,
+        317
+      ],
+      "unparseable": 7,
+      "n": 900
+    },
+    "alpha": {
+      "acc": [
+        546,
+        900
+      ],
+      "merge": [
+        119,
+        353
+      ],
+      "unparseable": 5,
+      "n": 900
+    },
+    "indexed": {
+      "acc": [
+        532,
+        900
+      ],
+      "merge": [
+        161,
+        368
+      ],
+      "unparseable": 1,
+      "n": 900
+    },
+    "confusable": {
+      "acc": [
+        207,
+        897
+      ],
+      "merge": [
+        510,
+        681
+      ],
+      "unparseable": 8,
+      "n": 900
+    },
+    "repeat": {
+      "acc": [
+        195,
+        892
+      ],
+      "merge": [
+        496,
+        671
+      ],
+      "unparseable": 27,
+      "n": 900
+    },
+    "homoglyph": {
+      "acc": [
+        28,
+        900
+      ],
+      "merge": [
+        853,
+        870
+      ],
+      "unparseable": 18,
+      "n": 900
+    }
+  },
+  "accuracy": {
+    "mistralai/mistral-small-3.2-24b-instruct|canonical": {
+      "k": 38,
+      "n": 150
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|alpha": {
+      "k": 39,
+      "n": 150
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|indexed": {
+      "k": 14,
+      "n": 150
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|confusable": {
+      "k": 12,
+      "n": 150
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|repeat": {
+      "k": 3,
+      "n": 150
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|homoglyph": {
+      "k": 0,
+      "n": 150
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|canonical": {
+      "k": 94,
+      "n": 150
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|alpha": {
+      "k": 51,
+      "n": 150
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|indexed": {
+      "k": 33,
+      "n": 150
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|confusable": {
+      "k": 24,
+      "n": 150
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|repeat": {
+      "k": 13,
+      "n": 150
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|homoglyph": {
+      "k": 5,
+      "n": 150
+    },
+    "meta-llama/llama-4-maverick|canonical": {
+      "k": 32,
+      "n": 150
+    },
+    "meta-llama/llama-4-maverick|alpha": {
+      "k": 45,
+      "n": 150
+    },
+    "meta-llama/llama-4-maverick|indexed": {
+      "k": 98,
+      "n": 150
+    },
+    "meta-llama/llama-4-maverick|confusable": {
+      "k": 20,
+      "n": 150
+    },
+    "meta-llama/llama-4-maverick|repeat": {
+      "k": 14,
+      "n": 150
+    },
+    "meta-llama/llama-4-maverick|homoglyph": {
+      "k": 6,
+      "n": 150
+    },
+    "google/gemini-2.5-flash|canonical": {
+      "k": 143,
+      "n": 150
+    },
+    "google/gemini-2.5-flash|alpha": {
+      "k": 143,
+      "n": 150
+    },
+    "google/gemini-2.5-flash|indexed": {
+      "k": 102,
+      "n": 150
+    },
+    "google/gemini-2.5-flash|confusable": {
+      "k": 14,
+      "n": 150
+    },
+    "google/gemini-2.5-flash|repeat": {
+      "k": 27,
+      "n": 150
+    },
+    "google/gemini-2.5-flash|homoglyph": {
+      "k": 4,
+      "n": 150
+    },
+    "openai/gpt-5.2|canonical": {
+      "k": 123,
+      "n": 150
+    },
+    "openai/gpt-5.2|alpha": {
+      "k": 119,
+      "n": 150
+    },
+    "openai/gpt-5.2|indexed": {
+      "k": 136,
+      "n": 150
+    },
+    "openai/gpt-5.2|confusable": {
+      "k": 28,
+      "n": 150
+    },
+    "openai/gpt-5.2|repeat": {
+      "k": 13,
+      "n": 150
+    },
+    "openai/gpt-5.2|homoglyph": {
+      "k": 4,
+      "n": 150
+    },
+    "anthropic/claude-opus-5|canonical": {
+      "k": 150,
+      "n": 150
+    },
+    "anthropic/claude-opus-5|alpha": {
+      "k": 149,
+      "n": 150
+    },
+    "anthropic/claude-opus-5|indexed": {
+      "k": 149,
+      "n": 150
+    },
+    "anthropic/claude-opus-5|confusable": {
+      "k": 109,
+      "n": 147
+    },
+    "anthropic/claude-opus-5|repeat": {
+      "k": 125,
+      "n": 142
+    },
+    "anthropic/claude-opus-5|homoglyph": {
+      "k": 9,
+      "n": 150
+    }
+  },
+  "merge": {
+    "mistralai/mistral-small-3.2-24b-instruct|canonical": {
+      "k": 29,
+      "n": 112
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|alpha": {
+      "k": 18,
+      "n": 111
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|indexed": {
+      "k": 42,
+      "n": 136
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|confusable": {
+      "k": 48,
+      "n": 138
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|repeat": {
+      "k": 50,
+      "n": 146
+    },
+    "mistralai/mistral-small-3.2-24b-instruct|homoglyph": {
+      "k": 144,
+      "n": 150
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|canonical": {
+      "k": 18,
+      "n": 56
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|alpha": {
+      "k": 39,
+      "n": 99
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|indexed": {
+      "k": 51,
+      "n": 117
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|confusable": {
+      "k": 112,
+      "n": 126
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|repeat": {
+      "k": 125,
+      "n": 134
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507|homoglyph": {
+      "k": 143,
+      "n": 145
+    },
+    "meta-llama/llama-4-maverick|canonical": {
+      "k": 50,
+      "n": 115
+    },
+    "meta-llama/llama-4-maverick|alpha": {
+      "k": 54,
+      "n": 104
+    },
+    "meta-llama/llama-4-maverick|indexed": {
+      "k": 36,
+      "n": 52
+    },
+    "meta-llama/llama-4-maverick|confusable": {
+      "k": 101,
+      "n": 126
+    },
+    "meta-llama/llama-4-maverick|repeat": {
+      "k": 106,
+      "n": 133
+    },
+    "meta-llama/llama-4-maverick|homoglyph": {
+      "k": 135,
+      "n": 142
+    },
+    "google/gemini-2.5-flash|canonical": {
+      "k": 3,
+      "n": 7
+    },
+    "google/gemini-2.5-flash|alpha": {
+      "k": 4,
+      "n": 7
+    },
+    "google/gemini-2.5-flash|indexed": {
+      "k": 23,
+      "n": 48
+    },
+    "google/gemini-2.5-flash|confusable": {
+      "k": 103,
+      "n": 136
+    },
+    "google/gemini-2.5-flash|repeat": {
+      "k": 87,
+      "n": 121
+    },
+    "google/gemini-2.5-flash|homoglyph": {
+      "k": 145,
+      "n": 146
+    },
+    "openai/gpt-5.2|canonical": {
+      "k": 6,
+      "n": 27
+    },
+    "openai/gpt-5.2|alpha": {
+      "k": 4,
+      "n": 31
+    },
+    "openai/gpt-5.2|indexed": {
+      "k": 9,
+      "n": 14
+    },
+    "openai/gpt-5.2|confusable": {
+      "k": 114,
+      "n": 122
+    },
+    "openai/gpt-5.2|repeat": {
+      "k": 116,
+      "n": 122
+    },
+    "openai/gpt-5.2|homoglyph": {
+      "k": 145,
+      "n": 146
+    },
+    "anthropic/claude-opus-5|canonical": {
+      "k": 0,
+      "n": 0
+    },
+    "anthropic/claude-opus-5|alpha": {
+      "k": 0,
+      "n": 1
+    },
+    "anthropic/claude-opus-5|indexed": {
+      "k": 0,
+      "n": 1
+    },
+    "anthropic/claude-opus-5|confusable": {
+      "k": 32,
+      "n": 33
+    },
+    "anthropic/claude-opus-5|repeat": {
+      "k": 12,
+      "n": 15
+    },
+    "anthropic/claude-opus-5|homoglyph": {
+      "k": 141,
+      "n": 141
+    }
+  }
+}

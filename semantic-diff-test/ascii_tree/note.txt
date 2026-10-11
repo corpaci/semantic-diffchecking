@@ -1,0 +1,1 @@
+Each ◇ is one operation. Variables are the lowercase letters at the leaves. Grouping is shown by indentation: a node's two children are its arguments, the left one first.
