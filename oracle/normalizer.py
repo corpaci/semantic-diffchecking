@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import unicodedata
 from dataclasses import dataclass
 
 CANONICAL_OP = "◇"
@@ -184,13 +185,75 @@ class Equation:
         return self.lhs.size() + self.rhs.size()
 
 # ---------------------------------------------------------------------------
+# Identifier spelling
+# ---------------------------------------------------------------------------
+
+def _identifier_start(ch: str) -> bool:
+    """A Unicode letter (including letter numbers), or an ASCII underscore."""
+    category = unicodedata.category(ch)
+    return ch == "_" or category.startswith("L") or category == "Nl"
+
+
+def _identifier_continue(ch: str) -> bool:
+    """Letters, numbers (including subscripts), marks, or connector punctuation.
+
+    Do not normalize or case-fold: visually similar spellings must remain
+    distinct, including composed/decomposed accents and mathematical letters.
+    Whitespace, operators, and format controls are not identifier characters.
+    """
+    category = unicodedata.category(ch)
+    return category[0] in "LNM" or category == "Pc"
+
+
+def _identifier_end(s: str, start: int) -> int:
+    """Scan an identifier whose first character has already been checked."""
+    end = start + 1
+    while end < len(s) and _identifier_continue(s[end]):
+        end += 1
+    return end
+
+
+def _skip_space(s: str, pos: int) -> int:
+    while pos < len(s) and s[pos].isspace():
+        pos += 1
+    return pos
+
+
+# ---------------------------------------------------------------------------
 # Cleanup of raw LLM output (before tokenizing)
 # ---------------------------------------------------------------------------
 
 _QUANTIFIER = re.compile(
-    r"^\s*(?:∀|\\forall|for\s+all|for\s+every|for\s+any)\b[\w\s,]*?[,.:]\s*",
+    r"^\s*(?:∀|\\forall\b|for\s+(?:all|every|any)\b)\s*",
     re.IGNORECASE,
 )
+
+
+def _strip_quantifier_prefix(s: str) -> str:
+    """Read quantified names using the same identifier rules as equation terms.
+
+    Names can be separated by whitespace or commas; a comma, colon, or period
+    terminates the prefix. For comma lists, keep the last valid boundary before
+    the equation starts, without consuming an operation or function argument.
+    """
+    match = _QUANTIFIER.match(s)
+    if match is None:
+        return s
+    pos = match.end()
+    boundary = None
+    while pos < len(s) and _identifier_start(s[pos]):
+        end = _identifier_end(s, pos)
+        pos = _skip_space(s, end)
+        if pos == len(s):
+            break
+        if s[pos] in ".:":
+            return s[pos + 1:].lstrip()
+        if s[pos] == ",":
+            boundary = pos = _skip_space(s, pos + 1)
+        elif pos == end:
+            break
+    return s[boundary:] if boundary is not None else s
+
 
 def strip_noise(text: str) -> str:
     r"""Strip the packaging an LLM tends to wrap a formula in, before tokenizing.
@@ -222,7 +285,7 @@ def strip_noise(text: str) -> str:
         s = re.sub(rf"\\{cmd}(?![A-Za-z])", sym, s)
     s = s.replace(r"\left", "").replace(r"\right", "")
     while True:
-        stripped = _QUANTIFIER.sub("", s)
+        stripped = _strip_quantifier_prefix(s)
         if stripped == s:
             break
         s = stripped.strip()
@@ -235,7 +298,7 @@ def strip_noise(text: str) -> str:
 
 _TOKEN = re.compile(
     r"\s*(?:(?P<eq>==|=|≡)|(?P<lp>\()|(?P<rp>\))|(?P<comma>,)"
-    r"|(?P<ident>[A-Za-z_][A-Za-z_0-9]*)|(?P<num>\d+)|(?P<sym>.))"
+    r"|(?P<num>\d+)|(?P<sym>.))"
 )
 
 def tokenize(s: str):
@@ -252,6 +315,14 @@ def tokenize(s: str):
     tokens = []
     pos = 0
     while pos < len(s):
+        pos = _skip_space(s, pos)
+        if pos == len(s):
+            break
+        if _identifier_start(s[pos]):
+            end = _identifier_end(s, pos)
+            tokens.append(("IDENT", s[pos:end]))
+            pos = end
+            continue
         m = _TOKEN.match(s, pos)
         if not m:
             raise ParseFailure(f"cannot tokenize at position {pos}: {s[pos:pos+10]!r}")
@@ -264,8 +335,6 @@ def tokenize(s: str):
             tokens.append(("RP", ")"))
         elif m.lastgroup == "comma":
             tokens.append(("COMMA", ","))
-        elif m.lastgroup == "ident":
-            tokens.append(("IDENT", m.group("ident")))
         elif m.lastgroup == "num":
             raise OutsideFragment(
                 f"numeric constant {m.group('num')!r}: the fragment has variables only"

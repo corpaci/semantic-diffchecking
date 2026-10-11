@@ -111,6 +111,50 @@ The parser also accepts whitespace, redundant parentheses, functional
 operation notation, and LaTeX wrappers. Equation numbers are expanded to
 their catalogue equations before comparison.
 
+### Unicode variable names
+
+The parser accepts ASCII and Unicode identifiers. Names start with a Unicode
+letter (including Unicode letter numbers such as `Ⅰ`) or `_`. Later characters
+may be letters, numbers, combining marks, or connector punctuation. This
+includes Greek and Cyrillic letters, mathematical styled letters, accented
+names, and subscripted names such as `x₁` and `x₂`. The same rules apply to
+function-style operation names and names in universal-quantifier prefixes.
+Numeric constants remain unsupported; a bare number is not a variable.
+
+**Identifier identity uses the exact Unicode code-point sequence.** The oracle
+does not case-fold, apply Unicode normalization (NFC/NFKC), or replace visually
+similar characters. In particular:
+
+- Latin `a` (U+0061) and Cyrillic `а` (U+0430) are distinct variables.
+- Plain `x` (U+0078) and mathematical italic `𝑥` (U+1D465) are distinct.
+- `x₁` and `x1` are distinct.
+- Precomposed `é` (U+00E9) and `e` followed by a combining acute accent
+  (U+0065 U+0301) are distinct names, even if they render identically.
+
+For example, `a * а = a` has two variables and is `equal` to `x * y = x`
+under bijective renaming. Changing it to `a * a = a` merges those variables;
+the new equation is `weaker`, not `equal`. Changing it to `a * а = а` gives
+`incomparable`. Thus accepting Unicode does not erase repeated-variable
+patterns or operand order. Whitespace separates tokens; format controls
+(such as zero-width joiners and bidirectional overrides), emoji, and arbitrary
+symbols are not accepted as identifier characters. Unrecognized LaTeX variable
+macros such as `\alpha` remain unsupported; use the actual character `α`.
+
+The existing `translate/confusable_vars` catalogue uses ASCII confusables
+(`l`, `I`, `ll`, etc.). Unicode support does not modify those saved inputs or
+retroactively add Unicode cases to the experiment.
+
+Parser regressions (no ETP files required), from the repository root:
+
+```bash
+python3 -m unittest discover -s oracle -v
+```
+
+The oracle's `--selftest` also checks Unicode verdicts using the catalogue and
+implication matrix described in Setup.
+
+### Equal versus equivalent
+
 `equivalent` now means **equivalent but not equal**: both equations imply each
 other, but their structures differ even after the allowed transformations.
 For example, Equation 2 (`x = y`) and Equation 7

@@ -244,6 +244,14 @@ def selftest(oracle: SemanticOracle) -> None:
         ("x * y = x", "a = a * b", "equal"),                   # renamed + swapped
         ("x * y = x", "y * x = y", "equal"),                   # renaming canonical letters
         ("x * y = x", "l * I = l", "equal"),                   # confusable variables
+        ("x * y = x", "α * β = α", "equal"),                   # Unicode letters
+        ("x * y = x", "a * а = a", "equal"),                   # Latin a / Cyrillic а
+        ("x * y = x", "x * 𝑥 = x", "equal"),                   # mathematical italic, distinct from x
+        ("x * y = x", "x₁ * x₂ = x₁", "equal"),               # Unicode subscripts
+        ("x * y = x", "é * e\u0301 = é", "equal"),              # preserve composed/decomposed spellings
+        ("a * а = a", "a * a = a", "weaker"),                  # cannot merge confusable variables
+        ("a * а = a", "a * а = а", "incomparable"),            # repeated-variable pattern matters
+        ("x * y = x", "∀ α, β: α = α ⊕ β", "equal"),         # Unicode quantifier + side swap
         ("x * y = x", "l = l ⊕ I", "equal"),                  # all three transformations
         ("x = y * (x * y)", "I ⊕ (l ⊕ I) = l", "equal"),     # flip changes first-appearance order
         ("x * y = x", "x ⊕ y = x", "equal"),                  # operation symbol only
