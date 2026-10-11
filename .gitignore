@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .venv/
 .env
+semantic-diff-test/results
+dev/
+implications/
