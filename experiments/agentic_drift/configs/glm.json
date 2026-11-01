@@ -1,0 +1,24 @@
+{
+  "model": "z-ai/glm-4.7",
+  "provider": "novita/fp8",
+  "open_weights": true,
+  "weights_source": "https://huggingface.co/zai-org/GLM-4.7",
+  "license": "MIT",
+  "selection_status": "exploratory cross-family pilot; selected after observing initial Qwen pair",
+  "max_tokens": 16384,
+  "temperature": 0.6,
+  "reasoning": {
+    "enabled": true,
+    "exclude": false
+  },
+  "require_reasoning": true,
+  "price_ceiling_per_million": {
+    "prompt": "1",
+    "completion": "4"
+  },
+  "total_budget_usd": "50",
+  "per_run_budget_usd": "5",
+  "timeout_seconds": 600,
+  "max_calls": 12,
+  "rounds": 5
+}
