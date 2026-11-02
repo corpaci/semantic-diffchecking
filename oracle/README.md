@@ -94,21 +94,74 @@ side does not map to a node. `weaker`/`stronger` describe the **generated**
 equation relative to the intended one: weaker = under-specified, stronger =
 over-specified.
 
-`equal` means the two parsed equations are syntactically identical, allowing
-the two sides of `=` to be swapped: `x * y = x` and `x = x * y` are `equal`.
-The comparison preserves variable names, argument order, and grouping. The
-parser still accepts its usual notation variants (such as `*` and `◇`),
-whitespace, redundant parentheses, and LaTeX wrappers. Equation numbers are
-expanded to their catalogue equations before comparison.
+`equal` means the two equations have the same term structure, up to:
+
+- **symmetry of equality**: either equation's two sides may be swapped;
+- **consistent, bijective variable renaming** across the whole equation:
+  every occurrence of one variable receives the same new name, and distinct
+  variables remain distinct;
+- **changing the binary operation symbol**, such as `*`, `◇`, or `⊕`.
+
+Thus `x * y = x`, `l * I = l`, and `l = l ⊕ I` are all `equal`. Argument
+order, grouping, and the pattern of repeated variables are preserved. Changing
+`x * y = x` to `l * I = I` or `l * l = l` is not an allowed renaming and
+does not produce `equal`. Each input must still use exactly one binary
+operation: mixing distinct operation symbols within an equation is rejected.
+The parser also accepts whitespace, redundant parentheses, functional
+operation notation, and LaTeX wrappers. Equation numbers are expanded to
+their catalogue equations before comparison.
+
+### Unicode variable names
+
+The parser accepts ASCII and Unicode identifiers. Names start with a Unicode
+letter (including Unicode letter numbers such as `Ⅰ`) or `_`. Later characters
+may be letters, numbers, combining marks, or connector punctuation. This
+includes Greek and Cyrillic letters, mathematical styled letters, accented
+names, and subscripted names such as `x₁` and `x₂`. The same rules apply to
+function-style operation names and names in universal-quantifier prefixes.
+Numeric constants remain unsupported; a bare number is not a variable.
+
+**Identifier identity uses the exact Unicode code-point sequence.** The oracle
+does not case-fold, apply Unicode normalization (NFC/NFKC), or replace visually
+similar characters. In particular:
+
+- Latin `a` (U+0061) and Cyrillic `а` (U+0430) are distinct variables.
+- Plain `x` (U+0078) and mathematical italic `𝑥` (U+1D465) are distinct.
+- `x₁` and `x1` are distinct.
+- Precomposed `é` (U+00E9) and `e` followed by a combining acute accent
+  (U+0065 U+0301) are distinct names, even if they render identically.
+
+For example, `a * а = a` has two variables and is `equal` to `x * y = x`
+under bijective renaming. Changing it to `a * a = a` merges those variables;
+the new equation is `weaker`, not `equal`. Changing it to `a * а = а` gives
+`incomparable`. Thus accepting Unicode does not erase repeated-variable
+patterns or operand order. Whitespace separates tokens; format controls
+(such as zero-width joiners and bidirectional overrides), emoji, and arbitrary
+symbols are not accepted as identifier characters. Unrecognized LaTeX variable
+macros such as `\alpha` remain unsupported; use the actual character `α`.
+
+The existing `translate/confusable_vars` catalogue uses ASCII confusables
+(`l`, `I`, `ll`, etc.). Unicode support does not modify those saved inputs or
+retroactively add Unicode cases to the experiment.
+
+Parser regressions (no ETP files required), from the repository root:
+
+```bash
+python3 -m unittest discover -s oracle -v
+```
+
+The oracle's `--selftest` also checks Unicode verdicts using the catalogue and
+implication matrix described in Setup.
+
+### Equal versus equivalent
 
 `equivalent` now means **equivalent but not equal**: both equations imply each
-other, but their parsed syntax differs even after allowing equality symmetry.
-This includes variable renamings (such as `x * y = x` versus `a * b = a`,
-which map to the same node) and distinct ETP nodes in the same semantic
-equivalence class. For example, Equation 2 (`x = y`) and Equation 7
+other, but their structures differ even after the allowed transformations.
+For example, Equation 2 (`x = y`) and Equation 7
 (`x = y ◇ z`) imply each other but are syntactically different, so their
-verdict is `equivalent`. Sharing an ETP node alone does not establish `equal`,
-because node mapping also ignores variable names.
+verdict is `equivalent`. For successfully mapped inputs, sharing an ETP node
+establishes `equal`: the mapper's canonical keys account for exactly equality
+symmetry, bijective variable renaming, and operation-symbol changes.
 
 Both verdicts indicate semantic preservation; consumers counting successful
 comparisons should include both labels. `equal` takes precedence over
@@ -116,12 +169,12 @@ comparisons should include both labels. `equal` takes precedence over
 `forward` and `backward` fields still report the raw matrix statuses. Inputs
 that fail to map retain their existing off-graph verdicts.
 
-**Equality, including swapped sides:**
+**Equality, combining swapped sides, variable renaming, and symbol changes:**
 
 ```bash
-python3 oracle.py --intended "x * y = x" --generated "x = x * y"
+python3 oracle.py --intended "x * y = x" --generated "l = l ⊕ I"
 # ...
-#   verdict: EQUAL  (same parsed equation up to symmetry of equality)
+#   verdict: EQUAL  (both map to Equation 4)
 ```
 
 **Default (human-readable) output** — each side's mapping, both implication
@@ -141,11 +194,11 @@ changed the operator symbol, so both sides land on Equation 43:
 
 ```bash
 python3 oracle.py --intended 43 --generated "p * q = q * p"
-#  intended: '43' -> Equation 43  [x ◇ y = y ◇ x]
+#  intended: 'x ◇ y = y ◇ x' -> Equation 43  [x ◇ y = y ◇ x]
 # generated: 'p * q = q * p' -> Equation 43  [x ◇ y = y ◇ x]
 #   forward: intended => generated : proof_true
 #  backward: generated => intended : proof_true
-#   verdict: EQUIVALENT  (both map to Equation 43)
+#   verdict: EQUAL  (both map to Equation 43)
 ```
 
 **`--json`** — the same comparison as a record ready to serialize into a
@@ -154,8 +207,8 @@ dataset (`node`/`normalized` per side, `forward`/`backward`, `evidence`):
 ```bash
 python3 oracle.py --intended 43 --generated "p * q = q * p" --json
 # {
-#   "label": "equivalent",
-#   "intended":  { "status": "mapped", "input_text": "43",            "normalized": "x ◇ y = y ◇ x", "node": 43, "order": 2, "reason": null },
+#   "label": "equal",
+#   "intended":  { "status": "mapped", "input_text": "x ◇ y = y ◇ x", "normalized": "x ◇ y = y ◇ x", "node": 43, "order": 2, "reason": null },
 #   "generated": { "status": "mapped", "input_text": "p * q = q * p", "normalized": "x ◇ y = y ◇ x", "node": 43, "order": 2, "reason": null },
 #   "forward": "proof_true",
 #   "backward": "proof_true",
@@ -169,7 +222,7 @@ exits 0 only if all pass):
 
 ```bash
 python3 oracle.py --selftest
-# [ok ] intended='x ◇ y = y ◇ x' generated='a * b = b * a' -> equivalent | both map to Equation 43
+# [ok ] intended='x ◇ y = y ◇ x' generated='a * b = b * a' -> equal | both map to Equation 43
 # ... (additional equality, graph-relation, and rejection cases) ...
 # selftest: all passed
 ```
