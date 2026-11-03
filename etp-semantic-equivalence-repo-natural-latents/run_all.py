@@ -52,6 +52,9 @@ def parse_args():
     p.add_argument('--pairs', type=int)
     p.add_argument('--seeds', type=int, nargs='+', help='split seeds')
     p.add_argument('--out', help='results directory')
+    p.add_argument('--twin-split', action='store_true',
+                   help='hold out whole twin groups (oracle-equivalent / dual equations stay on one side)')
+    p.add_argument('--twin-giant', choices=['drop', 'train'], help="what to do with the giant twin group (default drop)")
     p.add_argument('--no-png', action='store_true', help='skip confusion-matrix images')
     p.add_argument('--quick', action='store_true', help='smoke test: 300 equations, 3,000 pairs, 2 splits')
     p.add_argument('--list', action='store_true', help='list methods and exit')
@@ -80,6 +83,10 @@ def main():
         cfg.results_dir = a.out
     if a.no_png:
         cfg.save_confusion_pngs = False
+    if a.twin_split:
+        cfg.twin_split = True
+    if a.twin_giant:
+        cfg.twin_giant = a.twin_giant
 
     methods = all_methods(cfg, a.modules)
     if a.match:

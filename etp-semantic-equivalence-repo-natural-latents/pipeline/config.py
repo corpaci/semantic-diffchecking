@@ -24,6 +24,8 @@ class Config:
     # evaluation
     split_seeds: tuple = (42, 7, 123, 99, 256)
     test_frac: float = 0.3             # fraction of EQUATIONS held out per split
+    twin_split: bool = False           # hold out whole twin groups (oracle-equivalent / dual equations) together
+    twin_giant: str = 'drop'           # the one huge twin group: 'drop' (left out of train and test) or 'train'
 
     # the ONE base classifier used by every learned method: 'hgb' or 'rf'
     classifier: str = 'hgb'

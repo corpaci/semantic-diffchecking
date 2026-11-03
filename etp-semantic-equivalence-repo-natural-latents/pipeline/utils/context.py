@@ -33,8 +33,16 @@ class Context:
         self.ii = np.array([idx[a] for a in pairs.node_a])
         self.jj = np.array([idx[b] for b in pairs.node_b])
         self.y = np.array([LABEL_IDS[r] for r in pairs.relation])
+        from .twins import twin_groups, leakage_report
+        group_by_node, giant = twin_groups(self.all_equations)
+        self.twin_group = np.array([group_by_node[n] for n in self.node_order])
         self.splits = node_holdout_splits(len(self.node_order), self.ii, self.jj,
-                                          cfg.split_seeds, cfg.test_frac)
+                                          cfg.split_seeds, cfg.test_frac,
+                                          groups=self.twin_group if cfg.twin_split else None,
+                                          giant=giant, giant_mode=cfg.twin_giant)
+        rep = [leakage_report(s, self.ii, self.jj, self.twin_group) for s in self.splits]
+        log(f"[leakage] twin_split={cfg.twin_split}: test equations with a twin in training "
+            f"{np.mean([r[0] for r in rep]):.0%}; unordered pairs on both sides {sum(r[1] for r in rep)}")
         self._cache = {}
         log(f"[data] {len(self.node_order)} equations, {len(self.y):,} ordered pairs "
             f"(from {n_available:,} resolvable unordered pairs), label counts "
