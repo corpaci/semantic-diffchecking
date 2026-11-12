@@ -35,6 +35,12 @@ experiments of your own as a [design](designs/E0-TEMPLATE.md) sheet and bring it
 The suggested week-by-week plan: [ONBOARDING.md](ONBOARDING.md).
 
 
+## Agentic requirement preservation
+
+The [experiment package](experiments/agentic_drift/README.md) measures requirement preservation through MetaGPT handoffs and multi-hop code refactoring.
+It includes independent requirement checks, ETP equation evaluation, artifact tracing, and guarded checkpoint recovery.
+Preparation and offline tests require no model API key.
+
 ## The design-sheet workflow
 
 1. Copy `designs/E0-TEMPLATE.md` to `designs/E<n>-short-keyname.md` and fill it in

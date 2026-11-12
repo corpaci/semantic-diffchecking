@@ -1,0 +1,5 @@
+# The refactoring evaluator needs only Python's standard library.
+# Calibration records the resolved immutable image ID in every run plan.
+FROM python:3.11.11-slim-bookworm
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+WORKDIR /tmp

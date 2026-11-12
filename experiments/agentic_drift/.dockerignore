@@ -1,0 +1,7 @@
+*
+!*.py
+!requirements-*.txt
+!openrouter_config.json
+!cases/
+!cases/bankaccount_v1/
+!cases/bankaccount_v1/requirements.json

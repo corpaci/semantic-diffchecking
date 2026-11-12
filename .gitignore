@@ -5,3 +5,6 @@ __pycache__/
 semantic-diff-test/results
 dev/
 implications/
+.venv-*/
+experiments/agentic_drift/runs/
+experiments/agentic_drift/data/
